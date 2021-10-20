@@ -5,11 +5,6 @@ import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
 
 const Navbar = styled.header`
-  /* position: sticky;
-  top: 0px;
-  min-width: 100%;
-  z-index: 100; */
-
   position: sticky;
   top: 0;
   width: 100%;
@@ -20,7 +15,7 @@ const Navbar = styled.header`
 
 const Container = styled.div`
   margin: 0 auto;
-  width: 100vh;
+  width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   text-align: center;
@@ -45,7 +40,8 @@ const Logo = styled.a`
   /* margin-left: 60px;
   margin-top: 26px; */
   @media (max-width: 768px) {
-    display: none;
+    width: 50%;
+    margin-top:2vh;
   }
 `;
 
@@ -66,13 +62,6 @@ const DeskTag = styled.a`
     cursor: pointer;
   }
 `;
-// const TagLine = styled.div`
-//   width: 34px;
-//   font-size: 20px;
-//   color: #3f3a3a;
-//   line-height: 28px;
-//   margin-right: 20px;
-// `;
 
 const Member = styled.div`
   margin-left: 42px;
@@ -83,7 +72,7 @@ const Member = styled.div`
 const MobileHeaderDiv = styled.div`
   display: none;
   @media (max-width: 768px) {
-    height: 52px;
+    height: 110px;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -91,67 +80,61 @@ const MobileHeaderDiv = styled.div`
     top: 0;
     z-index: 99;
     background-color: #fff;
+    flex-direction: column;
   }
 `;
 
 const MobileNav = styled.div`
   display: none;
   @media (max-width: 768px) {
-    height: 40px;
-    background-color: #313538;
-    width: 100%;
     display: flex;
     align-items: center;
   }
 `;
 const MobileTag = styled.div`
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: 18px;
     color: #828282;
     flex-grow: 1;
     text-align: center;
-  }
-`;
-
-const MobileTagLine = styled.div`
-  @media (max-width: 768px) {
-    border-left: 2px solid #828282;
+    margin: 2px 8px 8px 8px;
   }
 `;
 
 export default function Header() {
-    return (
-        <Navbar>
-            <Container>
-                <DeskHeaderDiv>
-                    <Logo href="./">
-                        <img src={roseLogo} alt="logo" height="64" />
-                    </Logo>
-                    <DeskNav>
-                        <DeskTag href="./?tag=women">Invatation</DeskTag>
+  return (
+    <Navbar>
+      <Container>
+        <DeskHeaderDiv>
+          <Logo href="./">
+            <img src={roseLogo} alt="logo" height="64" />
+          </Logo>
+          <DeskNav>
+            <DeskTag href="./?tag=women">Invatation</DeskTag>
 
-                        <DeskTag href="./?tag=men">Guest List</DeskTag>
+            <DeskTag href="./?tag=men">Guest List</DeskTag>
 
-                        <DeskTag href="./?tag=accessories">Table</DeskTag>
-                    </DeskNav>
+            <DeskTag href="./?tag=accessories">Table</DeskTag>
+          </DeskNav>
 
-                    <Member>
-                        <img src={memberImg} height="44" alt="member" />
-                    </Member>
-                </DeskHeaderDiv>
-                <MobileHeaderDiv>
-                    <Logo href="./">
-                        <img src={roseLogo} height="20" alt="logo" />
-                    </Logo>
-                </MobileHeaderDiv>
-                <MobileNav>
-                    <MobileTag href="./?tag=women">Invatation</MobileTag>
-                    <MobileTagLine>|</MobileTagLine>
-                    <MobileTag href="./?tag=men">Guest List</MobileTag>
-                    <MobileTagLine>|</MobileTagLine>
-                    <MobileTag href="./?tag=accessories">Table</MobileTag>
-                </MobileNav>
-            </Container>
-        </Navbar>
-    );
+          <Member>
+            <img src={memberImg} height="44" alt="member" />
+          </Member>
+        </DeskHeaderDiv>
+        <MobileHeaderDiv>
+          <Logo href="./">
+            <img src={roseLogo} height="48" alt="logo" />
+          </Logo>
+
+          <MobileNav>
+            <MobileTag href="./?tag=women">Invatation</MobileTag>
+            {/* <MobileTagLine>|</MobileTagLine> */}
+            <MobileTag href="./?tag=men">Guest List</MobileTag>
+            {/* <MobileTagLine>|</MobileTagLine> */}
+            <MobileTag href="./?tag=accessories">Table</MobileTag>
+          </MobileNav>
+        </MobileHeaderDiv>
+      </Container>
+    </Navbar>
+  );
 }
