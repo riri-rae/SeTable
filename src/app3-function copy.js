@@ -34,54 +34,70 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     return result;
 };
 
-const Container = styled.div`
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-    position: relative;
-    min-height: 100vh;
-`;
-
 
 const BlockWrap = styled.div`
     margin-right: 2.5rem;
     margin-left: 2.5rem;
     position: relative;
-    height: 50vh;
+    height: 10rem;
 `;
 
 const Block = styled.div`
     position: fixed;
-    top: 50%;
+    top: 120px;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translateX(-50%);
+    border: 1px solid #ddd;
     background: #B8AB9B;
-    width: 50%;
+    border-radius: 5px;
+    width: 80%;
+    /* height: 145px; */
     text-align: center;
 `;
 const BlockTitle = styled.div`
     color: #574E56;
     font-size: 2rem;
     margin: 16px 0;
-    
+`;
+
+const Button = styled.button`
+    display: flex;
+    align-items: center;
+    margin:  12px auto;
+    padding: 0.5rem;
+    color: #000;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+   
 `;
 const TaskContainer = styled.div`
-  margin: 8px;
-  border: 1px solid lightgrey;
-  border-radius: 2px;
+  margin-top: 212px;
+  /* border: 1px solid lightgrey;
+  border-radius: 2px; */
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
 `;
 
 
 const TaskRow = styled.div`
-  padding: 8px;
+  padding: 8px 8px 8px 2rem;
   margin-bottom: 8px;
   transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+  background-color: ${props => (props.isDraggingOver ? '#FDFBF4' : 'white')};
   flex-grow: 1;
   display: flex;
   border: 3px solid #ccc;
-  min-height: 4rem;
+  border-radius: 4px;
+  min-height: 7rem;
+  width: 80%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 `;
 
 const Task = styled.div`
@@ -89,7 +105,20 @@ const Task = styled.div`
   border-radius: 50%;
   padding: 8px;
   margin: 8px;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+  background-color: ${props => (props.isDragging ? '#b78f95' : 'white')};
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+`;
+const KioskItems = styled.div`
+  border: 2px solid lightgrey;
+  border-radius: 50%;
+  padding: 8px;
+  margin: 8px;
+  background-color: ${props => (props.isDragging ? 'A47E84' : 'white')};
   width: 50px;
   height: 50px;
   display: flex;
@@ -99,37 +128,25 @@ const Task = styled.div`
 `;
 
 const KioskContainer = styled.div`
-    border: 1px
-        ${props => (props.isDraggingOver ? 'solid lightblue' : 'solid #ddd')};
+    box-sizing: border-box;
+    border: 3px
+        ${props => (props.isDraggingOver ? 'solid #A47E84' : 'solid #A47E84')};
     background: #fff;
-    padding: 0.5rem 0.5rem 0;
     border-radius: 5px;
-    flex: 0 0 150px;
-    font-family: sans-serif;
     display: flex;
+    justify-content: flex-start;
     position: fixed;
-    top: 270px;
-    /* bottom:1vh; */
-    right: 8px;
-    width: 160px;
-    margin-right:2.5rem;
+    top: 250px;
+    left: 50%;
+    transform: translateX(-50%);
     flex-wrap:wrap;
-    overflow:scroll;
+    overflow-x:scroll;
+    width: 80%;
+    height: 190px;
+    padding: 8px 8px 8px 2rem;
 `;
 
-const KioskItems = styled.div`
-    border: 2px solid lightgrey;
-  border-radius: 50%;
-  padding: 8px;
-  margin-right: 8px;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-`;
 
 
 
@@ -164,18 +181,17 @@ function App3() {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-
             <BlockWrap>
                 <Block>
                     <BlockTitle>Arrange your table here!</BlockTitle>
-                    <button
+                    <Button
                         type="button"
                         onClick={() => {
                             setState([...state, []]);
                         }}
                     >
                         Add Table
-                    </button>
+                    </Button>
                 </Block>
             </BlockWrap>
 

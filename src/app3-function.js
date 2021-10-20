@@ -2,6 +2,142 @@ import React, { useState } from "react";
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+
+const BlockWrap = styled.div`
+    position: relative;
+    height: 10rem;
+`;
+
+const Block = styled.div`
+    position: fixed;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid #ddd;
+    background: #B8AB9B;
+    border-radius: 5px;
+    width: 80%;
+    /* height: 145px; */
+    text-align: center;
+    z-index: 1;
+`;
+const BlockTitle = styled.div`
+    color: #574E56;
+    font-size: 2rem;
+    margin: 16px 0;
+`;
+
+const Button = styled.button`
+    display: flex;
+    align-items: center;
+    margin:  12px auto;
+    padding: 0.5rem;
+    color: #000;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+   
+`;
+// const KioskItems = styled.div`
+//   border: 2px solid lightgrey;
+//   border-radius: 50%;
+//   padding: 8px;
+//   margin: 8px;
+//   background-color: ${props => (props.isDragging ? 'A47E84' : 'white')};
+//   width: 50px;
+//   height: 50px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+
+// `;
+
+// const KioskContainer = styled.div`
+//     box-sizing: border-box;
+//     border: 3px
+//         ${props => (props.isDraggingOver ? 'solid #A47E84' : 'solid #A47E84')};
+//     background: #fff;
+//     border-radius: 5px;
+//     display: flex;
+//     justify-content: flex-start;
+//     position: fixed;
+//     top: 250px;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     flex-wrap:wrap;
+//     overflow-x:scroll;
+//     width: 80%;
+//     height: 190px;
+//     padding: 8px 8px 8px 2rem;
+// `;
+
+const TaskContainer = styled.div`
+  /* margin-top: 212px; */
+  /* border: 1px solid lightgrey;
+  border-radius: 2px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  & >:first-child {
+    /* box-sizing: border-box; */
+    border: 3px
+        ${props => (props.isDraggingOver ? 'solid #A47E84' : 'solid #A47E84')};
+    /* background: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start; */
+    position: fixed;
+    top: 250px;
+    /* left: 50%;
+    transform: translateX(-50%); */
+    flex-wrap:wrap;
+    overflow-x:scroll;
+    width: 80%;
+    height: 190px;
+    padding: 8px 8px 8px 2rem;
+  }
+
+  & >:nth-child(2){
+      margin-top: 200px;
+    
+  }
+`;
+
+const TaskRow = styled.div`
+  padding: 8px 8px 8px 2rem;
+  margin-bottom: 8px;
+  transition: background-color 0.2s ease;
+  background-color: ${props => (props.isDraggingOver ? '#FDFBF4' : 'white')};
+  flex-grow: 1;
+  display: flex;
+  border: 3px solid #ccc;
+  border-radius: 4px;
+  min-height: 7rem;
+  width: 80%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+`;
+
+const Task = styled.div`
+  border: 2px solid lightgrey;
+  border-radius: 50%;
+  padding: 8px;
+  margin: 8px;
+  background-color: ${props => (props.isDragging ? '#b78f95' : 'white')};
+  /* z-index: ${props => (props.isDragging ? '100' : '100')}; */
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+
+
 // fake data generator
 const getItems = (count, offset = 1) =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
@@ -35,124 +171,9 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 
-const BlockWrap = styled.div`
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-    position: relative;
-    height: 10rem;
-`;
-
-const Block = styled.div`
-    position: fixed;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid #ddd;
-    background: #B8AB9B;
-    border-radius: 5px;
-    width: 80%;
-    /* height: 145px; */
-    text-align: center;
-`;
-const BlockTitle = styled.div`
-    color: #574E56;
-    font-size: 2rem;
-    margin: 16px 0;
-`;
-
-const Button = styled.button`
-    display: flex;
-    align-items: center;
-    margin:  12px auto;
-    padding: 0.5rem;
-    color: #000;
-    border: 1px solid #ddd;
-    background: #fff;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-   
-`;
-const TaskContainer = styled.div`
-  margin-top: 212px;
-  /* border: 1px solid lightgrey;
-  border-radius: 2px; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
- 
-`;
-
-
-const TaskRow = styled.div`
-  padding: 8px 8px 8px 2rem;
-  margin-bottom: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? '#FDFBF4' : 'white')};
-  flex-grow: 1;
-  display: flex;
-  border: 3px solid #ccc;
-  border-radius: 4px;
-  min-height: 7rem;
-  width: 80%;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-`;
-
-const Task = styled.div`
-  border: 2px solid lightgrey;
-  border-radius: 50%;
-  padding: 8px;
-  margin: 8px;
-  background-color: ${props => (props.isDragging ? '#b78f95' : 'white')};
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-`;
-const KioskItems = styled.div`
-  border: 2px solid lightgrey;
-  border-radius: 50%;
-  padding: 8px;
-  margin: 8px;
-  background-color: ${props => (props.isDragging ? 'A47E84' : 'white')};
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-`;
-
-const KioskContainer = styled.div`
-    box-sizing: border-box;
-    border: 3px
-        ${props => (props.isDraggingOver ? 'solid #A47E84' : 'solid #A47E84')};
-    background: #fff;
-    border-radius: 5px;
-    display: flex;
-    justify-content: flex-start;
-    position: fixed;
-    top: 250px;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-wrap:wrap;
-    overflow-x:scroll;
-    width: 80%;
-    height: 190px;
-    padding: 8px 8px 8px 2rem;
-`;
-
-
-
-
-
 
 function App3() {
-    const [state, setState] = useState([getItems(12)]);
+    const [state, setState] = useState([getItems(50)]);
 
     function onDragEnd(result) {
         const { source, destination } = result;
@@ -169,6 +190,7 @@ function App3() {
             const newState = [...state];
             newState[sInd] = items;
             setState(newState);
+
         } else {
             const result = move(state[sInd], state[dInd], source, destination);
             const newState = [...state];
@@ -177,6 +199,7 @@ function App3() {
 
             setState(newState.filter(group => group.length));
         }
+
     }
 
     return (
@@ -195,7 +218,7 @@ function App3() {
                 </Block>
             </BlockWrap>
 
-            {state.map((el, ind) => (
+            {/* {state.map((el, ind) => (
                 <Droppable key={ind} droppableId={`${ind}`}>
                     {(provided, snapshot) => (
                         <KioskContainer
@@ -225,7 +248,7 @@ function App3() {
                         </KioskContainer>
                     )}
                 </Droppable>
-            ))}
+            ))} */}
 
 
             <TaskContainer>
