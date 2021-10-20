@@ -16,8 +16,6 @@ const Navbar = styled.header`
 const Container = styled.div`
   margin: 0 auto;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -58,8 +56,10 @@ const DeskTag = styled.a`
   line-height: 28px;
   margin: 0 24px;
   &:hover {
+    text-decoration: none;
     color: #8b572a;
     cursor: pointer;
+    /* border-bottom: 2px solid #8b572a; */
   }
 `;
 

@@ -34,13 +34,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
     return result;
 };
 
-const Container = styled.div`
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-    position: relative;
-    min-height: 100vh;
-`;
-
 
 const BlockWrap = styled.div`
     margin-right: 2.5rem;
@@ -51,13 +44,14 @@ const BlockWrap = styled.div`
 
 const Block = styled.div`
     position: fixed;
-    top: 108px;
+    top: 120px;
     left: 50%;
     transform: translateX(-50%);
     border: 1px solid #ddd;
     background: #B8AB9B;
     border-radius: 5px;
     width: 80%;
+    /* height: 145px; */
     text-align: center;
 `;
 const BlockTitle = styled.div`
@@ -111,7 +105,7 @@ const Task = styled.div`
   border-radius: 50%;
   padding: 8px;
   margin: 8px;
-  background-color: ${props => (props.isDragging ? '#A47E84' : 'white')};
+  background-color: ${props => (props.isDragging ? '#b78f95' : 'white')};
   width: 50px;
   height: 50px;
   display: flex;
