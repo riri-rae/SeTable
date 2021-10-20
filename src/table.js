@@ -3,9 +3,11 @@ import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const Content = styled.div`
-    margin-right: 12rem;
-    margin-left: 0.5rem;
+const Container = styled.div`
+    margin-right: 2.5rem;
+    margin-left: 2.5rem;
+    position: relative;
+    min-height: 100vh;
 `;
 
 const Item = styled.div`
@@ -38,7 +40,7 @@ const List = styled.div`
         ${props => (props.isDraggingOver ? 'solid lightblue' : 'solid #ddd')};
     background: #fff;
     padding: 0.5rem 0.5rem 0;
-    border-radius: 3px;
+    border-radius: 5px;
     flex: 0 0 150px;
     font-family: sans-serif;
     display: flex;
@@ -46,23 +48,31 @@ const List = styled.div`
 `;
 
 const Kiosk = styled(List)`
-    position: absolute;
-    top: 58px;
-    right: 0;
-    /* bottom: 58px; */
+    position: fixed;
+    top: 270px;
+    bottom:1vh;
+    right: 8px;
     width: 160px;
-    margin-right:16px;
-    display: flex;
+    margin-right:2.5rem;
     flex-wrap:wrap;
     overflow:scroll;
-    height:85vh;
 `;
 
-const Container = styled(List)`
-    margin: 0.5rem 0.5rem 1.5rem;
-    min-height: 5rem;
-    overflow: hidden;
-    
+// const TableBoxWrap = styled(List)`
+//     width: calc(100% - 222px);
+//     height:100vh;
+//     border:1px solid #ccc;
+//     flex-wrap: wrap;
+//     justify-content: center;
+// `;
+
+const TableBox = styled(List)`
+    width: calc(100% - 222px);
+    margin-left: 8px;
+    margin-bottom: 16px;
+    /* margin:0 auto; */
+    min-width:45%;
+    height: 5rem;
 `;
 
 const Notice = styled.div`
@@ -77,7 +87,40 @@ const Notice = styled.div`
     color: #aaa;
 `;
 
+const BlockWrap = styled.div`
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    background: #B8AB9B;
+    border-radius: 5px;
+    flex-direction: column;
+  
+`;
+
+
+const BtnWrap = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
 const Button = styled.button`
+    display: flex;
+    align-items: center;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    color: #000;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+`;
+
+const ButtonDel = styled.button`
     display: flex;
     align-items: center;
     align-content: center;
@@ -87,13 +130,20 @@ const Button = styled.button`
     color: #000;
     border: 1px solid #ddd;
     background: #fff;
-    border-radius: 3px;
+    border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
 `;
 
 const ButtonText = styled.div`
     margin: 0 1rem;
+`;
+
+const ButtonTitle = styled.div`
+    color: #574E56;
+    font-size: 2rem;
+    margin: 16px 0;
+    
 `;
 
 const ITEMS = [
@@ -233,7 +283,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-class App3 extends Component {
+class Table extends Component {
   state = {
     [uuid()]: []
   };
@@ -287,55 +337,71 @@ class App3 extends Component {
   render() {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="ITEMS" isDropDisabled={true} >
-          {(provided, snapshot) => (
-            <Kiosk
-              ref={provided.innerRef}
-              isDraggingOver={snapshot.isDraggingOver}>
-              {ITEMS.map((item, index) => (
-                <Draggable
-                  key={item.id}
-                  draggableId={item.id}
-                  index={index}>
-                  {(provided, snapshot) => (
-                    <React.Fragment>
-                      <Item
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        isDragging={snapshot.isDragging}
-                        style={
-                          provided.draggableProps
-                            .style
-                        }
-                      >
-                        {item.content}
-                      </Item>
-                      {snapshot.isDragging && (
-                        <Clone>{item.content}</Clone>
-                      )}
-                    </React.Fragment>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </Kiosk>
-          )}
-        </Droppable>
-        <Content>
-          <Button onClick={this.addList}>
-            <svg width="24" height="24" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-              />
-            </svg>
-            <ButtonText>Add Table</ButtonText>
-          </Button>
+        <Container>
+          <Droppable droppableId="ITEMS" isDropDisabled={true} >
+            {(provided, snapshot) => (
+              <Kiosk
+                ref={provided.innerRef}
+                isDraggingOver={snapshot.isDraggingOver}>
+                {ITEMS.map((item, index) => (
+                  <Draggable
+                    key={item.id}
+                    draggableId={item.id}
+                    index={index}>
+                    {(provided, snapshot) => (
+                      <React.Fragment>
+                        <Item
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          isDragging={snapshot.isDragging}
+                          style={
+                            provided.draggableProps
+                              .style
+                          }
+                        >
+                          {item.content}
+                        </Item>
+                        {snapshot.isDragging && (
+                          <Clone>{item.content}</Clone>
+                        )}
+                      </React.Fragment>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </Kiosk>
+            )}
+          </Droppable>
+          <BlockWrap>
+            <ButtonTitle>Arrange your table here!</ButtonTitle>
+            <BtnWrap>
+              <Button onClick={this.addList}>
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                  />
+                </svg>
+                <ButtonText>Add Table</ButtonText>
+              </Button>
+
+              <ButtonDel onClick={this.addList}>
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                  />
+                </svg>
+                <ButtonText>Remove Table</ButtonText>
+              </ButtonDel>
+            </BtnWrap>
+          </BlockWrap>
+
           {Object.keys(this.state).map((list, i) => (
             <Droppable key={list} droppableId={list} direction='horizontal'>
               {(provided, snapshot) => (
-                <Container
+                <TableBox
                   ref={provided.innerRef}
                   isDraggingOver={snapshot.isDraggingOver}>
                   {this.state[list].length
@@ -366,11 +432,12 @@ class App3 extends Component {
                       <Notice>Drop items here</Notice>
                     )}
                   {provided.placeholder}
-                </Container>
+                </TableBox>
               )}
             </Droppable>
           ))}
-        </Content>
+
+        </Container>
       </DragDropContext>
     );
   }
@@ -379,4 +446,4 @@ class App3 extends Component {
 // Put the things into the DOM!
 // ReactDOM.render(<App />, document.getElementById('root'));
 
-export default App3;
+export default Table;
