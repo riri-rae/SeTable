@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 const DeskHeaderDiv = styled.div`
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
   background-color: #fff;
@@ -107,14 +107,12 @@ export default function Header() {
       <Container>
         <DeskHeaderDiv>
           <Logo href="./">
-            <img src={roseLogo} alt="logo" height="64" />
+            <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
-            <DeskTag href="./?tag=women">Invatation</DeskTag>
-
-            <DeskTag href="./?tag=men">Guest List</DeskTag>
-
-            <DeskTag href="./?tag=accessories">Table</DeskTag>
+            <DeskTag href="./invatation">Invatation</DeskTag>
+            <DeskTag href="./guestlist">Guest List</DeskTag>
+            <DeskTag href="./table">Table</DeskTag>
           </DeskNav>
 
           <Member>
@@ -123,15 +121,13 @@ export default function Header() {
         </DeskHeaderDiv>
         <MobileHeaderDiv>
           <Logo href="./">
-            <img src={roseLogo} height="48" alt="logo" />
+            <img src={roseLogo} height="44" alt="logo" />
           </Logo>
 
           <MobileNav>
-            <MobileTag href="./?tag=women">Invatation</MobileTag>
-            {/* <MobileTagLine>|</MobileTagLine> */}
-            <MobileTag href="./?tag=men">Guest List</MobileTag>
-            {/* <MobileTagLine>|</MobileTagLine> */}
-            <MobileTag href="./?tag=accessories">Table</MobileTag>
+            <MobileTag href="./invatation">Invatation</MobileTag>
+            <MobileTag href="./guestlist">Guest List</MobileTag>
+            <MobileTag href="./table">Table</MobileTag>
           </MobileNav>
         </MobileHeaderDiv>
       </Container>

@@ -49,16 +49,6 @@ function App2() {
       { id: 28, name: "ben" },
       { id: 29, name: "joe" },
       { id: 30, name: "jason" },
-      { id: 31, name: "chris" },
-      { id: 32, name: "heather" },
-      { id: 33, name: "Richard" },
-      { id: 34, name: "george" },
-      { id: 35, name: "rupert" },
-      { id: 36, name: "alice" },
-      { id: 37, name: "katherine" },
-      { id: 38, name: "ben" },
-      { id: 39, name: "joe" },
-      { id: 40, name: "jason" },
     ],
   });
 

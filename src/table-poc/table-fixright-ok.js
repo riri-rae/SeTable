@@ -6,19 +6,19 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const BlockWrap = styled.div`
   position: relative;
-  height: 10rem;
+  height: 2rem;
 `;
 
 const Block = styled.div`
   position: fixed;
-  top: 120px;
+  /* top: 120px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
   border: 1px solid #ddd;
   background: #b8ab9b;
   border-radius: 5px;
-  width: 80%;
-
+  width: 300px;
+  height: 100vh;
   text-align: center;
   z-index: 1;
 `;
@@ -36,7 +36,7 @@ const Button = styled.button`
   color: #000;
   border: 1px solid #ddd;
   background: #fff;
-  border-radius: 30px;
+  border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
 `;
@@ -47,24 +47,27 @@ const TaskContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-left: 220px;
   & > :first-child {
+    flex-direction: row;
     border: 3px
       ${(props) => (props.isDraggingOver ? "solid #A47E84" : "solid #A47E84")};
     position: fixed;
     top: 250px;
-    /* left: 50%; 
-    transform: translateX(-50%);  */
+    /* left: 50%;
+    transform: translateX(-50%); */
     flex-wrap: wrap;
     overflow-x: scroll;
-    width: 80%;
-    height: 190px;
+    width: 300px;
+    /* height: 190px; */
     padding: 8px 8px 8px 2rem;
     z-index: 90;
+    left:0;
   }
 
-  & > :nth-child(2) {
+  /* & > :nth-child(2) {
     margin-top: 200px;
-  }
+  } */
 `;
 
 const TaskRow = styled.div`
@@ -99,19 +102,19 @@ const Task = styled.div`
 // firebase data
 const db = firebase.firestore();
 
-const list = db.collection('Documents').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp').doc('guestlist')
-console.log(list);
-db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
-  .get()
-  .then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      let allList = doc.data().guestlist
-      console.log(allList)
-      allList.forEach((data) => {
-        console.log(data)
-      })
-    });
-  })
+// const list = db.collection('Documents').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp').doc('guestlist')
+// console.log(list);
+// db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
+//     .get()
+//     .then((querySnapshot) => {
+//       querySnapshot.forEach((doc) => {
+//         let allList = doc.data().guestlist
+//         console.log(allList)
+//         allList.forEach((data) => {
+//           console.log(data)
+//         })
+//       });
+//     })
 
 const getItems = (count, offset = 1) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
@@ -145,7 +148,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 function Table() {
-  const [state, setState] = useState([getItems(12)]);
+  const [state, setState] = useState([getItems(24)]);
 
   useEffect(() => {
     db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
