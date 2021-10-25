@@ -61,9 +61,8 @@ const TaskContainer = styled.div`
     padding: 8px 8px 8px 2rem;
     z-index: 90;
   }
-
   & > :nth-child(2) {
-    margin-top: 200px;
+    margin-top: 220px;
   }
 `;
 
@@ -99,38 +98,27 @@ const Task = styled.div`
 // firebase data
 const db = firebase.firestore();
 
-const list = db.collection('Documents').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp').doc('guestlist')
-console.log(list);
-db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
-  .get()
-  .then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      let allList = doc.data().guestlist
-      console.log(allList)
-      allList.forEach((data) => {
-        console.log(data)
-      })
-    });
-  })
-
 const getItems = (count, offset = 1) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
     content: `Test ${k + offset}`,
   }));
+console.log(getItems(5));
+
 
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-
+  // console.log(result)
   return result;
 };
 
 //Moves an item from one list to another list.
 
 const move = (source, destination, droppableSource, droppableDestination) => {
+  console.log(source, destination);
   const sourceClone = Array.from(source);
   const destClone = Array.from(destination);
   const [removed] = sourceClone.splice(droppableSource.index, 1);
@@ -140,58 +128,81 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   const result = {};
   result[droppableSource.droppableId] = sourceClone;
   result[droppableDestination.droppableId] = destClone;
-
+  console.log(result)
   return result;
 };
 
 function Table() {
-  const [state, setState] = useState([getItems(12)]);
+  const [state, setState] = useState([]);
+  const [tables, setTables] = useState([]);
+
+  // useEffect(() => {
+  //   save state & tables to firestore
+  // }, [state, tables]);
 
   useEffect(() => {
-    db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
+    const myList = [];
+    db.collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("rsvp")
       .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const guestList = [];
-          let allList = doc.data().guestlist
+      .then((collectionSnapshot) => {
+        collectionSnapshot.docs.forEach((doc) => {
+          let allList = doc.data().guestlist;
           let groupId = doc.id;
+          // console.log(allList)
           const newAllList = allList.map((name) => {
             return {
               id: `${groupId}-${name}`,
-              name: name
-            }
-          })
-          // console.log(guestList.push().concat(...newAllList));
-          console.log(newAllList);
+              content: name,
+            };
+          });
+          // console.log(state);
+          // console.log(newAllList);
+          myList.push(...newAllList);
         });
-        // setstate
-
       })
-
+      .then(() => {
+        setState([...state, ...myList]);
+        setTables([...tables, myList]);
+      });
   }, []);
 
-  function onDragEnd(result) {
-    const { source, destination } = result;
 
+  function onDragEnd(result) {
+    console.log(tables)
+    const { source, destination } = result;
+    console.log(source, destination);
+    console.log(result)
     if (!destination) {
       return;
     }
     const sInd = +source.droppableId;
+    console.log(typeof sInd);
     const dInd = +destination.droppableId;
-
+    console.log(sInd, dInd);
     if (sInd === dInd) {
-      const items = reorder(state[sInd], source.index, destination.index);
-      const newState = [...state];
-      newState[sInd] = items;
-      setState(newState);
+      const items = reorder(state, source.index, destination.index);
+      console.log(state)
+      // const newState = [...state];
+      // newState[sInd] = items;
+      setState(items);
     } else {
-      const result = move(state[sInd], state[dInd], source, destination);
+      const result = move(
+        tables[Number(sInd)],
+        tables[Number(dInd)],
+        source,
+        destination
+      );
       const newState = [...state];
-      newState[sInd] = result[sInd];
-      newState[dInd] = result[dInd];
+      tables[Number(sInd)] = result[sInd];
+      tables[Number(dInd)] = result[dInd];
       setState(newState);
-      // setState(newState.filter((group) => group.length));
+      console.log(newState)
+      // setTables(newState);
     }
+
+    // save state to firestore
   }
 
   return (
@@ -202,7 +213,8 @@ function Table() {
           <Button
             type="button"
             onClick={() => {
-              setState([...state, []]);
+              setTables([...tables, []]);
+              // console.log(state);
             }}
           >
             Add Table
@@ -211,17 +223,41 @@ function Table() {
       </BlockWrap>
 
       <TaskContainer>
-        {state.map((el, ind) => (
+        {/* <Droppable key={0} droppableId='777' direction="horizontal">
+          {(provided, snapshot) => (
+            <TaskRow
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
+            >
+              {state.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <Task
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      isDragging={snapshot.isDragging}
+                    >
+                      {item.content}
+                    </Task>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </TaskRow>
+          )}
+        </Droppable> */}
+        {tables.map((table, ind) => (
           <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
-
             {(provided, snapshot) => (
               <TaskRow
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 isDraggingOver={snapshot.isDraggingOver}
               >
-                {el.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                {table.map((guest, index) => (
+                  <Draggable key={guest.id} draggableId={guest.id} index={index}>
                     {(provided, snapshot) => (
                       <Task
                         ref={provided.innerRef}
@@ -229,7 +265,7 @@ function Table() {
                         {...provided.dragHandleProps}
                         isDragging={snapshot.isDragging}
                       >
-                        {item.content}
+                        {guest.content}
                       </Task>
                     )}
                   </Draggable>
@@ -247,10 +283,36 @@ function Table() {
 export default Table;
 
 
-// How about giving your cards something to make them distinguishable, 
-//like an ID or a specific (numbered?) class? 
-//After dragging you could simply store the position 
+// A semi-generic way to handle multiple lists. Matches
+// the IDs of the droppable container to the names of the
+// source arrays stored in the state.
+
+
+
+// How about giving your cards something to make them distinguishable,
+//like an ID or a specific (numbered?) class?
+//After dragging you could simply store the position
 //(which area, what position) of every card and "shift" them back into their place after reload …
 
-// Just find a system to store the position of each card that fits best your needs and your preferences. Like "card1, area5, position3". Put that into an js object and store it into local storage. 
+// Just find a system to store the position of each card that fits best your needs and your preferences. Like "card1, area5, position3". Put that into an js object and store it into local storage.
 // Write a script that moves your cards into the stored positions. Done ;)
+
+// useEffect(() => {
+//   db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
+//     .get()
+//     .then((collectionSnapshot) => {
+//       collectionSnapshot.forEach((doc) => {
+//         const guestList = [];
+//         let allList = doc.data().guestlist
+//         let groupId = doc.id;
+//         const newAllList = allList.map((name) => {
+//           return {
+//             id: `${groupId}-${name}`,
+//             name: name
+//           }
+//         })
+//         console.log(newAllList);
+//       });
+
+//     })
+// }, []);

@@ -143,8 +143,9 @@ function GuestList() {
           });
           // console.log(guestList.push().concat(...newAllList));
           console.log(newAllList);
+
         });
-        // setstate
+
       });
   }, []);
 

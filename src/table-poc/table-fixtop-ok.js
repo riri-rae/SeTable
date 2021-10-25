@@ -213,7 +213,6 @@ function Table() {
             <TaskContainer>
                 {state.map((el, ind) => (
                     <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
-
                         {(provided, snapshot) => (
                             <TaskRow
                                 ref={provided.innerRef}

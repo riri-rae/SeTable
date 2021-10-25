@@ -105,20 +105,6 @@ function App2() {
             </GridItem>
           ))}
         </GridDropZone>
-        {/* <GridDropZone
-          className="dropzone left left3"
-          id="left3"
-          boxesPerRow={10}
-          rowHeight={70}
-        >
-          {items.left3.map((item) => (
-            <GridItem key={item.id}>
-              <div className="grid-item">
-                <div className="grid-item-content">{item.name}</div>
-              </div>
-            </GridItem>
-          ))}
-        </GridDropZone> */}
 
         <GridDropZone
           className="dropzone right"
