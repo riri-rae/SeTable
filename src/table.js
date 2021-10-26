@@ -98,55 +98,27 @@ const Task = styled.div`
 // firebase data
 const db = firebase.firestore();
 
-const getItems = (count, offset = 1) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `Test ${k + offset}`,
-  }));
-console.log(getItems(5));
-
-
-
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  // console.log(result)
-  return result;
-};
-
 //Moves an item from one list to another list.
 
-const move = (source, destination, droppableSource, droppableDestination) => {
-  console.log(source, destination);
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-  console.log(result)
-  return result;
-};
-
 function Table() {
-  const [state, setState] = useState([]);
+  // const [state, setState] = useState([]);
   const [tables, setTables] = useState([]);
 
   // useEffect(() => {
   //   save state & tables to firestore
   // }, [state, tables]);
 
+  //   db.collection("Articles").onSnapshot(function (querySnapshot) {
+  //     querySnapshot.forEach(function (doc) {
+  //         console.log(" data: ", doc.data());
+  //     })
+  // });
   useEffect(() => {
     const myList = [];
     db.collection("users")
       .doc("0pNg8BybCeidJQXjrYiX")
       .collection("rsvp")
-      .get()
-      .then((collectionSnapshot) => {
+      .onSnapshot((collectionSnapshot) => {
         collectionSnapshot.docs.forEach((doc) => {
           let allList = doc.data().guestlist;
           let groupId = doc.id;
@@ -160,46 +132,71 @@ function Table() {
           // console.log(state);
           // console.log(newAllList);
           myList.push(...newAllList);
+          setTables([myList]);
         });
+
       })
-      .then(() => {
-        setState([...state, ...myList]);
-        setTables([...tables, myList]);
-      });
+    // .then(() => {
+    //   setTables([myList]);
+    // });
   }, []);
 
+  const result = {
+    // type: "TYPE",
+    // reason: "DROP",
+    draggableID: "task-1",
+    source: {
+      droppableID: "colum-1",
+      index: 0,
+    },
+    destination: {
+      droppableID: "colum-1",
+      index: 1,
+    },
+  };
 
   function onDragEnd(result) {
-    console.log(tables)
-    const { source, destination } = result;
-    console.log(source, destination);
-    console.log(result)
+    const { source, destination, draggableId } = result;
+
     if (!destination) {
-      return;
+      return tables;
     }
-    const sInd = +source.droppableId;
-    console.log(typeof sInd);
-    const dInd = +destination.droppableId;
-    console.log(sInd, dInd);
-    if (sInd === dInd) {
-      const items = reorder(state, source.index, destination.index);
-      console.log(state)
-      // const newState = [...state];
-      // newState[sInd] = items;
-      setState(items);
-    } else {
-      const result = move(
-        tables[Number(sInd)],
-        tables[Number(dInd)],
-        source,
-        destination
-      );
-      const newState = [...state];
-      tables[Number(sInd)] = result[sInd];
-      tables[Number(dInd)] = result[dInd];
-      setState(newState);
-      console.log(newState)
-      // setTables(newState);
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return tables;
+    }
+
+    if (
+      source.droppableId === destination.droppableId
+      && source.index !== destination.index
+    ) {
+      const result = Array.from(tables); //result=copy tables[]
+      const theTable = result[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
+      // 把table array的 source.index 跟 destination.index交換
+      const [changeSeat] = theTable.splice(source.index, 1);
+      theTable.splice(destination.index, 0, changeSeat);
+
+      result[Number(source.droppableId)] = theTable
+      setTables(result);
+    }
+
+    if (source.droppableId !== destination.droppableId) {
+      const tablesClone = Array.from(tables); //result=copy tables[]
+      const pickTable = tablesClone[Number(source.droppableId)];//抓到tables[]裡的哪一張table[]
+      const desTable = tablesClone[Number(destination.droppableId)];
+
+      const [moveGuest] = pickTable.splice(source.index, 1);
+      desTable.splice(destination.index, 0, moveGuest);
+
+      tablesClone[Number(source.droppableId)] = pickTable;
+      tablesClone[Number(destination.droppableId)] = desTable;
+      // console.log(tablesClone);
+
+      // let newTables = [];
+      setTables(tablesClone);
     }
 
     // save state to firestore
@@ -223,31 +220,6 @@ function Table() {
       </BlockWrap>
 
       <TaskContainer>
-        {/* <Droppable key={0} droppableId='777' direction="horizontal">
-          {(provided, snapshot) => (
-            <TaskRow
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              isDraggingOver={snapshot.isDraggingOver}
-            >
-              {state.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <Task
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      isDragging={snapshot.isDragging}
-                    >
-                      {item.content}
-                    </Task>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </TaskRow>
-          )}
-        </Droppable> */}
         {tables.map((table, ind) => (
           <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
             {(provided, snapshot) => (
@@ -257,7 +229,11 @@ function Table() {
                 isDraggingOver={snapshot.isDraggingOver}
               >
                 {table.map((guest, index) => (
-                  <Draggable key={guest.id} draggableId={guest.id} index={index}>
+                  <Draggable
+                    key={guest.id}
+                    draggableId={guest.id}
+                    index={index}
+                  >
                     {(provided, snapshot) => (
                       <Task
                         ref={provided.innerRef}
@@ -282,12 +258,9 @@ function Table() {
 
 export default Table;
 
-
 // A semi-generic way to handle multiple lists. Matches
 // the IDs of the droppable container to the names of the
 // source arrays stored in the state.
-
-
 
 // How about giving your cards something to make them distinguishable,
 //like an ID or a specific (numbered?) class?
