@@ -101,18 +101,21 @@ const db = firebase.firestore();
 //Moves an item from one list to another list.
 
 function Table() {
-  // const [state, setState] = useState([]);
   const [tables, setTables] = useState([]);
+  const [myList, setMyList] = useState([])
+  //位子的紀錄用json存到使用者資訊裡
+  //在桌位要撈出來之前先過濾跟ＲＳＶＰ裡面一樣的資料才放出來（for loop）
+  useEffect(() => {
+    db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+      .onSnapshot((doc) => {
+        let getSaveList = (doc.data().guestlist)
+        let saveList = JSON.parse(getSaveList)
+        console.log(saveList);
+        setTables(saveList)
+      });
 
-  // useEffect(() => {
-  //   save state & tables to firestore
-  // }, [state, tables]);
+  }, [])
 
-  //   db.collection("Articles").onSnapshot(function (querySnapshot) {
-  //     querySnapshot.forEach(function (doc) {
-  //         console.log(" data: ", doc.data());
-  //     })
-  // });
   useEffect(() => {
     const myList = [];
     db.collection("users")
@@ -122,41 +125,70 @@ function Table() {
         collectionSnapshot.docs.forEach((doc) => {
           let allList = doc.data().guestlist;
           let groupId = doc.id;
-          // console.log(allList)
           const newAllList = allList.map((name) => {
             return {
               id: `${groupId}-${name}`,
               content: name,
             };
           });
-          // console.log(state);
-          // console.log(newAllList);
+          // console.log(...newAllList) 
+          //{id: 'HzXhHCEH7txUm8bqdAq8-123', content: '123'} {id: 'HzXhHCEH7txUm8bqdAq8-456', content: '456'}
           myList.push(...newAllList);
-          setTables([myList]);
-        });
+          console.log(myList);
+          setMyList(myList)
+          // console.log(myList) 
+          //[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+          // console.log(...myList)
+          // {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}
+          // console.log([myList]) 
+          // [[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]]
+          //要先過濾資訊才set成要撈的資訊
+          // if (e.target.data-rbd-droppable-id ==='0'){
+          //   const fromRsvp = JSON.parse(guestlist)
+          //   const rsvpList = 
+          // }
 
+
+          //setTables([myList]);
+
+        });
       })
-    // .then(() => {
-    //   setTables([myList]);
-    // });
   }, []);
 
-  const result = {
-    // type: "TYPE",
-    // reason: "DROP",
-    draggableID: "task-1",
-    source: {
-      droppableID: "colum-1",
-      index: 0,
-    },
-    destination: {
-      droppableID: "colum-1",
-      index: 1,
-    },
-  };
+  useEffect(() => {
+    const myGuest = tables.reduce((cur, acc) => {
+      return [...acc, ...cur.map(guest => guest.id)]
+    }, [])
+    myList.forEach((guest) => {
+      if (!myGuest.includes(guest.id)) {
+        const newTables = Array.from(tables); //reorder=copy tables[]
+        const [preTable] = newTables.splice(0, 1); // 把table array的 source.index 跟 destination.index交換
+        preTable.push(guest)
+        console.log(preTable);
+        newTables.splice(0, 0, preTable);
+        setTables(newTables)
+      }
+    });
+  }, [myList])
+
+
+
+
+
+  // const result = {
+  //   draggableID: "task-1",
+  //   source: {
+  //     droppableID: "colum-1",
+  //     index: 0,
+  //   },
+  //   destination: {
+  //     droppableID: "colum-1",
+  //     index: 1,
+  //   },
+  // };
 
   function onDragEnd(result) {
-    const { source, destination, draggableId } = result;
+    const { source, destination } = result;
 
     if (!destination) {
       return tables;
@@ -173,34 +205,49 @@ function Table() {
       source.droppableId === destination.droppableId
       && source.index !== destination.index
     ) {
-      const result = Array.from(tables); //result=copy tables[]
-      const theTable = result[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
-      // 把table array的 source.index 跟 destination.index交換
-      const [changeSeat] = theTable.splice(source.index, 1);
+      const reorder = Array.from(tables); //reorder=copy tables[]
+      const theTable = reorder[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
+
+      const [changeSeat] = theTable.splice(source.index, 1); // 把table array的 source.index 跟 destination.index交換
       theTable.splice(destination.index, 0, changeSeat);
 
-      result[Number(source.droppableId)] = theTable
-      setTables(result);
+      reorder[Number(source.droppableId)] = theTable
+
+      setTables(reorder);
+      console.log(reorder);
+      //存json, 第0張桌子不存
+      const saveReorder = JSON.stringify(reorder)
+      const reoderData = {}
+      reoderData.guestlist = saveReorder;
+
+      db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+        .update(reoderData);
     }
 
     if (source.droppableId !== destination.droppableId) {
-      const tablesClone = Array.from(tables); //result=copy tables[]
-      const pickTable = tablesClone[Number(source.droppableId)];//抓到tables[]裡的哪一張table[]
-      const desTable = tablesClone[Number(destination.droppableId)];
+      const move = Array.from(tables); //result=copy tables[]
+      const pickTable = move[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
+      const desTable = move[Number(destination.droppableId)];
 
       const [moveGuest] = pickTable.splice(source.index, 1);
       desTable.splice(destination.index, 0, moveGuest);
 
-      tablesClone[Number(source.droppableId)] = pickTable;
-      tablesClone[Number(destination.droppableId)] = desTable;
-      // console.log(tablesClone);
+      move[Number(source.droppableId)] = pickTable;
+      move[Number(destination.droppableId)] = desTable;
 
       // let newTables = [];
-      setTables(tablesClone);
-    }
+      setTables(move);
+      console.log(move);
+      //存json，第0張桌子不存
+      const saveMove = JSON.stringify(move)
+      const reoderMove = {}
+      reoderMove.guestlist = saveMove;
 
-    // save state to firestore
+      db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+        .update(reoderMove);
+    }
   }
+
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -261,31 +308,3 @@ export default Table;
 // A semi-generic way to handle multiple lists. Matches
 // the IDs of the droppable container to the names of the
 // source arrays stored in the state.
-
-// How about giving your cards something to make them distinguishable,
-//like an ID or a specific (numbered?) class?
-//After dragging you could simply store the position
-//(which area, what position) of every card and "shift" them back into their place after reload …
-
-// Just find a system to store the position of each card that fits best your needs and your preferences. Like "card1, area5, position3". Put that into an js object and store it into local storage.
-// Write a script that moves your cards into the stored positions. Done ;)
-
-// useEffect(() => {
-//   db.collection('users').doc('0pNg8BybCeidJQXjrYiX').collection('rsvp')
-//     .get()
-//     .then((collectionSnapshot) => {
-//       collectionSnapshot.forEach((doc) => {
-//         const guestList = [];
-//         let allList = doc.data().guestlist
-//         let groupId = doc.id;
-//         const newAllList = allList.map((name) => {
-//           return {
-//             id: `${groupId}-${name}`,
-//             name: name
-//           }
-//         })
-//         console.log(newAllList);
-//       });
-
-//     })
-// }, []);

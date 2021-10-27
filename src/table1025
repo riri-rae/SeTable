@@ -108,124 +108,124 @@ const db = firebase.firestore();
 
 
 const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    console.log(result)
-    return result;
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  console.log(result)
+  return result;
 };
 
 //Moves an item from one list to another list.
 
 const move = (source, destination, droppableSource, droppableDestination) => {
-    // console.log(source, destination);
-    const sourceClone = Array.from(source);
-    const destClone = Array.from(destination);
-    const [removed] = sourceClone.splice(droppableSource.index, 1);
+  // console.log(source, destination);
+  const sourceClone = Array.from(source);
+  const destClone = Array.from(destination);
 
-    destClone.splice(droppableDestination.index, 0, removed);
+  const [removed] = sourceClone.splice(droppableSource.index, 1);
+  destClone.splice(droppableDestination.index, 0, removed);
 
-    const result = {};
-    result[droppableSource.droppableId] = sourceClone;
-    result[droppableDestination.droppableId] = destClone;
-    console.log(result)
-    return result;
+  const result = {};
+  result[droppableSource.droppableId] = sourceClone;
+  result[droppableDestination.droppableId] = destClone;
+  console.log(result)
+  return result;
 };
 
 function Table() {
-    const [state, setState] = useState([]);
-    const [tables, setTables] = useState([]);
+  const [state, setState] = useState([]);
+  const [tables, setTables] = useState([]);
 
-    // useEffect(() => {
-    //   save state & tables to firestore
-    // }, [state, tables]);
-
-
-    //   db.collection("Articles").onSnapshot(function (querySnapshot) {
-    //     querySnapshot.forEach(function (doc) {
-    //         console.log(" data: ", doc.data());
-    //     })
-    // });
-
-    useEffect(() => {
-        const myList = [];
-        db.collection("users")
-            .doc("0pNg8BybCeidJQXjrYiX")
-            .collection("rsvp")
-            .get()
-            .then((collectionSnapshot) => {
-                collectionSnapshot.docs.forEach((doc) => {
-                    let allList = doc.data().guestlist;
-                    let groupId = doc.id;
-                    // console.log(allList)
-                    const newAllList = allList.map((name) => {
-                        return {
-                            id: `${groupId}-${name}`,
-                            content: name,
-                        };
-                    });
-                    // console.log(state);
-                    // console.log(newAllList);
-                    myList.push(...newAllList);
-                });
-            })
-            .then(() => {
-                setState([...state, ...myList]);
-                setTables([...tables, myList]);
-            });
-    }, []);
+  // useEffect(() => {
+  //   save state & tables to firestore
+  // }, [state, tables]);
 
 
-    function onDragEnd(result) {
-        console.log(tables)
-        const { source, destination } = result;
-        console.log(source, destination);
-        console.log(result)
-        if (!destination) {
-            return;
-        }
-        const sInd = +source.droppableId;
-        const dInd = +destination.droppableId;
-        console.log(sInd, dInd);
-        if (sInd === dInd) {
-            const items = reorder(state, source.index, destination.index);
-            console.log(state)
-            // const newState = [...state];
-            // newState[sInd] = items;
-            setState(items);
-            //setTables(items);
-        } else {
-            const result = move(tables[sInd], tables[dInd], source, destination);
-            const newState = [...state];
-            tables[sInd] = result[sInd];
-            tables[dInd] = result[dInd];
-            setState(newState);
-            console.log(newState)
-            // setTables(newState);
-        }
+  //   db.collection("Articles").onSnapshot(function (querySnapshot) {
+  //     querySnapshot.forEach(function (doc) {
+  //         console.log(" data: ", doc.data());
+  //     })
+  // });
 
-        // save state to firestore
+  useEffect(() => {
+    const myList = [];
+    db.collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("rsvp")
+      .get()
+      .then((collectionSnapshot) => {
+        collectionSnapshot.docs.forEach((doc) => {
+          let allList = doc.data().guestlist;
+          let groupId = doc.id;
+          // console.log(allList)
+          const newAllList = allList.map((name) => {
+            return {
+              id: `${groupId}-${name}`,
+              content: name,
+            };
+          });
+          // console.log(state);
+          // console.log(newAllList);
+          myList.push(...newAllList);
+        });
+      })
+      .then(() => {
+        setState([...state, ...myList]);
+        setTables([...tables, myList]);
+      });
+  }, []);
+
+
+  function onDragEnd(result) {
+    console.log(tables)
+    const { source, destination } = result;
+    console.log(source, destination);
+    console.log(result)
+    if (!destination) {
+      return;
+    }
+    const sInd = +source.droppableId;
+    const dInd = +destination.droppableId;
+    console.log(sInd, dInd);
+    if (sInd === dInd) {
+      const items = reorder(state, source.index, destination.index);
+      console.log(state)
+      // const newState = [...state];
+      // newState[sInd] = items;
+      setState(items);
+      //setTables(items);
+    } else {
+      const result = move(tables[sInd], tables[dInd], source, destination);
+      const newState = [...state];
+      tables[sInd] = result[sInd];
+      tables[dInd] = result[dInd];
+      setState(newState);
+      console.log(newState)
+      // setTables(newState);
     }
 
-    return (
-        <DragDropContext onDragEnd={onDragEnd}>
-            <BlockWrap>
-                <Block>
-                    <BlockTitle>Arrange your table here!</BlockTitle>
-                    <Button
-                        type="button"
-                        onClick={() => {
-                            setTables([...tables, []]);
-                            // console.log(state);
-                        }}
-                    >
-                        Add Table
-                    </Button>
-                </Block>
-            </BlockWrap>
+    // save state to firestore
+  }
 
-            <TaskContainer>
-                {/* <Droppable key={0} droppableId='777' direction="horizontal">
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <BlockWrap>
+        <Block>
+          <BlockTitle>Arrange your table here!</BlockTitle>
+          <Button
+            type="button"
+            onClick={() => {
+              setTables([...tables, []]);
+              // console.log(state);
+            }}
+          >
+            Add Table
+          </Button>
+        </Block>
+      </BlockWrap>
+
+      <TaskContainer>
+        {/* <Droppable key={0} droppableId='777' direction="horizontal">
           {(provided, snapshot) => (
             <TaskRow
               ref={provided.innerRef}
@@ -250,36 +250,36 @@ function Table() {
             </TaskRow>
           )}
         </Droppable> */}
-                {tables.map((table, ind) => (
-                    <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
-                        {(provided, snapshot) => (
-                            <TaskRow
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                                isDraggingOver={snapshot.isDraggingOver}
-                            >
-                                {table.map((guest, index) => (
-                                    <Draggable key={guest.id} draggableId={guest.id} index={index}>
-                                        {(provided, snapshot) => (
-                                            <Task
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                isDragging={snapshot.isDragging}
-                                            >
-                                                {guest.content}
-                                            </Task>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </TaskRow>
-                        )}
-                    </Droppable>
+        {tables.map((table, ind) => (
+          <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
+            {(provided, snapshot) => (
+              <TaskRow
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                isDraggingOver={snapshot.isDraggingOver}
+              >
+                {table.map((guest, index) => (
+                  <Draggable key={guest.id} draggableId={guest.id} index={index}>
+                    {(provided, snapshot) => (
+                      <Task
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        isDragging={snapshot.isDragging}
+                      >
+                        {guest.content}
+                      </Task>
+                    )}
+                  </Draggable>
                 ))}
-            </TaskContainer>
-        </DragDropContext>
-    );
+                {provided.placeholder}
+              </TaskRow>
+            )}
+          </Droppable>
+        ))}
+      </TaskContainer>
+    </DragDropContext>
+  );
 }
 
 export default Table;

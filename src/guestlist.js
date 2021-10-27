@@ -90,36 +90,38 @@ const Hr = styled.hr`
   border-style: none;
 `;
 
-const TaskRow = styled.div`
-  padding: 8px 8px 8px 2rem;
-  margin-bottom: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${(props) => (props.isDraggingOver ? "#FDFBF4" : "white")};
-  flex-grow: 1;
-  display: flex;
-  border: 3px solid #ccc;
-  border-radius: 4px;
-  min-height: 7rem;
-  width: 80%;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-`;
+// const TaskRow = styled.div`
+//   padding: 8px 8px 8px 2rem;
+//   margin-bottom: 8px;
+//   transition: background-color 0.2s ease;
+//   background-color: ${(props) => (props.isDraggingOver ? "#FDFBF4" : "white")};
+//   flex-grow: 1;
+//   display: flex;
+//   border: 3px solid #ccc;
+//   border-radius: 4px;
+//   min-height: 7rem;
+//   width: 80%;
+//   flex-wrap: wrap;
+//   box-sizing: border-box;
+// `;
 
-const Task = styled.div`
-  border: 2px solid lightgrey;
-  border-radius: 50%;
-  padding: 8px;
-  margin: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${(props) => (props.isDragging ? "#b78f95" : "white")};
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const Task = styled.div`
+//   border: 2px solid lightgrey;
+//   border-radius: 50%;
+//   padding: 8px;
+//   margin: 8px;
+//   transition: background-color 0.2s ease;
+//   background-color: ${(props) => (props.isDragging ? "#b78f95" : "white")};
+//   width: 50px;
+//   height: 50px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
 // firebase data
+
+
 const db = firebase.firestore();
 
 function GuestList() {
@@ -132,7 +134,7 @@ function GuestList() {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const guestList = [];
+          // const guestList = [];
           let allList = doc.data().guestlist;
           let groupId = doc.id;
           const newAllList = allList.map((name) => {
