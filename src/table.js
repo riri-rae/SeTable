@@ -113,15 +113,14 @@ function Table() {
         console.log(saveList);
         setTables(saveList)
       });
-
   }, [])
 
   useEffect(() => {
-    const myList = [];
     db.collection("users")
       .doc("0pNg8BybCeidJQXjrYiX")
       .collection("rsvp")
       .onSnapshot((collectionSnapshot) => {
+        const myNewList = [];
         collectionSnapshot.docs.forEach((doc) => {
           let allList = doc.data().guestlist;
           let groupId = doc.id;
@@ -131,11 +130,7 @@ function Table() {
               content: name,
             };
           });
-          // console.log(...newAllList) 
-          //{id: 'HzXhHCEH7txUm8bqdAq8-123', content: '123'} {id: 'HzXhHCEH7txUm8bqdAq8-456', content: '456'}
-          myList.push(...newAllList);
-          console.log(myList);
-          setMyList(myList)
+          myNewList.push(...newAllList);
           // console.log(myList) 
           //[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
           // console.log(...myList)
@@ -150,22 +145,69 @@ function Table() {
 
 
           //setTables([myList]);
-
         });
+        setMyList(myNewList);
+        console.log(myNewList);
       })
   }, []);
 
   useEffect(() => {
-    const myGuest = tables.reduce((cur, acc) => {
+    const myGuest = tables.reduce((acc, cur) => {
       return [...acc, ...cur.map(guest => guest.id)]
     }, [])
+
+    //my guest 是歷史資料的所有id
+    console.log(myList)//新資料(少) 以mylist為主，排除historyTable裡的
+    let historyTable = tables.flat();
+    console.log(historyTable)//應該減少的舊資料(多)
+
+    if (myList.length < historyTable.length) {
+      console.log('different')
+      const guestDelete = historyTable.filter(({ id: id1 }) => !myList.some(({ id: id2 }) => id2 === id1));
+      let guestToDelete = guestDelete[0].id
+      console.log(guestToDelete)
+
+      function findTablesIndex(tables, id) {
+        var tablesInd;
+        var tableInd;
+        for (tablesInd = 0; tablesInd < tables.length; ++tablesInd) {
+          const nsDetails = tables[tablesInd];
+          for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
+            const tempObject = nsDetails[tableInd];
+            if (tempObject.id === id) {
+              return { tablesInd, tableInd };
+            }
+          }
+        }
+        return {};
+      }
+
+      var { tablesInd, tableInd } = findTablesIndex(tables, guestToDelete);
+      console.log(tablesInd, tableInd)
+
+      let afterDelete = Array.from(tables);
+
+      const [deletePreTable] = afterDelete.splice(tablesInd, 1);
+      console.log(deletePreTable)
+      deletePreTable.splice(tableInd, 1)
+      console.log(deletePreTable);
+      afterDelete.splice(0, 0, deletePreTable);//再把deletePreTable塞回tables[]
+      setTables(afterDelete)
+
+
+
+    }
+
     myList.forEach((guest) => {
+      //myList是rsvp來源的最新清單[{},{},{}]
+      //如果myList的所有id有包含myGuest沒有的，就拿出tables(歷史資料)的第0張桌子
       if (!myGuest.includes(guest.id)) {
-        const newTables = Array.from(tables); //reorder=copy tables[]
-        const [preTable] = newTables.splice(0, 1); // 把table array的 source.index 跟 destination.index交換
-        preTable.push(guest)
+        const newTables = Array.from(tables);
+        const [preTable] = newTables.splice(0, 1);
+        console.log(preTable)//pretable會是桌子０舊的人
+        preTable.push(guest) //把原本沒有的guest塞回去pretable
         console.log(preTable);
-        newTables.splice(0, 0, preTable);
+        newTables.splice(0, 0, preTable);//再把pretable塞回tables[]
         setTables(newTables)
       }
     });
@@ -308,3 +350,28 @@ export default Table;
 // A semi-generic way to handle multiple lists. Matches
 // the IDs of the droppable container to the names of the
 // source arrays stored in the state.
+
+// function matrixIndexed(details, id) {
+//   var r;
+//   var c;
+//   for (r = 0; r < details.length; ++r) {
+//      const nsDetails = details[r];
+//      for (c = 0; c < nsDetails.length; ++c) {
+//         const tempObject = nsDetails[c];
+//         if (tempObject.id === id) {
+//            return { r, c};
+//         }
+//      }
+//   }
+//   return {};
+// }
+// const details = [
+//   [
+//      {id:'111', studentName: 'John'}, {id:'222',studentName:'David'}
+//   ],
+//   [
+//      {id:'333',studentName:"Mike"},{id:'444',studentName:'Bob'},{id:'555',studentName:'Carol'}
+//   ]
+// ];
+// var {r, c } = matrixIndexed(details, '222');
+// console.log(r, c);

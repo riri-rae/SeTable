@@ -125,31 +125,25 @@ const Hr = styled.hr`
 const db = firebase.firestore();
 
 function GuestList() {
-  const [state, setState] = useState([]);
+  // const [guest, setGuest] = useState([]);
 
-  useEffect(() => {
-    db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
-      .collection("rsvp")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          // const guestList = [];
-          let allList = doc.data().guestlist;
-          let groupId = doc.id;
-          const newAllList = allList.map((name) => {
-            return {
-              id: `${groupId}-${name}`,
-              name: name,
-            };
-          });
-          // console.log(guestList.push().concat(...newAllList));
-          console.log(newAllList);
+  // useEffect(() => {
+  //   const myList = [];
+  //   db.collection("users")
+  //     .doc("0pNg8BybCeidJQXjrYiX")
+  //     .collection("rsvp")
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         let allList = doc.data().guestlist;
+  //         setGuest([allList])
+  //         console.log(...allList);
 
-        });
+  //       });
 
-      });
-  }, []);
+  //     });
+  // }, []);
+
 
   return (
     <>
@@ -170,19 +164,15 @@ function GuestList() {
       <Container>
         <Title>Joyfully Attend</Title>
         <Count>50</Count>
-        <DropBtn>▼</DropBtn>
+        <DropBtn >▼</DropBtn>
         <Input />
-        <Button
-          type="button"
-          onClick={() => {
-            setState([...state, []]);
-          }}
-        >
+        <Button>
           Add Guest
         </Button>
         <Hr />
       </Container>
       <Container>
+        blablablab
       </Container>
       <Container>
         <Title>Regretfully Decline</Title>
