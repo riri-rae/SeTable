@@ -3,6 +3,7 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { v4 as uuid } from 'uuid';
 
 const BlockWrap = styled.div`
   position: relative;
@@ -103,14 +104,13 @@ const db = firebase.firestore();
 function Table() {
   const [tables, setTables] = useState([]);
   const [myList, setMyList] = useState([])
-  //位子的紀錄用json存到使用者資訊裡
-  //在桌位要撈出來之前先過濾跟ＲＳＶＰ裡面一樣的資料才放出來（for loop）
+
   useEffect(() => {
     db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
       .onSnapshot((doc) => {
         let getSaveList = (doc.data().guestlist)
         let saveList = JSON.parse(getSaveList)
-        console.log(saveList);
+        console.log(saveList);// [[{}{}] [{}]]
         setTables(saveList)
       });
   }, [])
@@ -123,11 +123,11 @@ function Table() {
         const myNewList = [];
         collectionSnapshot.docs.forEach((doc) => {
           let allList = doc.data().guestlist;
-          let groupId = doc.id;
-          const newAllList = allList.map((name) => {
+          // let groupId = doc.id;
+          const newAllList = allList.map((guest) => {
             return {
-              id: `${groupId}-${name}`,
-              content: name,
+              id: guest.id,
+              content: guest.content,
             };
           });
           myNewList.push(...newAllList);
@@ -147,20 +147,16 @@ function Table() {
           //setTables([myList]);
         });
         setMyList(myNewList);
-        console.log(myNewList);
+        // console.log(myNewList);
       })
   }, []);
 
   useEffect(() => {
-    const myGuest = tables.reduce((acc, cur) => {
-      return [...acc, ...cur.map(guest => guest.id)]
-    }, [])
 
-    //my guest 是歷史資料的所有id
-    console.log(myList)//新資料(少) 以mylist為主，排除historyTable裡的
+    console.log(myList)//新資料(少) 以mylist為主，排除historyTable裡的 [{}{}{}]
     let historyTable = tables.flat();
-    console.log(historyTable)//應該減少的舊資料(多)
-
+    console.log(historyTable)//應該減少的舊資料(多)[{}{}{}]
+    //刪除的事情
     if (myList.length < historyTable.length) {
       console.log('different')
       const guestDelete = historyTable.filter(({ id: id1 }) => !myList.some(({ id: id2 }) => id2 === id1));
@@ -175,6 +171,7 @@ function Table() {
           for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
             const tempObject = nsDetails[tableInd];
             if (tempObject.id === id) {
+              console.log(tablesInd, tableInd)
               return { tablesInd, tableInd };
             }
           }
@@ -182,40 +179,45 @@ function Table() {
         return {};
       }
 
-      var { tablesInd, tableInd } = findTablesIndex(tables, guestToDelete);
+      let { tablesInd, tableInd } = findTablesIndex(tables, guestToDelete);
       console.log(tablesInd, tableInd)
-
       let afterDelete = Array.from(tables);
 
-      const [deletePreTable] = afterDelete.splice(tablesInd, 1);
-      console.log(deletePreTable)
-      deletePreTable.splice(tableInd, 1)
-      console.log(deletePreTable);
-      afterDelete.splice(0, 0, deletePreTable);//再把deletePreTable塞回tables[]
+      const [deleteTable] = afterDelete.splice(tablesInd, 1); //把桌子抓出來
+      console.log(deleteTable)
+      deleteTable.splice(tableInd, 1)
+      afterDelete.splice(tablesInd, 0, deleteTable);//再把deleteTable塞回tables[]
       setTables(afterDelete)
-
-
-
     }
+
+    const myGuestId = tables.reduce((acc, cur) => {
+      return [...acc, ...cur.map(guest => guest.id)]
+    }, [])
+    // console.log(myGuestId.split('-'))
+    // (myGuestId.split('-')[0]) 
+
+    const myGuestName = tables.reduce((acc, cur) => {
+      return [...acc, ...cur.map(guest => guest.content)]
+    }, [])
+    console.log(myGuestName)  //['','','']
+    //my guest 是歷史資料的所有id
 
     myList.forEach((guest) => {
       //myList是rsvp來源的最新清單[{},{},{}]
       //如果myList的所有id有包含myGuest沒有的，就拿出tables(歷史資料)的第0張桌子
-      if (!myGuest.includes(guest.id)) {
+      if (!myGuestId.includes(guest.id)) {
         const newTables = Array.from(tables);
         const [preTable] = newTables.splice(0, 1);
-        console.log(preTable)//pretable會是桌子０舊的人
+        // console.log(preTable)//pretable會是桌子０舊的人
         preTable.push(guest) //把原本沒有的guest塞回去pretable
-        console.log(preTable);
+        // console.log(preTable);
         newTables.splice(0, 0, preTable);//再把pretable塞回tables[]
         setTables(newTables)
+        console.log(newTables)
       }
     });
+
   }, [myList])
-
-
-
-
 
   // const result = {
   //   draggableID: "task-1",
@@ -256,7 +258,7 @@ function Table() {
       reorder[Number(source.droppableId)] = theTable
 
       setTables(reorder);
-      console.log(reorder);
+      // console.log(reorder);
       //存json, 第0張桌子不存
       const saveReorder = JSON.stringify(reorder)
       const reoderData = {}
@@ -279,7 +281,7 @@ function Table() {
 
       // let newTables = [];
       setTables(move);
-      console.log(move);
+      // console.log(move);
       //存json，第0張桌子不存
       const saveMove = JSON.stringify(move)
       const reoderMove = {}

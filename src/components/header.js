@@ -61,6 +61,12 @@ const DeskTag = styled.a`
     cursor: pointer;
     /* border-bottom: 2px solid #8b572a; */
   }
+  &:active{
+    color:none;
+  }
+  &:focus{
+    outline:none;
+  }
 `;
 
 const Member = styled.div`
