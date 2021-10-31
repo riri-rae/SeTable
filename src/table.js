@@ -37,7 +37,7 @@ const Button = styled.button`
   color: #000;
   border: 1px solid #ddd;
   background: #fff;
-  border-radius: 30px;
+  border-radius: 16px;
   font-size: 1rem;
   cursor: pointer;
 `;
@@ -75,7 +75,7 @@ const TaskRow = styled.div`
   flex-grow: 1;
   display: flex;
   border: 3px solid #ccc;
-  border-radius: 4px;
+  border-radius: 16px;
   min-height: 7rem;
   width: 80%;
   flex-wrap: wrap;
@@ -131,20 +131,6 @@ function Table() {
             };
           });
           myNewList.push(...newAllList);
-          // console.log(myList) 
-          //[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-          // console.log(...myList)
-          // {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}
-          // console.log([myList]) 
-          // [[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]]
-          //要先過濾資訊才set成要撈的資訊
-          // if (e.target.data-rbd-droppable-id ==='0'){
-          //   const fromRsvp = JSON.parse(guestlist)
-          //   const rsvpList = 
-          // }
-
-
-          //setTables([myList]);
         });
         setMyList(myNewList);
         // console.log(myNewList);
@@ -193,8 +179,6 @@ function Table() {
     const myGuestId = tables.reduce((acc, cur) => {
       return [...acc, ...cur.map(guest => guest.id)]
     }, [])
-    // console.log(myGuestId.split('-'))
-    // (myGuestId.split('-')[0]) 
 
     const myGuestName = tables.reduce((acc, cur) => {
       return [...acc, ...cur.map(guest => guest.content)]
@@ -349,31 +333,3 @@ function Table() {
 
 export default Table;
 
-// A semi-generic way to handle multiple lists. Matches
-// the IDs of the droppable container to the names of the
-// source arrays stored in the state.
-
-// function matrixIndexed(details, id) {
-//   var r;
-//   var c;
-//   for (r = 0; r < details.length; ++r) {
-//      const nsDetails = details[r];
-//      for (c = 0; c < nsDetails.length; ++c) {
-//         const tempObject = nsDetails[c];
-//         if (tempObject.id === id) {
-//            return { r, c};
-//         }
-//      }
-//   }
-//   return {};
-// }
-// const details = [
-//   [
-//      {id:'111', studentName: 'John'}, {id:'222',studentName:'David'}
-//   ],
-//   [
-//      {id:'333',studentName:"Mike"},{id:'444',studentName:'Bob'},{id:'555',studentName:'Carol'}
-//   ]
-// ];
-// var {r, c } = matrixIndexed(details, '222');
-// console.log(r, c);

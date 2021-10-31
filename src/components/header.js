@@ -116,7 +116,7 @@ export default function Header() {
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
-            <DeskTag href="./invatation">Invatation</DeskTag>
+            <DeskTag href="./invitation-edit">Invitation</DeskTag>
             <DeskTag href="./guestlist">Guest List</DeskTag>
             <DeskTag href="./table">Table</DeskTag>
           </DeskNav>
@@ -131,7 +131,7 @@ export default function Header() {
           </Logo>
 
           <MobileNav>
-            <MobileTag href="./invatation">Invatation</MobileTag>
+            <MobileTag href="./invitation-edit">Invitation</MobileTag>
             <MobileTag href="./guestlist">Guest List</MobileTag>
             <MobileTag href="./table">Table</MobileTag>
           </MobileNav>

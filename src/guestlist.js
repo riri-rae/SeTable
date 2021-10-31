@@ -50,7 +50,7 @@ const DelButton = styled(Button)`
   /* margin-left:4px; */
   padding: 0.4rem;
   color: #574e56;
-  border: 1px solid #000;
+  border: 1px solid #ddd;
   background: #fff;
   border-radius: 16px;
   font-size: 14px;
@@ -77,7 +77,7 @@ const PText = styled.p`
 const MainTitleContainer = styled.div`
   margin: 0 auto;
   padding: 24px 16px;
-  width: 76%;
+  width: 80%;
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
@@ -85,7 +85,7 @@ const MainTitleContainer = styled.div`
 `;
 
 const SubTitleContainer = styled(MainTitleContainer)`
-  padding: 0px 16px 24px 46px;
+  padding: 0px 16px 24px 16px;
 
   &:last-child{
    padding-bottom: 160px;
@@ -108,6 +108,7 @@ const Content = styled(Subtitle)`
   margin-left: 4px;
   letter-spacing: 1px;
 `;
+
 
 const Title = styled.div`
   font-size: 20px;
@@ -214,130 +215,134 @@ function GuestList() {
       </MainTitleContainer>
       <SubTitleContainer>
         <table>
-          <tr>
-            <Th>Name</Th>
-            <Th>Role</Th>
-            <Th>Vegetarian</Th>
-            <Th>Baby Seat</Th>
-            <Th>Phone</Th>
-            <Th>Note</Th>
-            <Th>Delete</Th>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-            <Td><DelButton>Delete</DelButton></Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's Family</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>I don't want to seat next to Jimmy</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Oh My Goooooood</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's Family</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
+          <thead>
+            <tr>
+              <Th>Name</Th>
+              <Th>Role</Th>
+              <Th>Vegetarian</Th>
+              <Th>Baby Seat</Th>
+              <Th>Phone</Th>
+              <Th>Note</Th>
+              <Th>Delete</Th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+              <Td><DelButton>Delete</DelButton></Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's Family</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>I don't want to seat next to Jimmy</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Oh My Goooooood</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's Family</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+          </tbody>
         </table>
 
       </SubTitleContainer>
@@ -350,150 +355,153 @@ function GuestList() {
 
       <SubTitleContainer>
         <table>
-          <tr>
-            <Th>Name</Th>
-            <Th>Role</Th>
-            <Th>Vegetarian</Th>
-            <Th>Baby Seat</Th>
-            <Th>Phone</Th>
-            <Th>Note</Th>
-            <Th>Delete</Th>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Groom's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats hahahahhaahahaha happy happy forever blablablablablbalba</Td>
-            <Td><button>Delete</button></Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <NoteTd>Congrats</NoteTd>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-
+          <thead>
+            <tr>
+              <Th>Name</Th>
+              <Th>Role</Th>
+              <Th>Vegetarian</Th>
+              <Th>Baby Seat</Th>
+              <Th>Phone</Th>
+              <Th>Note</Th>
+              <Th>Delete</Th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Groom's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats hahahahhaahahaha happy happy forever blablablablablbalba</Td>
+              <Td><button>Delete</button></Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <NoteTd>Congrats</NoteTd>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+          </tbody>
         </table>
 
       </SubTitleContainer>
@@ -506,133 +514,136 @@ function GuestList() {
       </MainTitleContainer>
       <SubTitleContainer>
         <table>
-          <tr>
-            <Th>Name</Th>
-            <Th>Role</Th>
-            <Th>Vegetarian</Th>
-            <Th>Baby Seat</Th>
-            <Th>Phone</Th>
-            <Th>Note</Th>
-            <Th>Delete</Th>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
-          <tr>
-            <Td>ＡＢＣ</Td>
-            <Td>Bride's BFF</Td>
-            <Td>
-              <select>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </Td>
-            <Td>
-              <select>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </Td>
-            <Td>0911123456</Td>
-            <Td>Congrats</Td>
-          </tr>
+          <thead>
+            <tr>
+              <Th>Name</Th>
+              <Th>Role</Th>
+              <Th>Vegetarian</Th>
+              <Th>Baby Seat</Th>
+              <Th>Phone</Th>
+              <Th>Note</Th>
+              <Th>Delete</Th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+            <tr>
+              <Td>ＡＢＣ</Td>
+              <Td>Bride's BFF</Td>
+              <Td>
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </Td>
+              <Td>
+                <select>
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </Td>
+              <Td>0911123456</Td>
+              <Td>Congrats</Td>
+            </tr>
+          </tbody>
         </table>
 
       </SubTitleContainer>
-
     </>
   );
 }
