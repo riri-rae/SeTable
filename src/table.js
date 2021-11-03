@@ -3,6 +3,7 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Header from "./components/Header";
 
 const BlockWrap = styled.div`
   position: relative;
@@ -279,57 +280,60 @@ function Table() {
 
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <BlockWrap>
-        <Block>
-          <BlockTitle>Arrange your table here!</BlockTitle>
-          <Button
-            type="button"
-            onClick={() => {
-              setTables([...tables, []]);
-              // console.log(state);
-            }}
-          >
-            Add Table
-          </Button>
-        </Block>
-      </BlockWrap>
+    <>
+      <Header />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <BlockWrap>
+          <Block>
+            <BlockTitle>Arrange your table here!</BlockTitle>
+            <Button
+              type="button"
+              onClick={() => {
+                setTables([...tables, []]);
+                // console.log(state);
+              }}
+            >
+              Add Table
+            </Button>
+          </Block>
+        </BlockWrap>
 
-      <TaskContainer>
+        <TaskContainer>
 
-        {tables.map((table, ind) => (
-          <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
-            {(provided, snapshot) => (
-              <TaskRow
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                isDraggingOver={snapshot.isDraggingOver}
-              >
-                {table.map((guest, index) => (
-                  <Draggable
-                    key={guest.id}
-                    draggableId={guest.id}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <Task
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        isDragging={snapshot.isDragging}
-                      >
-                        {guest.content}
-                      </Task>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </TaskRow>
-            )}
-          </Droppable>
-        ))}
-      </TaskContainer>
-    </DragDropContext>
+          {tables.map((table, ind) => (
+            <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
+              {(provided, snapshot) => (
+                <TaskRow
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  {table.map((guest, index) => (
+                    <Draggable
+                      key={guest.id}
+                      draggableId={guest.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <Task
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          isDragging={snapshot.isDragging}
+                        >
+                          {guest.content}
+                        </Task>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </TaskRow>
+              )}
+            </Droppable>
+          ))}
+        </TaskContainer>
+      </DragDropContext>
+    </>
   );
 }
 

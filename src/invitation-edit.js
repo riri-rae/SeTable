@@ -3,6 +3,7 @@ import styled from "styled-components";
 //import firebase from "./utils/firebase";
 import pictop from "../src/images/purpleFlower-top.png";
 import picbt from "../src/images/purpleFlower-bt.png";
+import Header from "./components/Header";
 //import picbt from "../src/images/rose-ring.png";
 
 import "firebase/firestore";
@@ -144,73 +145,76 @@ const Button = styled.button`
 
 const InvitationEdit = () => {
   return (
-    <Container>
-      <Template>
-        <PicTopWrap>
-          <PicTop src={pictop} />
-        </PicTopWrap>
-        <ContentWrap>
-          <SaveDate>Save the Date</SaveDate>
-          <BrideName>Ariana</BrideName>
-          <And>&</And>
-          <GroomName>Thomas</GroomName>
-          <DateTimeWrap>
-            <Date>2022.05.20</Date>
-            <Time>At 12:00 PM</Time>
-          </DateTimeWrap>
-          <Address>1 N Kaniku Dr, Waimea, HI 96743, USA</Address>
-        </ContentWrap>
-        <PicTopWrap>
-          <PicBt src={picbt} />
-        </PicTopWrap>
-      </Template>
+    <>
+      <Header />
+      <Container>
+        <Template>
+          <PicTopWrap>
+            <PicTop src={pictop} />
+          </PicTopWrap>
+          <ContentWrap>
+            <SaveDate>Save the Date</SaveDate>
+            <BrideName>Ariana</BrideName>
+            <And>&</And>
+            <GroomName>Thomas</GroomName>
+            <DateTimeWrap>
+              <Date>2022.05.20</Date>
+              <Time>At 12:00 PM</Time>
+            </DateTimeWrap>
+            <Address>1 N Kaniku Dr, Waimea, HI 96743, USA</Address>
+          </ContentWrap>
+          <PicTopWrap>
+            <PicBt src={picbt} />
+          </PicTopWrap>
+        </Template>
 
-      <Edit>
-        <EditTitle>Edit your custom infomation</EditTitle>
+        <Edit>
+          <EditTitle>Edit your custom infomation</EditTitle>
 
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="bride-name">Bride's Name:</Label>
-            <Input type="text" id="bride-name" />
-            <Button>Edit</Button>
-            <Button>Save</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="groom-name">Groom's Name:</Label>
-            <Input type="text" id="groom-name" />
-            <Button>Edit</Button>
-            <Button>Save</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="wedding-date">Wedding Date:</Label>
-            <Input type="text" id="wedding-date" />
-            <Button>Edit</Button>
-            <Button>Save</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="wedding-time">Time:</Label>
-            <Input type="text" id="wedding-time" />
-            <Button>Edit</Button>
-            <Button>Save</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="Address">Address:</Label>
-            <Input type="text" id="Address" />
-            <Button>Edit</Button>
-            <Button>Save</Button>
-          </InputWrap>
-        </EditText>
-        <Button>Send</Button>
-      </Edit>
-    </Container>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="bride-name">Bride's Name:</Label>
+              <Input type="text" id="bride-name" />
+              <Button>Edit</Button>
+              <Button>Save</Button>
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="groom-name">Groom's Name:</Label>
+              <Input type="text" id="groom-name" />
+              <Button>Edit</Button>
+              <Button>Save</Button>
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="wedding-date">Wedding Date:</Label>
+              <Input type="text" id="wedding-date" />
+              <Button>Edit</Button>
+              <Button>Save</Button>
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="wedding-time">Time:</Label>
+              <Input type="text" id="wedding-time" />
+              <Button>Edit</Button>
+              <Button>Save</Button>
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="Address">Address:</Label>
+              <Input type="text" id="Address" />
+              <Button>Edit</Button>
+              <Button>Save</Button>
+            </InputWrap>
+          </EditText>
+          <Button>Send</Button>
+        </Edit>
+      </Container>
+    </>
   );
 };
 

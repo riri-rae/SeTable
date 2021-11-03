@@ -4,6 +4,7 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import GuestlistPack from "./components/GuestlistPack";
+import Header from "./components/Header";
 
 const Button = styled.button`
   display: flex;
@@ -157,6 +158,7 @@ function GuestList() {
 
   return (
     <>
+      <Header />
       <MainTitleContainer>
         <Title>Joyfully Attend</Title>
         <Count>50</Count>
