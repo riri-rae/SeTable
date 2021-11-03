@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+//import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import firebase from "./utils/firebase";
+//import firebase from "./utils/firebase";
 import pictop from "../src/images/purpleFlower-top.png";
 import picbt from "../src/images/purpleFlower-bt.png";
 //import picbt from "../src/images/rose-ring.png";
@@ -173,6 +173,7 @@ const InvitationEdit = () => {
             <Label htmlFor="bride-name">Bride's Name:</Label>
             <Input type="text" id="bride-name" />
             <Button>Edit</Button>
+            <Button>Save</Button>
           </InputWrap>
         </EditText>
         <EditText>
@@ -180,6 +181,7 @@ const InvitationEdit = () => {
             <Label htmlFor="groom-name">Groom's Name:</Label>
             <Input type="text" id="groom-name" />
             <Button>Edit</Button>
+            <Button>Save</Button>
           </InputWrap>
         </EditText>
         <EditText>
@@ -187,6 +189,7 @@ const InvitationEdit = () => {
             <Label htmlFor="wedding-date">Wedding Date:</Label>
             <Input type="text" id="wedding-date" />
             <Button>Edit</Button>
+            <Button>Save</Button>
           </InputWrap>
         </EditText>
         <EditText>
@@ -194,6 +197,7 @@ const InvitationEdit = () => {
             <Label htmlFor="wedding-time">Time:</Label>
             <Input type="text" id="wedding-time" />
             <Button>Edit</Button>
+            <Button>Save</Button>
           </InputWrap>
         </EditText>
         <EditText>
@@ -201,8 +205,10 @@ const InvitationEdit = () => {
             <Label htmlFor="Address">Address:</Label>
             <Input type="text" id="Address" />
             <Button>Edit</Button>
+            <Button>Save</Button>
           </InputWrap>
         </EditText>
+        <Button>Send</Button>
       </Edit>
     </Container>
   );

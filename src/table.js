@@ -3,7 +3,6 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuid } from 'uuid';
 
 const BlockWrap = styled.div`
   position: relative;
@@ -99,11 +98,12 @@ const Task = styled.div`
 // firebase data
 const db = firebase.firestore();
 
+
 //Moves an item from one list to another list.
 
 function Table() {
   const [tables, setTables] = useState([]);
-  const [myList, setMyList] = useState([])
+  const [myList, setMyList] = useState([]);
 
   useEffect(() => {
     db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
@@ -118,12 +118,12 @@ function Table() {
   useEffect(() => {
     db.collection("users")
       .doc("0pNg8BybCeidJQXjrYiX")
-      .collection("rsvp")
+      .collection("rsvp").where("status", "==", "yes")
       .onSnapshot((collectionSnapshot) => {
         const myNewList = [];
         collectionSnapshot.docs.forEach((doc) => {
+
           let allList = doc.data().guestlist;
-          // let groupId = doc.id;
           const newAllList = allList.map((guest) => {
             return {
               id: guest.id,
@@ -136,6 +136,7 @@ function Table() {
         // console.log(myNewList);
       })
   }, []);
+
 
   useEffect(() => {
 
@@ -295,6 +296,7 @@ function Table() {
       </BlockWrap>
 
       <TaskContainer>
+
         {tables.map((table, ind) => (
           <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
             {(provided, snapshot) => (

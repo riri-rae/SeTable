@@ -2,32 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-
-const BlockWrap = styled.div`
-  position: relative;
-  height: 8rem;
-`;
-
-const Block = styled.div`
-  position: fixed;
-  top: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 1px solid #ddd;
-  background: #b8ab9b;
-  border-radius: 5px;
-  width: 80%;
-  text-align: center;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-const BlockTitle = styled.div`
-  color: #574e56;
-  font-size: 2rem;
-  margin: 16px 0;
-`;
+import { v4 as uuid } from "uuid";
+import GuestlistPack from "./components/GuestlistPack";
 
 const Button = styled.button`
   display: flex;
@@ -43,21 +19,23 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const DelButton = styled(Button)`
-  /* display: flex; */
-  /* align-items: center; */
-  margin: 0 auto;
-  /* margin-left:4px; */
-  padding: 0.4rem;
-  color: #574e56;
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 16px;
-  font-size: 14px;
-  cursor: pointer;
-`;
 
 const Input = styled.input`
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  /* margin-left:24px; */
+  padding: 0.5rem;
+  color: #000;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  max-width: 6rem;
+`;
+
+const InputNew = styled(Input)`
   display: flex;
   align-items: center;
   margin: 16px;
@@ -68,10 +46,8 @@ const Input = styled.input`
   border-radius: 16px;
   cursor: pointer;
   font-size: 14px;
-`;
-const PText = styled.p`
-   font-size: 16px;
-   letter-spacing: 1;
+  max-width: 100%;
+  text-align: left;
 `;
 
 const MainTitleContainer = styled.div`
@@ -90,23 +66,6 @@ const SubTitleContainer = styled(MainTitleContainer)`
   &:last-child{
    padding-bottom: 160px;
  }
-`;
-
-const Subtitle = styled.div`
-  padding: 0px 32px 8px 32px;
-  font-size: 18px;
-  margin-left: 4px;
-  letter-spacing: 1px;
-  align-items:center;
-  justify-content: space-around;
-`;
-
-
-const Content = styled(Subtitle)`
-  padding: 0px 32px 8px 32px;
-  font-size: 18px;
-  margin-left: 4px;
-  letter-spacing: 1px;
 `;
 
 
@@ -147,68 +106,93 @@ const Th = styled.th`
  font-size: 16px;
 `;
 
-const Td = styled.td`
- text-align:center;
- color: #574E56;
- line-height:36px;
- border-bottom: 1px solid #ddd;
-
- &:nth-child(6){
-   width: 276px;
- }
-`;
-
-const NoteTd = styled(Td)`
- min-width: 276;
-`;
 
 
-
-const db = firebase.firestore();
+//const db = firebase.firestore();
 
 function GuestList() {
-  // const [guest, setGuest] = useState([]);
+  const [allData, SetAllData] = useState([]);
+  const [addYes, setAddYes] = useState('');
+  const [addNo, setAddNo] = useState('');
+  const [addNotSure, setAddNotSure] = useState('');
 
-  // useEffect(() => {
-  //   const myList = [];
-  //   db.collection("users")
-  //     .doc("0pNg8BybCeidJQXjrYiX")
-  //     .collection("rsvp")
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         let allList = doc.data().guestlist;
-  //         setGuest([allList])
-  //         console.log(...allList);
+  // const [name, setName] = useState([]);
+  // const [group, setGroup] = useState('');
+  // const [status, setStatus] = useState("");
+  // const [tag, setTag] = useState("");
+  // const [role, setRole] = useState("");
+  // const [veggie, setVeggie] = useState("");
+  // const [baby, setBaby] = useState("");
+  // const [note, setNote] = useState("");
 
-  //       });
+  const db = firebase.firestore();
+  useEffect(() => {
+    db.collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("rsvp")
+      .onSnapshot((querySnapshot) => {
+        const data = [];
+        querySnapshot.forEach((doc) => {
+          data.push(doc.data())
+          // let group = doc.data().group;
+          let guestlist = doc.data().guestlist;
+          // let tag = doc.data().tag;
+          // console.log(group)
+          console.log(guestlist[0].content)
+          // console.log(tag)
+        });
+        SetAllData(data);
+        console.log(allData)
+      })
+  }, []);
 
-  //     });
-  // }, []);
-
+  function onSubmit(body, id) {
+    const rsvp = db
+      .collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("rsvp")
+      .doc(id);
+    rsvp.set(body);
+  }
 
   return (
     <>
-      <BlockWrap>
-        <Block>
-          <BlockTitle>Arrange your guests here!</BlockTitle>
-          {/* <Input /> */}
-          {/* <Button
-            type="button"
-            onClick={() => {
-              setState([...state, []]);
-            }}
-          >
-            search
-          </Button> */}
-        </Block>
-      </BlockWrap>
       <MainTitleContainer>
         <Title>Joyfully Attend</Title>
         <Count>50</Count>
         <DropBtn >▼</DropBtn>
-        <Input />
-        <Button>
+        <InputNew
+          type="text"
+          id="bride-name"
+          placeholder="Enter a new name"
+          value={addYes}
+          onChange={(e) => setAddYes(e.target.value)}
+        />
+        <Button
+          onClick={() => {
+            const id = db
+              .collection("users")
+              .doc().id;
+            let body = {
+              guestlist: [
+                {
+                  id: uuid(),
+                  content: addYes,
+                },
+              ],
+              status: 'yes',
+              group: '',
+              tag: '',
+              role: '',
+              baby: '',
+              veggie: '',
+              note: '',
+              id
+              // userid
+            };
+            onSubmit(body, id);
+          }}
+        >
           Add Guest
         </Button>
         <Hr />
@@ -218,298 +202,133 @@ function GuestList() {
           <thead>
             <tr>
               <Th>Name</Th>
+              <Th>Group</Th>
+              <Th>Tag</Th>
               <Th>Role</Th>
               <Th>Vegetarian</Th>
               <Th>Baby Seat</Th>
-              <Th>Phone</Th>
               <Th>Note</Th>
+              <Th>Save</Th>
               <Th>Delete</Th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-              <Td><DelButton>Delete</DelButton></Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's Family</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>I don't want to seat next to Jimmy</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Oh My Goooooood</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's Family</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
+            {allData.map((data, index) => (
+              data.status === 'yes' ?
+                <GuestlistPack data={data} index={index} ></GuestlistPack>
+                : <></>
+            ))
+            }
+
           </tbody>
         </table>
-
-      </SubTitleContainer>
-      <MainTitleContainer>
-        <Title>Regretfully Decline</Title>
-        <Count>8</Count>
-        <DropBtn>▼</DropBtn>
-        <Hr />
-      </MainTitleContainer>
-
-      <SubTitleContainer>
-        <table>
-          <thead>
-            <tr>
-              <Th>Name</Th>
-              <Th>Role</Th>
-              <Th>Vegetarian</Th>
-              <Th>Baby Seat</Th>
-              <Th>Phone</Th>
-              <Th>Note</Th>
-              <Th>Delete</Th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Groom's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats hahahahhaahahaha happy happy forever blablablablablbalba</Td>
-              <Td><button>Delete</button></Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <NoteTd>Congrats</NoteTd>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-          </tbody>
-        </table>
-
       </SubTitleContainer>
 
       <MainTitleContainer>
         <Title>Not Sure</Title>
+        <Count>8</Count>
+        <DropBtn>▼</DropBtn>
+        <InputNew
+          type="text"
+          id="bride-name"
+          placeholder="Enter a new name"
+          value={addNotSure}
+          onChange={(e) => setAddNotSure(e.target.value)}
+        />
+        <Button
+          onClick={() => {
+            const id = db
+              .collection("users")
+              .doc().id;
+            let body = {
+              guestlist: [
+                {
+                  id: uuid(),
+                  content: addNotSure,
+                },
+              ],
+              status: 'notSure',
+              group: '',
+              tag: '',
+              role: '',
+              baby: '',
+              veggie: '',
+              note: '',
+              id
+              // userid
+            };
+            onSubmit(body, id);
+          }}
+        >
+          Add Guest
+        </Button>
+        <Hr />
+      </MainTitleContainer>
+
+      <SubTitleContainer>
+        <table>
+          <thead>
+            <tr>
+              <Th>Name</Th>
+              <Th>Group</Th>
+              <Th>Tag</Th>
+              <Th>Role</Th>
+              <Th>Vegetarian</Th>
+              <Th>Baby Seat</Th>
+              <Th>Note</Th>
+              <Th>Save</Th>
+              <Th>Delete</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {allData.map((data, index) => (
+              data.status === 'notSure' ?
+                <GuestlistPack data={data} index={index}></GuestlistPack>
+                : <></>
+            ))
+            }
+          </tbody>
+        </table>
+
+      </SubTitleContainer>
+
+      <MainTitleContainer>
+        <Title>Regretfully Decline</Title>
         <Count>5</Count>
         <DropBtn>▼</DropBtn>
+        <InputNew
+          type="text"
+          id="bride-name"
+          placeholder="Enter a new name"
+          value={addNo}
+          onChange={(e) => setAddNo(e.target.value)}
+        />
+        <Button
+          onClick={() => {
+            const id = db
+              .collection("users")
+              .doc().id;
+            let body = {
+              guestlist: [
+                {
+                  id: uuid(),
+                  content: addNo,
+                },
+              ],
+              status: 'no',
+              group: '',
+              tag: '',
+              role: '',
+              baby: '',
+              veggie: '',
+              note: '',
+              id
+            };
+            onSubmit(body, id);
+          }}
+        >
+          Add Guest
+        </Button>
         <Hr />
       </MainTitleContainer>
       <SubTitleContainer>
@@ -517,129 +336,23 @@ function GuestList() {
           <thead>
             <tr>
               <Th>Name</Th>
+              <Th>Group</Th>
+              <Th>Tag</Th>
               <Th>Role</Th>
               <Th>Vegetarian</Th>
               <Th>Baby Seat</Th>
-              <Th>Phone</Th>
               <Th>Note</Th>
+              <Th>Save</Th>
               <Th>Delete</Th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
-            <tr>
-              <Td>ＡＢＣ</Td>
-              <Td>Bride's BFF</Td>
-              <Td>
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-              </Td>
-              <Td>
-                <select>
-                  <option>0</option>
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              </Td>
-              <Td>0911123456</Td>
-              <Td>Congrats</Td>
-            </tr>
+            {allData.map((data, index) => (
+              data.status === 'no' ?
+                <GuestlistPack data={data} index={index}></GuestlistPack>
+                : <></>
+            ))
+            }
           </tbody>
         </table>
 
