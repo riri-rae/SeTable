@@ -6,6 +6,8 @@ import "firebase/firestore";
 import pictop from "../src/images/purpleFlower-top.png";
 import picbt from "../src/images/purpleFlower-bt.png";
 import { v4 as uuid } from "uuid";
+import RsvpPack from "./components/RsvpPack";
+
 //import { useParams } from "react-router";
 
 const Container = styled.div`
@@ -172,6 +174,7 @@ const Button = styled.button`
   align-items: center; */
   /* margin: 16px; */
   margin-left: 4px;
+  margin-bottom: 16px;
   /* padding: 0.5rem; */
   color: #574e56;
   border: 1px solid #ddd;
@@ -184,35 +187,87 @@ const Button = styled.button`
 const InvitationRsvp = () => {
   //const { userid } = useParams()
   // console.log(useid)
-  const [name, setName] = useState([]);
+  // const [name, setName] = useState([]);
   const [group, setGroup] = useState('');
-  const [status, setStatus] = useState("");
-  const [tag, setTag] = useState("");
-  const [role, setRole] = useState("");
-  const [veggie, setVeggie] = useState("");
-  const [baby, setBaby] = useState("");
-  const [note, setNote] = useState("");
-  // const [userid, setUserid] = useState('');
-  const [fields, setFields] =
-    useState([{
-      name: [],
-      status: '',
-      tag: '',
-      role: '',
-      veggie: '',
-      baby: '',
-      note: ''
-    }]);
+  // const [status, setStatus] = useState("");
+  // const [tag, setTag] = useState("");
+  // const [role, setRole] = useState("");
+  // const [veggie, setVeggie] = useState("");
+  // const [baby, setBaby] = useState("");
+  // const [note, setNote] = useState("");
+
+  const [allData, setAllData] = useState([]);
 
   const db = firebase.firestore();
-  function onSubmit(body, id) {
-    const rsvp = db
-      .collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
-      .collection("rsvp");
-    rsvp.doc(id).set(body);
-  }
 
+  // allData.forEach((data) => {
+  //   db.collection("users")
+  //     .doc("0pNg8BybCeidJQXjrYiX")
+  //     .collection("rsvp")
+  //     .doc(data.id)
+  //     .update({
+  //       guestlist: [
+  //         {
+  //           id: uuid(),
+  //           content: data.name,
+  //         },
+  //       ],
+  //       group: data.group,
+  //       tag: data.tag,
+  //       role: data.role,
+  //       baby: data.baby,
+  //       veggie: data.veggie,
+  //       note: data.note,
+  //     })
+  //     .then(() => {
+  //       window.alert("Change Saved!");
+  //     })
+
+
+  // })
+
+  // function sendForm(body, id) {
+  //   const rsvp = db
+  //     .collection("users")
+  //     .doc("0pNg8BybCeidJQXjrYiX")
+  //     .collection("rsvp")
+  //     .doc(id);
+  //   rsvp.set(body);
+  // }
+  function sendForm() {
+
+    allData.forEach((data) => {
+      console.log(data)
+      if (Object.values(data).every(x => (x === ''))) {
+        window.alert('You have an empty field')
+        return
+      } else {
+        let id = db.collection("users")
+          .doc("0pNg8BybCeidJQXjrYiX")
+          .collection("rsvp").doc().id;
+        db.collection("users")
+          .doc("0pNg8BybCeidJQXjrYiX")
+          .collection("rsvp")
+          .doc(id)
+          .set({
+            guestlist: [
+              {
+                id: uuid(),
+                content: data.name,
+              },
+            ],
+            group,
+            status: data.status,
+            tag: data.tag,
+            role: data.role,
+            baby: data.baby,
+            veggie: data.veggie,
+            note: data.note,
+            id
+          })
+      }
+    })
+  }
   return (
     <Container>
       <Template>
@@ -247,121 +302,20 @@ const InvitationRsvp = () => {
             onChange={(e) => setGroup(e.target.value)}
           />
         </InputWrap>
-
-        <AddMoreWrap>
-          <EditText>
-            <Button
-              type="button"
-              onClick={() => {
-                console.log('hi')
-                setFields([...fields, []]);
-                // console.log(state);
-              }}
-            >
-              Add More Guests
-            </Button>
-            <InputWrap>
-              <Label htmlFor="bride-name">Name:</Label>
-              <Input
-                type="text"
-                id="bride-name"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </InputWrap>
-          </EditText>
-          <EditText>
-            <InputWrap>
-              <div>Attending</div>
-              {/* <Select value={status} onChange={(e) => setStatus(e.target.value)
-            }
-              options={[
-                { value: 'no', label: 'no' }
-              ]}
-            > */}
-              <Select value={status} onChange={(e) => setStatus(e.target.value)
-              } >
-                <option value="disable">Please Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-                <option value="notSure">Not Sure</option>
-              </Select>
-            </InputWrap>
-          </EditText>
-          <EditText>
-            <InputWrap>
-              <div>You are on ...</div>
-              <Select value={tag} onChange={(e) => setTag(e.target.value)}>
-                <option value="disable">Please Select</option>
-                <option value="brides-side">Brides' side</option>
-                <option value="grooms-side">Groom's side</option>
-              </Select>
-            </InputWrap>
-          </EditText>
-          <EditText>
-            <InputWrap>
-              <div>You are our ...</div>
-              <Select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="disable">Please Select</option>
-                <option value="friend">Friend</option>
-                <option value="family">Family</option>
-              </Select>
-            </InputWrap>
-          </EditText>
-          <EditText>
-            <InputWrap>
-              <div>Would you like to choose a vegetarian meal?</div>
-              <Select value={veggie} onChange={(e) => setVeggie(e.target.value)}>
-                <option value="disable">Please Select</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Select>
-            </InputWrap>
-            <InputWrap>
-              <div>Require baby seat?</div>
-              <Select value={baby} onChange={(e) => setBaby(e.target.value)}>
-                <option value="disable">Please Select</option>
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </Select>
-            </InputWrap>
-            <InputWrap>
-              <div>Leave a message to us</div>
-              <Textarea
-                placeholder="Anything we need to know?"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              ></Textarea>
-            </InputWrap>
-          </EditText>
-        </AddMoreWrap>
+        <Button
+          type="button"
+          onClick={() => {
+            setAllData([...allData, {}])
+          }}
+        >
+          Click To Add Guests Info
+        </Button>
+        {allData.map((data, index) => (
+          <RsvpPack allData={allData} setAllData={setAllData} index={index} />
+        ))}
 
         <Button
-          onClick={() => {
-            const id = db
-              .collection("users").doc().id;
-            let body = {
-              guestlist: [
-                {
-                  id: uuid(),
-                  content: name,
-                },
-              ],
-              status,
-              group,
-              tag,
-              role,
-              baby,
-              veggie,
-              note,
-              id
-              // userid
-            };
-            onSubmit(body, id);
-          }}
+          onClick={sendForm}
         >
           Send
         </Button>

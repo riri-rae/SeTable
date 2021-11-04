@@ -70,7 +70,7 @@ const Textarea = styled.textarea`
   border-radius: 8px;
 `;
 
-function GuestlistPack({ data, index }) {
+function GuestlistPack({ data }) {
   const [name, setName] = useState(data.guestlist[0].content);
   const [group, setGroup] = useState(data.group);
   const [tag, setTag] = useState(data.tag);
@@ -117,7 +117,7 @@ function GuestlistPack({ data, index }) {
   }
 
   return (
-    <tr key={index}>
+    <tr>
       <Td>
         <Input
           type="text"

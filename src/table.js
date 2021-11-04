@@ -188,15 +188,14 @@ function Table() {
     console.log(myGuestName)  //['','','']
     //my guest 是歷史資料的所有id
 
+    //新增的事情
     myList.forEach((guest) => {
       //myList是rsvp來源的最新清單[{},{},{}]
       //如果myList的所有id有包含myGuest沒有的，就拿出tables(歷史資料)的第0張桌子
       if (!myGuestId.includes(guest.id)) {
         const newTables = Array.from(tables);
-        const [preTable] = newTables.splice(0, 1);
-        // console.log(preTable)//pretable會是桌子０舊的人
+        const [preTable] = newTables.splice(0, 1); //pretable會是桌子０舊的人
         preTable.push(guest) //把原本沒有的guest塞回去pretable
-        // console.log(preTable);
         newTables.splice(0, 0, preTable);//再把pretable塞回tables[]
         setTables(newTables)
         console.log(newTables)
