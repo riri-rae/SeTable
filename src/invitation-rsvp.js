@@ -189,9 +189,9 @@ const InvitationRsvp = () => {
   // console.log(useid)
   // const [name, setName] = useState([]);
   const [group, setGroup] = useState('');
-  // const [status, setStatus] = useState("");
-  // const [tag, setTag] = useState("");
-  // const [role, setRole] = useState("");
+  //const [status, setStatus] = useState("");
+  const [tag, setTag] = useState('');
+  const [role, setRole] = useState('');
   // const [veggie, setVeggie] = useState("");
   // const [baby, setBaby] = useState("");
   // const [note, setNote] = useState("");
@@ -234,39 +234,59 @@ const InvitationRsvp = () => {
   //     .doc(id);
   //   rsvp.set(body);
   // }
-  function sendForm() {
 
-    allData.forEach((data) => {
-      console.log(data)
-      if (Object.values(data).every(x => (x === ''))) {
-        window.alert('You have an empty field')
-        return
-      } else {
-        let id = db.collection("users")
-          .doc("0pNg8BybCeidJQXjrYiX")
-          .collection("rsvp").doc().id;
-        db.collection("users")
-          .doc("0pNg8BybCeidJQXjrYiX")
-          .collection("rsvp")
-          .doc(id)
-          .set({
-            guestlist: [
-              {
-                id: uuid(),
-                content: data.name,
-              },
-            ],
-            group,
-            status: data.status,
-            tag: data.tag,
-            role: data.role,
-            baby: data.baby,
-            veggie: data.veggie,
-            note: data.note,
-            id
-          })
-      }
-    })
+
+  function sendForm() {
+    if (group === '') {
+      window.alert('Please let us know who is filling this form?')
+    } else if (role === '') {
+      window.alert('Please let us know you are our?')
+    } else if (tag === '') {
+      window.alert('Please let us you are from which side?')
+    }
+    else {
+      allData.forEach((data) => {
+        console.log(data)
+        if (data.name === '') {
+          window.alert('Please fill in guest name')
+          return
+        } if (data.status === '' || data.status === 'disable') {
+          window.alert('Please let us know if you will attand')
+          return
+        } if (data.baby === '' || data.baby === 'disable') {
+          window.alert('Please let us you are from which side?')
+          return
+        } if (data.veggie === '' || data.veggie === 'disable') {
+          window.alert('Please let us you are from which side?')
+          return
+        }
+        else {
+          let id = db.collection("users")
+            .doc("0pNg8BybCeidJQXjrYiX")
+            .collection("rsvp").doc().id;
+          db.collection("users")
+            .doc("0pNg8BybCeidJQXjrYiX")
+            .collection("rsvp")
+            .doc(id)
+            .set({
+              guestlist: [
+                {
+                  id: uuid(),
+                  content: data.name,
+                },
+              ],
+              group,
+              status: data.status,
+              tag,
+              role,
+              baby: data.baby,
+              veggie: data.veggie,
+              note: data.note,
+              id
+            })
+        }
+      })
+    }
   }
   return (
     <Container>
@@ -302,6 +322,26 @@ const InvitationRsvp = () => {
             onChange={(e) => setGroup(e.target.value)}
           />
         </InputWrap>
+        <EditText>
+          <InputWrap>
+            <div>You are our ...</div>
+            <Select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="disable">Please Select</option>
+              <option value="friend">Friend</option>
+              <option value="family">Family</option>
+            </Select>
+          </InputWrap>
+        </EditText>
+        <EditText>
+          <InputWrap>
+            <div>You are on ...</div>
+            <Select value={tag} onChange={(e) => { setTag(e.target.value) }}>
+              <option value="disable">Please Select</option>
+              <option value="brides-side">Brides' side</option>
+              <option value="groom-side">Groom's side</option>
+            </Select>
+          </InputWrap>
+        </EditText>
         <Button
           type="button"
           onClick={() => {

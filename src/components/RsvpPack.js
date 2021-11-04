@@ -187,7 +187,7 @@ function RsvpPack({ allData, setAllData, index }) {
           </Select>
         </InputWrap>
       </EditText>
-      <EditText>
+      {/* <EditText>
         <InputWrap>
           <div>You are on ...</div>
           <Select
@@ -216,7 +216,7 @@ function RsvpPack({ allData, setAllData, index }) {
             <option value="family">Family</option>
           </Select>
         </InputWrap>
-      </EditText>
+      </EditText> */}
       <EditText>
         <InputWrap>
           <div>Would you like to choose a vegetarian meal?</div>
