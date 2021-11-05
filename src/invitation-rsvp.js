@@ -151,22 +151,12 @@ const Label = styled.label`
   color: #666;
 `;
 
-const AddMoreWrap = styled.div`
-  margin-bottom: 8px;
-  display: inline-block;
-  vertical-align: middle;
-  color: #666;
-  border:1px solid #ddd;
-`;
+
 
 const Select = styled.select`
   margin-left: 8px;
 `;
-const Textarea = styled.textarea`
-  margin-left: 8px;
-  width:100%;
-  resize: none;
-`;
+
 
 
 const Button = styled.button`
@@ -196,69 +186,42 @@ const InvitationRsvp = () => {
   // const [baby, setBaby] = useState("");
   // const [note, setNote] = useState("");
 
-  const [allData, setAllData] = useState([]);
+  const [allData, setAllData] = useState([{
+    guestlist: [
+      {
+        id: '',
+        content: '',
+      },
+    ],
+    status: '',
+    baby: '',
+    veggie: '',
+    note: '',
+
+  }]);
 
   const db = firebase.firestore();
-
-  // allData.forEach((data) => {
-  //   db.collection("users")
-  //     .doc("0pNg8BybCeidJQXjrYiX")
-  //     .collection("rsvp")
-  //     .doc(data.id)
-  //     .update({
-  //       guestlist: [
-  //         {
-  //           id: uuid(),
-  //           content: data.name,
-  //         },
-  //       ],
-  //       group: data.group,
-  //       tag: data.tag,
-  //       role: data.role,
-  //       baby: data.baby,
-  //       veggie: data.veggie,
-  //       note: data.note,
-  //     })
-  //     .then(() => {
-  //       window.alert("Change Saved!");
-  //     })
-
-
-  // })
-
-  // function sendForm(body, id) {
-  //   const rsvp = db
-  //     .collection("users")
-  //     .doc("0pNg8BybCeidJQXjrYiX")
-  //     .collection("rsvp")
-  //     .doc(id);
-  //   rsvp.set(body);
-  // }
-
 
   function sendForm() {
     if (group === '') {
       window.alert('Please let us know who is filling this form?')
-    } else if (role === '') {
-      window.alert('Please let us know you are our?')
     } else if (tag === '') {
       window.alert('Please let us you are from which side?')
+    } else if (role === '') {
+      window.alert('Please let us know you are our?')
     }
     else {
+      console.log('上面都填了！')
       allData.forEach((data) => {
-        console.log(data)
+        console.log(data.name)
         if (data.name === '') {
           window.alert('Please fill in guest name')
-          return
-        } if (data.status === '' || data.status === 'disable') {
+        } else if (data.status === '') {
           window.alert('Please let us know if you will attand')
-          return
-        } if (data.baby === '' || data.baby === 'disable') {
-          window.alert('Please let us you are from which side?')
-          return
-        } if (data.veggie === '' || data.veggie === 'disable') {
-          window.alert('Please let us you are from which side?')
-          return
+        } else if (data.baby === '') {
+          window.alert('Baby seat???')
+        } else if (data.veggie === '') {
+          window.alert('Veggie???')
         }
         else {
           let id = db.collection("users")
@@ -273,7 +236,7 @@ const InvitationRsvp = () => {
                 {
                   id: uuid(),
                   content: data.name,
-                },
+                }
               ],
               group,
               status: data.status,
@@ -324,35 +287,41 @@ const InvitationRsvp = () => {
         </InputWrap>
         <EditText>
           <InputWrap>
-            <div>You are our ...</div>
+            <div>You are ...</div>
+            <Select value={tag} onChange={(e) => { setTag(e.target.value) }}>
+              <option value="" disabled selected>Please Select</option>
+              <option value="brides-side">Brides' side</option>
+              <option value="groom-side">Groom's side</option>
+            </Select>
             <Select value={role} onChange={(e) => setRole(e.target.value)}>
-              <option value="disable">Please Select</option>
+              <option value="" disabled selected>Please Select</option>
               <option value="friend">Friend</option>
               <option value="family">Family</option>
             </Select>
           </InputWrap>
         </EditText>
-        <EditText>
+        {/* <EditText>
           <InputWrap>
-            <div>You are on ...</div>
-            <Select value={tag} onChange={(e) => { setTag(e.target.value) }}>
-              <option value="disable">Please Select</option>
-              <option value="brides-side">Brides' side</option>
-              <option value="groom-side">Groom's side</option>
+            <div>Friend or Family?</div>
+            <Select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="" disabled selected>Please Select</option>
+              <option value="friend">Friend</option>
+              <option value="family">Family</option>
             </Select>
           </InputWrap>
-        </EditText>
+        </EditText> */}
+
+        {allData.map((data, index) => (
+          <RsvpPack allData={allData} setAllData={setAllData} index={index} />
+        ))}
         <Button
           type="button"
           onClick={() => {
             setAllData([...allData, {}])
           }}
         >
-          Click To Add Guests Info
+          Click To Add More Guests
         </Button>
-        {allData.map((data, index) => (
-          <RsvpPack allData={allData} setAllData={setAllData} index={index} />
-        ))}
 
         <Button
           onClick={sendForm}

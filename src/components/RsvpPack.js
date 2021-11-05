@@ -1,9 +1,5 @@
-import React, { useState } from "react";
+import React from 'react';
 import styled from "styled-components";
-import firebase from "../utils/firebase";
-import "firebase/firestore";
-import { v4 as uuid } from "uuid";
-import { useEffect } from "react";
 
 const Button = styled.button`
   display: flex;
@@ -173,14 +169,14 @@ function RsvpPack({ allData, setAllData, index }) {
       </EditText>
       <EditText>
         <InputWrap>
-          <div>Attending</div>
+          <div>Will you be able to join us at our wedding?</div>
           <Select
             onChange={(e) => {
               let allDataInForm = [...allData];
               allDataInForm[index] = { ...allDataInForm[index], status: e.target.value };
               setAllData(allDataInForm);
             }}>
-            <option value="disable">Please Select</option>
+            <option value="" disabled selected>Please Select</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="notSure">Not Sure</option>
@@ -196,7 +192,7 @@ function RsvpPack({ allData, setAllData, index }) {
               allDataInForm[index] = { ...allDataInForm[index], tag: e.target.value };
               setAllData(allDataInForm);
             }}>
-            <option value="disable">Please Select</option>
+            <option value="" disabled selected>Please Select</option>
             <option value="brides-side">Brides' side</option>
             <option value="grooms-side">Groom's side</option>
           </Select>
@@ -211,7 +207,7 @@ function RsvpPack({ allData, setAllData, index }) {
               allDataInForm[index] = { ...allDataInForm[index], role: e.target.value };
               setAllData(allDataInForm);
             }}>
-            <option value="disable">Please Select</option>
+            <option value="" disabled selected>Please Select</option>
             <option value="friend">Friend</option>
             <option value="family">Family</option>
           </Select>
@@ -226,7 +222,7 @@ function RsvpPack({ allData, setAllData, index }) {
               allDataInForm[index] = { ...allDataInForm[index], veggie: e.target.value };
               setAllData(allDataInForm);
             }}>
-            <option value="disable">Please Select</option>
+            <option value="" disabled selected>Please Select</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </Select>
@@ -239,7 +235,7 @@ function RsvpPack({ allData, setAllData, index }) {
               allDataInForm[index] = { ...allDataInForm[index], baby: e.target.value };
               setAllData(allDataInForm);
             }}>
-            <option value="disable">Please Select</option>
+            <option value="" disabled selected>Please Select</option>
             <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -247,9 +243,9 @@ function RsvpPack({ allData, setAllData, index }) {
           </Select>
         </InputWrap>
         <InputWrap>
-          <div>Leave a message to us</div>
+          <div>Anything we need to know?</div>
           <Textarea
-            placeholder="Anything we need to know?"
+            placeholder="Leave your note here."
             onChange={(e) => {
               let allDataInForm = [...allData];
               allDataInForm[index] = { ...allDataInForm[index], note: e.target.value };
