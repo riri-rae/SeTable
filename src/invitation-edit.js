@@ -1,9 +1,10 @@
-//import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-//import firebase from "./utils/firebase";
+import firebase from "./utils/firebase";
 import pictop from "../src/images/purpleFlower-top.png";
 import picbt from "../src/images/purpleFlower-bt.png";
 import Header from "./components/Header";
+import RsvpTemplate from "./components/RsvpTemplate";
 //import picbt from "../src/images/rose-ring.png";
 
 import "firebase/firestore";
@@ -144,37 +145,35 @@ const Button = styled.button`
 `;
 
 const InvitationEdit = () => {
+
+  const [bride, setBride] = useState('');
+  const [groom, setGroom] = useState('');
+  const [date, setDate] = useState('');
+  // const [time, setTime] = useState('');
+  const [add, setAdd] = useState('');
+
+
+  // const db = firebase.firestore();
+
+
   return (
     <>
       <Header />
       <Container>
-        <Template>
-          <PicTopWrap>
-            <PicTop src={pictop} />
-          </PicTopWrap>
-          <ContentWrap>
-            <SaveDate>Save the Date</SaveDate>
-            <BrideName>Ariana</BrideName>
-            <And>&</And>
-            <GroomName>Thomas</GroomName>
-            <DateTimeWrap>
-              <Date>2022.05.20</Date>
-              <Time>At 12:00 PM</Time>
-            </DateTimeWrap>
-            <Address>1 N Kaniku Dr, Waimea, HI 96743, USA</Address>
-          </ContentWrap>
-          <PicTopWrap>
-            <PicBt src={picbt} />
-          </PicTopWrap>
-        </Template>
-
+        <RsvpTemplate bride={bride} groom={groom} add={add} date={date} />
         <Edit>
           <EditTitle>Edit your custom infomation</EditTitle>
 
           <EditText>
             <InputWrap>
               <Label htmlFor="bride-name">Bride's Name:</Label>
-              <Input type="text" id="bride-name" />
+              <Input
+                type="text"
+                id="bride-name"
+                placeholder="Enter the name"
+                value={bride}
+                onChange={(e) => setBride(e.target.value)}
+              />
               <Button>Edit</Button>
               <Button>Save</Button>
             </InputWrap>
@@ -182,31 +181,50 @@ const InvitationEdit = () => {
           <EditText>
             <InputWrap>
               <Label htmlFor="groom-name">Groom's Name:</Label>
-              <Input type="text" id="groom-name" />
+              <Input
+                type="text"
+                id="groom-name"
+                placeholder="Enter the name"
+                value={groom}
+                onChange={(e) => setGroom(e.target.value)}
+              />
               <Button>Edit</Button>
               <Button>Save</Button>
             </InputWrap>
           </EditText>
           <EditText>
             <InputWrap>
-              <Label htmlFor="wedding-date">Wedding Date:</Label>
-              <Input type="text" id="wedding-date" />
+              {/* <Label htmlFor="wedding-date">Wedding Date:</Label>
+              <Input type="text" id="wedding-date" /> */}
+              <label for="date">Enter the date:</label>
+              <input id="date" type="datetime-local" lang="en-US" name="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+
+              {/* 
               <Button>Edit</Button>
-              <Button>Save</Button>
+              <Button>Save</Button> */}
             </InputWrap>
           </EditText>
-          <EditText>
+          {/* <EditText>
             <InputWrap>
               <Label htmlFor="wedding-time">Time:</Label>
               <Input type="text" id="wedding-time" />
-              <Button>Edit</Button>
-              <Button>Save</Button>
+              <label for="time">Enter the time:</label>
+              <input id="time" type="time" lang="en-US" name="time" />
             </InputWrap>
-          </EditText>
+          </EditText> */}
           <EditText>
             <InputWrap>
-              <Label htmlFor="Address">Address:</Label>
-              <Input type="text" id="Address" />
+              <Label htmlFor="add">Address:</Label>
+              <Input
+                type="text"
+                id="add"
+                placeholder="Enter the addrsss"
+                value={add}
+                onChange={(e) => setAdd(e.target.value)}
+              />
               <Button>Edit</Button>
               <Button>Save</Button>
             </InputWrap>

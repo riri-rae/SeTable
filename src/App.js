@@ -15,6 +15,7 @@ const App = () => {
         {/* <Route exact path="/" component={HomePage} /> */}
         <Route path="/invitation-rsvp" component={InvitationRsvp} />
         <Route path="/invitation-edit" component={InvitationEdit} />
+        {/* <Route path="/invitation-card/:id" component={xxx} /> */}
         <Route path="/table" component={Table} />
         <Route path="/guestlist" component={GuestList} />
         {/* <Route path="/guestlist/:userid/doucument/:docId" component={GuestList} /> */}

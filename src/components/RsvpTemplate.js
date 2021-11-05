@@ -1,141 +1,113 @@
-import React from "react";
+import React, { useState } from "react";
+//import { useParams } from "react-router";
 import styled from "styled-components";
-// import logo from "../images/logo.png";
-import Header from "./components/Header";
+// import firebase from "../utils/firebase";
+// import "firebase/firestore";
+import pictop from "../images/purpleFlower-top.png";
+import picbt from "../images/purpleFlower-bt.png";
 
-const Navbar = styled.header`
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background: #fff;
-  box-shadow: 0px -5px 10px rgb(0 0 0 / 30%);
-  z-index: 100;
-`;
+//import { useParams } from "react-router";
 
-const Container = styled.div`
-  margin: 0 auto;
-  width: 100%;
-  text-align: center;
+const Template = styled.div`
+  /* border: 1px solid #ccc; */
+  flex: 2;
   display: flex;
-  justify-content: center;
-  /* overflow: hidden; */
-`;
-
-const DeskHeaderDiv = styled.div`
-  height: 80px;
-  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  background-color: #fff;
-  @media (max-width: 768px) {
-    display: none;
-  }
+  /* height: 100vh; */
+  /* background-color: #F8EFE9; */
+  /* background-color: rgba(0, 0, 0, 0.1); */
 `;
 
-const Logo = styled.a`
-  width: 100px;
-  /* margin: 0 0 -2%; */
-  /* margin-left: 60px;
-  margin-top: 26px; */
-  @media (max-width: 768px) {
-    width: 50%;
-    margin-top:2vh;
-  }
+const PicTopWrap = styled.div`
+  width: 80%;
+
+  background-color: rgba(248, 239, 233, 0.8);
 `;
 
-const DeskNav = styled.div`
+const PicTop = styled.img`
+  max-width: 100%;
+`;
+const PicBt = styled.img`
+  max-width: 100%;
+  margin-top: -2rem;
+`;
+const ContentWrap = styled.div`
+  width: 80%;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  background-color: rgba(248, 239, 233, 0.8);
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  /* padding-bottom: 100px; */
+`;
+
+const SaveDate = styled.div`
+  font-size: 24px;
+  margin: -76px 16px 24px 16px;
+`;
+
+const BrideName = styled.div`
+  font-size: 46px;
+  margin: 0 16px 0 16px;
+`;
+const GroomName = styled(BrideName)``;
+
+const And = styled.div`
+  font-size: 36px;
+`;
+const DateTimeWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 16px;
+  margin-top: 48px;
+`;
+
+const Date = styled.div`
+  font-size: 24px;
+  margin-right: 6px;
+`;
+
+const Time = styled.div`
+  font-size: 24px;
+  margin-left: 6px;
+`;
+const Address = styled.div`
+  font-size: 20px;
   margin-left: 16px;
   margin-right: 16px;
 `;
 
-const DeskTag = styled.a`
-  letter-spacing: 2px;
-  font-size: 20px;
-  color: #3f3a3a;
-  line-height: 28px;
-  margin: 0 24px;
-  &:hover {
-    text-decoration: none;
-    color: #8b572a;
-    cursor: pointer;
-    /* border-bottom: 2px solid #8b572a; */
-  }
-  &:active{
-    color:none;
-  }
-  &:focus{
-    outline:none;
-  }
-`;
+const RsvpTemplate = (props) => {
+  // const  { id } = useParams();
+  let dateAndTime = props.date.split('T')
+  let showDate = dateAndTime[0]
+  let showTime = dateAndTime[1]
+  console.log(showDate, showTime)
 
-const Member = styled.div`
-  margin-left: 42px;
-  margin-right: 54px;
-  cursor: pointer;
-`;
-
-const MobileHeaderDiv = styled.div`
-  display: none;
-  @media (max-width: 768px) {
-    height: 110px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    align-items: center;
-    top: 0;
-    z-index: 99;
-    background-color: #fff;
-    flex-direction: column;
-  }
-`;
-
-const MobileNav = styled.div`
-  display: none;
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-  }
-`;
-const MobileTag = styled.div`
-  @media (max-width: 768px) {
-    font-size: 18px;
-    color: #828282;
-    flex-grow: 1;
-    text-align: center;
-    margin: 2px 8px 8px 8px;
-  }
-`;
-
-export default function Header() {
   return (
-    <Navbar>
-      <Container>
-        <DeskHeaderDiv>
-          <Logo href="./">
-            <img src={roseLogo} alt="logo" height="44" />
-          </Logo>
-          <DeskNav>
-            <DeskTag href="./invatation">Invatation</DeskTag>
-            <DeskTag href="./guestlist">Guest List</DeskTag>
-            <DeskTag href="./table">Table</DeskTag>
-          </DeskNav>
-
-          <Member>
-            <img src={memberImg} height="44" alt="member" />
-          </Member>
-        </DeskHeaderDiv>
-        <MobileHeaderDiv>
-          <Logo href="./">
-            <img src={roseLogo} height="44" alt="logo" />
-          </Logo>
-
-          <MobileNav>
-            <MobileTag href="./invatation">Invatation</MobileTag>
-            <MobileTag href="./guestlist">Guest List</MobileTag>
-            <MobileTag href="./table">Table</MobileTag>
-          </MobileNav>
-        </MobileHeaderDiv>
-      </Container>
-    </Navbar>
+    <Template>
+      <PicTopWrap>
+        <PicTop src={pictop} />
+      </PicTopWrap>
+      <ContentWrap>
+        <SaveDate>Save the Date</SaveDate>
+        <BrideName>{props.bride}</BrideName>
+        <And>&</And>
+        <GroomName>{props.groom}</GroomName>
+        <DateTimeWrap>
+          <Date>{showDate}</Date>
+          <Time>{showTime}</Time>
+        </DateTimeWrap>
+        <Address>{props.add}</Address>
+      </ContentWrap>
+      <PicTopWrap>
+        <PicBt src={picbt} />
+      </PicTopWrap>
+    </Template>
   );
-}
+};
+
+export default RsvpTemplate;

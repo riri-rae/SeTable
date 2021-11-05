@@ -288,7 +288,7 @@ const InvitationRsvp = () => {
         <EditText>
           <InputWrap>
             <div>You are ...</div>
-            <Select value={tag} onChange={(e) => { setTag(e.target.value) }}>
+            <Select value={tag} onChange={(e) => setTag(e.target.value)}>
               <option value="" disabled selected>Please Select</option>
               <option value="brides-side">Brides' side</option>
               <option value="groom-side">Groom's side</option>
