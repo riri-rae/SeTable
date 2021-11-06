@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
-import pictop from "../src/images/purpleFlower-top.png";
-import picbt from "../src/images/purpleFlower-bt.png";
+import "firebase/firestore";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 //import picbt from "../src/images/rose-ring.png";
@@ -17,78 +16,6 @@ const Container = styled.div`
   max-height: 100vh;
   margin: 0 auto;
   /* flex-direction: column; */
-`;
-
-const Template = styled.div`
-  /* border: 1px solid #ccc; */
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  /* height: 100vh; */
-  /* background-color: #F8EFE9; */
-  /* background-color: rgba(0, 0, 0, 0.1); */
-`;
-
-const PicTopWrap = styled.div`
-  width: 80%;
-
-  background-color: rgba(248, 239, 233, 0.8);
-`;
-
-const PicTop = styled.img`
-  max-width: 100%;
-`;
-const PicBt = styled.img`
-  max-width: 100%;
-  margin-top: -2rem;
-`;
-const ContentWrap = styled.div`
-  width: 80%;
-  /* background-color: rgba(0, 0, 0, 0.1); */
-  background-color: rgba(248, 239, 233, 0.8);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  /* padding-bottom: 100px; */
-`;
-
-const SaveDate = styled.div`
-  font-size: 24px;
-  margin: -76px 16px 24px 16px;
-`;
-
-const BrideName = styled.div`
-  font-size: 46px;
-  margin: 0 16px 0 16px;
-`;
-const GroomName = styled(BrideName)``;
-
-const And = styled.div`
-  font-size: 36px;
-`;
-const DateTimeWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 16px;
-  margin-top: 48px;
-`;
-
-const Date = styled.div`
-  font-size: 24px;
-  margin-right: 6px;
-`;
-
-const Time = styled.div`
-  font-size: 24px;
-  margin-left: 6px;
-`;
-const Address = styled.div`
-  font-size: 20px;
-  margin-left: 16px;
-  margin-right: 16px;
 `;
 
 const Edit = styled.div`
@@ -146,21 +73,50 @@ const Button = styled.button`
 
 const InvitationEdit = () => {
 
-  const [bride, setBride] = useState('');
-  const [groom, setGroom] = useState('');
-  const [date, setDate] = useState('');
-  // const [time, setTime] = useState('');
-  const [add, setAdd] = useState('');
+  const [bride, setBride] = useState('Bride');
+  const [groom, setGroom] = useState('Ｇroom');
+  const [dateTime, setDateTime] = useState('2022-01-01T12:00');
+  const [add, setAdd] = useState('Some Here very nice');
 
+  const db = firebase.firestore();
 
-  // const db = firebase.firestore();
+  useEffect(() => {
+    db.collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("invitation").doc("template")
+      .onSnapshot((doc) => {
+        let bride = doc.data().bride
+        let groom = doc.data().groom
+        let dateTime = doc.data().dateTime
+        let add = doc.data().add
+        setBride(bride)
+        setGroom(groom)
+        setDateTime(dateTime)
+        setAdd(add)
+      });
+  }, []);
+
+  function saveChange() {
+    db.collection("users")
+      .doc("0pNg8BybCeidJQXjrYiX")
+      .collection("invitation").doc("template")
+      .update({
+        bride,
+        groom,
+        dateTime,
+        add
+      })
+      .then(() => {
+        window.alert("Change Saved!");
+      })
+  }
 
 
   return (
     <>
       <Header />
       <Container>
-        <RsvpTemplate bride={bride} groom={groom} add={add} date={date} />
+        <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
         <Edit>
           <EditTitle>Edit your custom infomation</EditTitle>
 
@@ -174,8 +130,12 @@ const InvitationEdit = () => {
                 value={bride}
                 onChange={(e) => setBride(e.target.value)}
               />
-              <Button>Edit</Button>
-              <Button>Save</Button>
+              {/* <Button>Edit</Button> */}
+              {/* <Button
+                onClick={saveChange}
+              >
+                Save
+              </Button> */}
             </InputWrap>
           </EditText>
           <EditText>
@@ -188,8 +148,12 @@ const InvitationEdit = () => {
                 value={groom}
                 onChange={(e) => setGroom(e.target.value)}
               />
-              <Button>Edit</Button>
-              <Button>Save</Button>
+              {/* <Button>Edit</Button> */}
+              {/* <Button
+                onClick={saveChange}
+              >
+                Save
+              </Button> */}
             </InputWrap>
           </EditText>
           <EditText>
@@ -198,13 +162,17 @@ const InvitationEdit = () => {
               <Input type="text" id="wedding-date" /> */}
               <label for="date">Enter the date:</label>
               <input id="date" type="datetime-local" lang="en-US" name="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={dateTime}
+                onChange={(e) => setDateTime(e.target.value)}
               />
 
-              {/* 
-              <Button>Edit</Button>
-              <Button>Save</Button> */}
+
+              {/* <Button>Edit</Button> */}
+              {/* <Button
+                onClick={saveChange}
+              >
+                Save
+              </Button> */}
             </InputWrap>
           </EditText>
           {/* <EditText>
@@ -225,11 +193,20 @@ const InvitationEdit = () => {
                 value={add}
                 onChange={(e) => setAdd(e.target.value)}
               />
-              <Button>Edit</Button>
-              <Button>Save</Button>
+              {/* <Button>Edit</Button> */}
+              {/* <Button
+                onClick={saveChange}
+              >
+                Save
+              </Button> */}
             </InputWrap>
           </EditText>
-          <Button>Send</Button>
+          <Button
+            onClick={saveChange}
+          >
+            Save Change
+          </Button>
+          <Button>Check your Rsvp Here</Button>
         </Edit>
       </Container>
     </>

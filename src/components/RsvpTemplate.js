@@ -82,9 +82,10 @@ const Address = styled.div`
 
 const RsvpTemplate = (props) => {
   // const  { id } = useParams();
-  let dateAndTime = props.date.split('T')
+
+  let dateAndTime = props.dateTime.split('T')
   let showDate = dateAndTime[0]
-  let showTime = dateAndTime[1]
+  let showTime = `AT  ${dateAndTime[1]}`
   console.log(showDate, showTime)
 
   return (

@@ -178,14 +178,12 @@ function GuestlistPack({ data }) {
       <Td>
         <DelButton
           onClick={saveChange}
-        // onClick={() => saveChange()}
         >
           Save
         </DelButton>
       </Td>
       <Td>
         <DelButton
-          // onClick={{ handelDel }}
           onClick={() => handelDel()}
         >
           Delete</DelButton>
