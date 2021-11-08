@@ -43,8 +43,8 @@ const Input = styled.input`
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  text-align: center;
-  max-width: 6rem;
+  /* text-align: center;
+  max-width: 6rem; */
 `;
 
 const Td = styled.td`
@@ -61,6 +61,7 @@ const Td = styled.td`
 const Select = styled.select`
   color: #000;
   text-align: center;
+  margin-left:8px;
 `;
 
 const Textarea = styled.textarea`

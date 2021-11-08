@@ -107,7 +107,6 @@ const RsvpMain = () => {
     baby: '',
     veggie: '',
     note: '',
-
   }]);
 
   const db = firebase.firestore();
@@ -117,6 +116,8 @@ const RsvpMain = () => {
       window.alert('Please let us know who is filling this form?')
     } else if (tag === '') {
       window.alert('Please let us you are from which side?')
+    } else if (role === '') {
+      window.alert('Please let us you are our?')
     }
     else {
       allData.forEach((data) => {
@@ -137,6 +138,7 @@ const RsvpMain = () => {
           let id = db.collection("users")
             .doc("0pNg8BybCeidJQXjrYiX")
             .collection("rsvp").doc().id;
+
           db.collection("users")
             .doc("0pNg8BybCeidJQXjrYiX")
             .collection("rsvp")
@@ -157,6 +159,7 @@ const RsvpMain = () => {
               note: data.note,
               id
             })
+
         }
       })
     }
@@ -185,7 +188,7 @@ const RsvpMain = () => {
               <option value="brides-side">Brides' side</option>
               <option value="groom-side">Groom's side</option>
             </Select>
-            <Select value={role} onChange={(e) => setRole(e.target.value)} defaultValue={''}>
+            <Select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="" disabled selected>Please Select</option>
               <option value="friend">Friend</option>
               <option value="family">Family</option>

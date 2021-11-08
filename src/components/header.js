@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import firebase from "../utils/firebase";
+import "firebase/firestore";
+import 'firebase/auth';
 // import logo from "../images/logo.png";
 import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
@@ -69,7 +72,7 @@ const DeskTag = styled.a`
   }
 `;
 
-const Member = styled.div`
+const Member = styled.a`
   margin-left: 42px;
   margin-right: 54px;
   cursor: pointer;
@@ -112,7 +115,7 @@ export default function Header() {
     <Navbar>
       <Container>
         <DeskHeaderDiv>
-          <Logo href="./">
+          <Logo href="./homepage">
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
@@ -121,13 +124,15 @@ export default function Header() {
             <DeskTag href="./table">Table</DeskTag>
           </DeskNav>
 
-          <Member>
+          <Member href="./">
             <img src={memberImg} height="44" alt="member" />
           </Member>
         </DeskHeaderDiv>
         <MobileHeaderDiv>
-          <Logo href="./">
+          <Logo href="./"
+            onClick={() => firebase.auth().signOut()}>
             <img src={roseLogo} height="44" alt="logo" />
+
           </Logo>
 
           <MobileNav>

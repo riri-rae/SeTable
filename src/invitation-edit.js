@@ -20,7 +20,7 @@ const Container = styled.div`
 
 const Edit = styled.div`
   font-size: 24px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -69,6 +69,22 @@ const Button = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+  margin-top: 8px;
+`;
+
+const CheckButton = styled.button`
+  /* display: flex;
+  align-items: center; */
+  /* margin: 16px; */
+  margin-left: 4px;
+  /* padding: 0.5rem; */
+  color: #574e56;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 36px;
 `;
 
 const InvitationEdit = () => {
@@ -160,8 +176,8 @@ const InvitationEdit = () => {
             <InputWrap>
               {/* <Label htmlFor="wedding-date">Wedding Date:</Label>
               <Input type="text" id="wedding-date" /> */}
-              <label for="date">Enter the date:</label>
-              <input id="date" type="datetime-local" lang="en-US" name="date"
+              <Label for="date">Enter the date:</Label>
+              <Input id="date" type="datetime-local" lang="en-US" name="date"
                 value={dateTime}
                 onChange={(e) => setDateTime(e.target.value)}
               />
@@ -206,7 +222,7 @@ const InvitationEdit = () => {
           >
             Save Change
           </Button>
-          <Button>Check your Rsvp Here</Button>
+          <CheckButton>Check your Rsvp Here</CheckButton>
         </Edit>
       </Container>
     </>
