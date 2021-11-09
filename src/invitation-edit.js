@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
+import 'firebase/auth';
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 //import picbt from "../src/images/rose-ring.png";
@@ -88,33 +89,43 @@ const CheckButton = styled.button`
 `;
 
 const InvitationEdit = () => {
+  const db = firebase.firestore();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    })
+  }, [])
 
   const [bride, setBride] = useState('Bride');
   const [groom, setGroom] = useState('Ｇroom');
   const [dateTime, setDateTime] = useState('2022-01-01T12:00');
-  const [add, setAdd] = useState('Some Here very nice');
-
-  const db = firebase.firestore();
+  const [add, setAdd] = useState('Some Where very nice');
 
   useEffect(() => {
     db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
+      .doc(user.uid)
       .collection("invitation").doc("template")
       .onSnapshot((doc) => {
-        let bride = doc.data().bride
-        let groom = doc.data().groom
-        let dateTime = doc.data().dateTime
-        let add = doc.data().add
-        setBride(bride)
-        setGroom(groom)
-        setDateTime(dateTime)
-        setAdd(add)
+        if (doc.exists) {
+          let bride = doc.data().bride
+          let groom = doc.data().groom
+          let dateTime = doc.data().dateTime
+          let add = doc.data().add
+          setBride(bride)
+          setGroom(groom)
+          setDateTime(dateTime)
+          setAdd(add)
+        }
       });
+
   }, []);
 
   function saveChange() {
     db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
+      .doc(user.uid)
       .collection("invitation").doc("template")
       .update({
         bride,

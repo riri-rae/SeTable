@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
+import 'firebase/auth';
 import { v4 as uuid } from "uuid";
 import GuestlistPack from "./components/GuestlistPack";
 import Header from "./components/Header";
@@ -116,15 +117,6 @@ function GuestList() {
   const [addYes, setAddYes] = useState('');
   const [addNo, setAddNo] = useState('');
   const [addNotSure, setAddNotSure] = useState('');
-
-  // const [name, setName] = useState([]);
-  // const [group, setGroup] = useState('');
-  // const [status, setStatus] = useState("");
-  // const [tag, setTag] = useState("");
-  // const [role, setRole] = useState("");
-  // const [veggie, setVeggie] = useState("");
-  // const [baby, setBaby] = useState("");
-  // const [note, setNote] = useState("");
 
   const db = firebase.firestore();
   useEffect(() => {

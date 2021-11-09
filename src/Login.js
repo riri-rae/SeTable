@@ -6,12 +6,6 @@ import 'firebase/auth';
 import { useHistory } from "react-router-dom";
 
 
-const H1 = styled.h1`
-width: 100%;
-text-align: center;
-margin-bottom: 5rem;
-`;
-
 const Right = styled.div`
  border: 1px solid #ccc;
  display: flex;
@@ -42,18 +36,18 @@ const Input = styled.input`
   padding: 0px 20px;
   margin: 0 5rem;
   border-bottom: 1.4px solid transparent;
-  /* transition: all 200ms ease-in-out; */
+  transition: all 200ms ease-in-out;
   font-size: 16px;
-  /* &::placeholder {
+  &::placeholder {
     color: rgba(200, 200, 200, 1);
-  } */
-  /* &:not(:last-of-type) {
+  }
+  &:not(:last-of-type) {
     border-bottom: 1.5px solid rgba(200, 200, 200, 0.4);
-  } */
-  /* &:focus {
+  }
+  &:focus {
     outline: none;
     border-bottom: 2px solid rgb(244,185,184);;
-  } */
+  }
 `;
 
 const SubmitButton = styled.button`

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
+import 'firebase/auth';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "./components/Header";
 
