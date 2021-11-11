@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
-import pictop from "../src/images/purpleFlower-top.png";
-import picbt from "../src/images/purpleFlower-bt.png";
+import "firebase/firestore";
+import 'firebase/auth';
+import { Link } from 'react-router-dom';
+import Header from "./components/Header";
+import RsvpTemplate from "./components/RsvpTemplate";
 //import picbt from "../src/images/rose-ring.png";
-
 
 import "firebase/firestore";
 
@@ -12,84 +14,15 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 80%;
-  max-height:100vh;
+  width: 100%;
+  max-height: 100vh;
   margin: 0 auto;
   /* flex-direction: column; */
 `;
 
-const Template = styled.div`
-  /* border: 1px solid #ccc; */
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  /* height: 100vh; */
-  background-color: rgba(239, 239, 222, 0.3);
-`;
-
-const PicTopWrap = styled.div`
-  width: 80%;
-  background-color: rgba(239, 239, 222, 0.2);
-`;
-
-const PicTop = styled.img`
-  max-width: 100%;
-`;
-const PicBt = styled.img`
-  max-width: 100%;
-  margin-top: -2rem;
-`;
-const ContentWrap = styled.div`
-  width: 80%;
-  background-color: rgba(239, 239, 222, 0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  /* padding-bottom: 100px; */
-`;
-
-const SaveDate = styled.div`
-  font-size: 24px;
-  margin: -76px 16px 24px 16px;
-`;
-
-const BrideName = styled.div`
-  font-size: 46px;
-  margin: 0 16px 0 16px;
-`;
-const GroomName = styled(BrideName)``;
-
-const And = styled.div`
-font-size: 36px;
-`
-const DateTimeWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin:16px;
-  margin-top:48px;
-`;
-
-const Date = styled.div`
-  font-size: 24px;
-  margin-right: 6px;
-`;
-
-const Time = styled.div`
-  font-size: 24px;
-  margin-left:6px;
-`;
-const Address = styled.div`
-  font-size: 20px;
-  margin-left:16px;
-  margin-right:16px;
-`;
-
 const Edit = styled.div`
   font-size: 24px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -100,39 +33,52 @@ const Edit = styled.div`
 const EditTitle = styled.div`
   font-size: 24px;
   margin-bottom: 60px;
+  font-family: 'Karla', sans-serif;
 `;
 
 const EditText = styled.div`
-  font-size: 24px;
-  flex-direction:row;
+  font-size: 20px;
+  flex-direction: row;
+  font-family: 'Karla', sans-serif;
 `;
 
 const Input = styled.input`
   border-radius: 5px;
-  border:2px solid #ddd;
+  border: 2px solid #ddd;
   line-height: 22px;
   font-size: 18px;
   margin-left: 8px;
-
+  font-family: 'Karla', sans-serif;
 `;
 
 const InputWrap = styled.div`
-display:flex;
-line-height: 20px;
-margin: 16px;
+  display: flex;
+  line-height: 20px;
+  margin: 16px;
+
+  /* background-color: #FFF; */
+    /* height: 600px;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px;
+    text-align:center; */
+  
 `;
 
-
 const Label = styled.label`
- width:200px;
- text-align:right; 
+  width: 200px;
+  text-align: right;
 `;
 
 const Button = styled.button`
   /* display: flex;
   align-items: center; */
   /* margin: 16px; */
-  margin-left:4px;
+  margin-left: 4px;
   /* padding: 0.5rem; */
   color: #574e56;
   border: 1px solid #ddd;
@@ -140,74 +86,135 @@ const Button = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+  margin-top: 8px;
+  font-family: 'Karla', sans-serif;
 `;
 
-
+const CheckRsvp = styled(Link)`
+  /* display: flex;
+  align-items: center; */
+  /* margin: 16px; */
+  margin-left: 4px;
+  /* padding: 0.5rem; */
+  color: #574e56;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 36px;
+  font-family: 'Karla', sans-serif;
+`;
 
 const InvitationEdit = () => {
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+
+  const [bride, setBride] = useState('Bride');
+  const [groom, setGroom] = useState('Ｇroom');
+  const [dateTime, setDateTime] = useState('2022-01-01T12:00');
+  const [add, setAdd] = useState('Some Where very nice');
+
+  useEffect(() => {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("invitation").doc("template")
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          let bride = doc.data().bride
+          let groom = doc.data().groom
+          let dateTime = doc.data().dateTime
+          let add = doc.data().add
+          setBride(bride)
+          setGroom(groom)
+          setDateTime(dateTime)
+          setAdd(add)
+        } else {
+          return
+        }
+      });
+
+  }, []);
+
+  function saveChange() {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("invitation").doc("template")
+      .set({
+        bride,
+        groom,
+        dateTime,
+        add
+      })
+      .then(() => {
+        window.alert("Change Saved!");
+      })
+  }
+
+
   return (
-    <Container>
-      <Template>
-        <PicTopWrap>
-          <PicTop src={pictop} />
-        </PicTopWrap>
-        <ContentWrap>
-          <SaveDate>Save the Date</SaveDate>
-          <BrideName>Ariana</BrideName>
-          <And>&</And>
-          <GroomName>Thomas</GroomName>
-          <DateTimeWrap>
-            <Date>2022.05.20</Date>
-            <Time>At 12:00 PM</Time>
-          </DateTimeWrap>
-          <Address>1 N Kaniku Dr, Waimea, HI 96743, USA</Address>
-        </ContentWrap>
-        <PicTopWrap>
-          <PicBt src={picbt} />
-        </PicTopWrap>
+    <>
+      <Header />
+      <Container>
+        <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
+        <Edit>
+          <EditTitle>Edit your custom infomation</EditTitle>
 
-      </Template>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="bride-name">Bride's Name:</Label>
+              <Input
+                type="text"
+                id="bride-name"
+                placeholder="Enter the name"
+                value={bride}
+                onChange={(e) => setBride(e.target.value)}
+              />
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="groom-name">Groom's Name:</Label>
+              <Input
+                type="text"
+                id="groom-name"
+                placeholder="Enter the name"
+                value={groom}
+                onChange={(e) => setGroom(e.target.value)}
+              />
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="date">Enter the date:</Label>
+              <Input id="date" type="datetime-local" lang="en-US" name="date"
+                value={dateTime}
+                onChange={(e) => setDateTime(e.target.value)}
+              />
+            </InputWrap>
+          </EditText>
+          <EditText>
+            <InputWrap>
+              <Label htmlFor="add">Address:</Label>
+              <Input
+                type="text"
+                id="add"
+                placeholder="Enter the addrsss"
+                value={add}
+                onChange={(e) => setAdd(e.target.value)}
+              />
+            </InputWrap>
+          </EditText>
+          <Button onClick={saveChange}
+          >
+            Save
+          </Button>
 
-      <Edit>
-        <EditTitle>Edit your custom infomation</EditTitle>
+          <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here</CheckRsvp>
 
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="bride-name">Bride's Name:</Label>
-            <Input type="text" id="bride-name" />
-            <Button>Edit</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="groom-name">Groom's Name:</Label>
-            <Input type="text" id="groom-name" />
-            <Button>Edit</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="wedding-date">Wedding Date:</Label>
-            <Input type="text" id="wedding-date" />
-            <Button>Edit</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="wedding-time">Time:</Label>
-            <Input type="text" id="wedding-time" />
-            <Button>Edit</Button>
-          </InputWrap>
-        </EditText>
-        <EditText>
-          <InputWrap>
-            <Label htmlFor="Address">Address:</Label>
-            <Input type="text" id="Address" />
-            <Button>Edit</Button>
-          </InputWrap>
-        </EditText>
-      </Edit>
-    </Container>
+        </Edit>
+      </Container>
+    </>
   );
 };
 

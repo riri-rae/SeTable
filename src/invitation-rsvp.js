@@ -13,41 +13,68 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 80%;
-  max-height: 100vh;
+  width: 100%;
+  max-height: 100%;
   margin: 0 auto;
   /* flex-direction: column; */
+  position: relative;
+`;
+
+const TemplateWrap = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60%;
+`;
+
+const FormWrap = styled.div`
+  position: absolute;
+  right: 0;
+  top: 12rem;
+  width: 40%;
 `;
 
 const InvitationRsvp = () => {
   const { userid } = useParams();
+
   const db = firebase.firestore();
 
-  const [bride, setBride] = useState('');
-  const [groom, setGroom] = useState('');
-  const [dateTime, setDateTime] = useState('');
-  const [add, setAdd] = useState('');
+  const [bride, setBride] = useState("");
+  const [groom, setGroom] = useState("");
+  const [dateTime, setDateTime] = useState("");
+  const [add, setAdd] = useState("");
 
   useEffect(() => {
     db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
-      .collection("invitation").doc("template")
+      .doc(userid)
+      .collection("invitation")
+      .doc("template")
       .onSnapshot((doc) => {
-        let bride = doc.data().bride
-        let groom = doc.data().groom
-        let dateTime = doc.data().dateTime
-        let add = doc.data().add
-        setBride(bride)
-        setGroom(groom)
-        setDateTime(dateTime)
-        setAdd(add)
+        let bride = doc.data().bride;
+        let groom = doc.data().groom;
+        let dateTime = doc.data().dateTime;
+        let add = doc.data().add;
+        setBride(bride);
+        setGroom(groom);
+        setDateTime(dateTime);
+        setAdd(add);
       });
   }, []);
 
   return (
     <Container>
-      <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} userid={userid} />
-      <RsvpMain userid={userid} />
+      <TemplateWrap>
+        <RsvpTemplate
+          bride={bride}
+          groom={groom}
+          add={add}
+          dateTime={dateTime}
+          userid={userid}
+        />
+      </TemplateWrap>
+      <FormWrap>
+        <RsvpMain userid={userid} />
+      </FormWrap>
     </Container>
   );
 };

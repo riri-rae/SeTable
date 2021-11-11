@@ -42,7 +42,7 @@ const Right = styled.div`
  box-sizing: border-box;
 `;
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   width: 100%;
   /* margin: 0 10rem; */
   display: flex;

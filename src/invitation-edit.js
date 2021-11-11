@@ -3,6 +3,7 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
+import { Link } from 'react-router-dom';
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 //import picbt from "../src/images/rose-ring.png";
@@ -13,10 +14,24 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 80%;
+  width: 100%;
   max-height: 100vh;
   margin: 0 auto;
   /* flex-direction: column; */
+`;
+
+
+const TemplateTop = styled.div`
+  top:80px;
+  height: calc(100vh - 80px);
+  /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); */
+`;
+
+
+const EditTitle = styled.div`
+  font-size: 36px;
+  margin-bottom: 60px;
+  font-family: 'Karla', sans-serif;
 `;
 
 const Edit = styled.div`
@@ -29,14 +44,19 @@ const Edit = styled.div`
   align-items: center;
 `;
 
-const EditTitle = styled.div`
-  font-size: 24px;
-  margin-bottom: 60px;
-`;
-
 const EditText = styled.div`
   font-size: 20px;
   flex-direction: row;
+  background-color: #FFF;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px;
+    text-align:center;
+  font-family: 'Karla', sans-serif;
 `;
 
 const Input = styled.input`
@@ -45,12 +65,26 @@ const Input = styled.input`
   line-height: 22px;
   font-size: 18px;
   margin-left: 8px;
+  font-family: 'Karla', sans-serif;
+  width: 256px;
 `;
 
 const InputWrap = styled.div`
   display: flex;
   line-height: 20px;
   margin: 16px;
+
+  /* background-color: #FFF; */
+    /* height: 600px;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px;
+    text-align:center; */
+  
 `;
 
 const Label = styled.label`
@@ -71,9 +105,10 @@ const Button = styled.button`
   font-size: 1rem;
   cursor: pointer;
   margin-top: 8px;
+  font-family: 'Karla', sans-serif;
 `;
 
-const CheckButton = styled.button`
+const CheckRsvp = styled(Link)`
   /* display: flex;
   align-items: center; */
   /* margin: 16px; */
@@ -86,18 +121,12 @@ const CheckButton = styled.button`
   font-size: 1rem;
   cursor: pointer;
   margin-top: 36px;
+  font-family: 'Karla', sans-serif;
 `;
 
 const InvitationEdit = () => {
   const db = firebase.firestore();
-
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-    })
-  }, [])
+  const user = firebase.auth().currentUser;
 
   const [bride, setBride] = useState('Bride');
   const [groom, setGroom] = useState('Ｇroom');
@@ -118,6 +147,8 @@ const InvitationEdit = () => {
           setGroom(groom)
           setDateTime(dateTime)
           setAdd(add)
+        } else {
+          return
         }
       });
 
@@ -127,7 +158,7 @@ const InvitationEdit = () => {
     db.collection("users")
       .doc(user.uid)
       .collection("invitation").doc("template")
-      .update({
+      .set({
         bride,
         groom,
         dateTime,
@@ -143,10 +174,11 @@ const InvitationEdit = () => {
     <>
       <Header />
       <Container>
-        <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
+        <TemplateTop>
+          <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
+        </TemplateTop>
         <Edit>
           <EditTitle>Edit your custom infomation</EditTitle>
-
           <EditText>
             <InputWrap>
               <Label htmlFor="bride-name">Bride's Name:</Label>
@@ -157,15 +189,7 @@ const InvitationEdit = () => {
                 value={bride}
                 onChange={(e) => setBride(e.target.value)}
               />
-              {/* <Button>Edit</Button> */}
-              {/* <Button
-                onClick={saveChange}
-              >
-                Save
-              </Button> */}
             </InputWrap>
-          </EditText>
-          <EditText>
             <InputWrap>
               <Label htmlFor="groom-name">Groom's Name:</Label>
               <Input
@@ -175,42 +199,14 @@ const InvitationEdit = () => {
                 value={groom}
                 onChange={(e) => setGroom(e.target.value)}
               />
-              {/* <Button>Edit</Button> */}
-              {/* <Button
-                onClick={saveChange}
-              >
-                Save
-              </Button> */}
             </InputWrap>
-          </EditText>
-          <EditText>
             <InputWrap>
-              {/* <Label htmlFor="wedding-date">Wedding Date:</Label>
-              <Input type="text" id="wedding-date" /> */}
-              <Label for="date">Enter the date:</Label>
+              <Label htmlFor="date">Enter the date:</Label>
               <Input id="date" type="datetime-local" lang="en-US" name="date"
                 value={dateTime}
                 onChange={(e) => setDateTime(e.target.value)}
               />
-
-
-              {/* <Button>Edit</Button> */}
-              {/* <Button
-                onClick={saveChange}
-              >
-                Save
-              </Button> */}
             </InputWrap>
-          </EditText>
-          {/* <EditText>
-            <InputWrap>
-              <Label htmlFor="wedding-time">Time:</Label>
-              <Input type="text" id="wedding-time" />
-              <label for="time">Enter the time:</label>
-              <input id="time" type="time" lang="en-US" name="time" />
-            </InputWrap>
-          </EditText> */}
-          <EditText>
             <InputWrap>
               <Label htmlFor="add">Address:</Label>
               <Input
@@ -220,20 +216,15 @@ const InvitationEdit = () => {
                 value={add}
                 onChange={(e) => setAdd(e.target.value)}
               />
-              {/* <Button>Edit</Button> */}
-              {/* <Button
-                onClick={saveChange}
-              >
-                Save
-              </Button> */}
             </InputWrap>
           </EditText>
-          <Button
-            onClick={saveChange}
+          <Button onClick={saveChange}
           >
-            Save Change
+            Save
           </Button>
-          <CheckButton>Check your Rsvp Here</CheckButton>
+
+          <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here</CheckRsvp>
+
         </Edit>
       </Container>
     </>

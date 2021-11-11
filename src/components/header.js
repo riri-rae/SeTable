@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
@@ -35,7 +36,7 @@ const DeskHeaderDiv = styled.div`
   }
 `;
 
-const Logo = styled.a`
+const Logo = styled(Link)`
   width: 100px;
   /* margin: 0 0 -2%; */
   /* margin-left: 60px;
@@ -52,7 +53,7 @@ const DeskNav = styled.div`
   margin-right: 16px;
 `;
 
-const DeskTag = styled.a`
+const DeskTag = styled(Link)`
   letter-spacing: 2px;
   font-size: 20px;
   color: #3f3a3a;
@@ -72,7 +73,7 @@ const DeskTag = styled.a`
   }
 `;
 
-const Member = styled.a`
+const Member = styled(Link)`
   margin-left: 42px;
   margin-right: 54px;
   cursor: pointer;
@@ -115,30 +116,30 @@ export default function Header() {
     <Navbar>
       <Container>
         <DeskHeaderDiv>
-          <Logo href="./homepage">
+          <Logo to="/homepage">
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
-            <DeskTag href="./invitation-edit">Invitation</DeskTag>
-            <DeskTag href="./guestlist">Guest List</DeskTag>
-            <DeskTag href="./table">Table</DeskTag>
+            <DeskTag to="/invitation-edit">Invitation</DeskTag>
+            <DeskTag to="/guestlist">Guest List</DeskTag>
+            <DeskTag to="/table">Table</DeskTag>
           </DeskNav>
 
-          <Member href="./">
+          <Member to="/">
             <img src={memberImg} height="44" alt="member" />
           </Member>
         </DeskHeaderDiv>
         <MobileHeaderDiv>
-          <Logo href="./"
+          <Logo to="/"
             onClick={() => firebase.auth().signOut()}>
             <img src={roseLogo} height="44" alt="logo" />
 
           </Logo>
 
           <MobileNav>
-            <MobileTag href="./invitation-edit">Invitation</MobileTag>
-            <MobileTag href="./guestlist">Guest List</MobileTag>
-            <MobileTag href="./table">Table</MobileTag>
+            <MobileTag to="/invitation-edit">Invitation</MobileTag>
+            <MobileTag to="/guestlist">Guest List</MobileTag>
+            <MobileTag to="/table">Table</MobileTag>
           </MobileNav>
         </MobileHeaderDiv>
       </Container>

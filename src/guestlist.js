@@ -112,37 +112,37 @@ const Th = styled.th`
 
 //const db = firebase.firestore();
 
-function GuestList() {
+function GuestList({ setDeleteId }) {
   const [allData, SetAllData] = useState([]);
   const [addYes, setAddYes] = useState('');
   const [addNo, setAddNo] = useState('');
   const [addNotSure, setAddNotSure] = useState('');
 
   const db = firebase.firestore();
+
+  const user = firebase.auth().currentUser;
+
   useEffect(() => {
     db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
+      .doc(user.uid)
       .collection("rsvp")
       .onSnapshot((querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
+          // console.log(doc.data())
           data.push(doc.data())
-          // let group = doc.data().group;
-          let guestlist = doc.data().guestlist;
-          // let tag = doc.data().tag;
-          // console.log(group)
-          console.log(guestlist[0].content)
-          // console.log(tag)
+          // let guestlist = doc.data().guestlist;
+          // console.log(guestlist[0].content)
         });
         SetAllData(data);
-        console.log(allData)
+        // console.log(data.map(data => data.guestlist[0].content))
       })
   }, []);
 
   function onSubmit(body, id) {
     const rsvp = db
       .collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
+      .doc(user.uid)
       .collection("rsvp")
       .doc(id);
     rsvp.set(body);
@@ -168,12 +168,13 @@ function GuestList() {
               .collection("users")
               .doc().id;
             let body = {
-              guestlist: [
-                {
-                  id: uuid(),
-                  content: addYes,
-                },
-              ],
+              // guestlist: [
+              //   {
+              //     id: uuid(),
+              //     content: addYes,
+              //   },
+              // ],
+              name: addYes,
               status: 'yes',
               group: '',
               tag: '',
@@ -182,9 +183,9 @@ function GuestList() {
               veggie: '',
               note: '',
               id
-              // userid
             };
             onSubmit(body, id);
+            setAddYes('');
           }}
         >
           Add Guest
@@ -209,7 +210,7 @@ function GuestList() {
           <tbody>
             {allData.map((data, index) => (
               data.status === 'yes' ?
-                <GuestlistPack data={data} index={index} ></GuestlistPack>
+                <GuestlistPack data={data} index={index} key={data.id} setDeleteId={setDeleteId}></GuestlistPack>
                 : <></>
             ))
             }
@@ -235,12 +236,13 @@ function GuestList() {
               .collection("users")
               .doc().id;
             let body = {
-              guestlist: [
-                {
-                  id: uuid(),
-                  content: addNotSure,
-                },
-              ],
+              // guestlist: [
+              //   {
+              //     id: uuid(),
+              //     content: addNotSure,
+              //   },
+              // ],
+              name: addNotSure,
               status: 'notSure',
               group: '',
               tag: '',
@@ -252,6 +254,7 @@ function GuestList() {
               // userid
             };
             onSubmit(body, id);
+            setAddNotSure('');
           }}
         >
           Add Guest
@@ -277,7 +280,7 @@ function GuestList() {
           <tbody>
             {allData.map((data, index) => (
               data.status === 'notSure' ?
-                <GuestlistPack data={data} index={index}></GuestlistPack>
+                <GuestlistPack data={data} index={index} key={data.id}></GuestlistPack>
                 : <></>
             ))
             }
@@ -303,12 +306,13 @@ function GuestList() {
               .collection("users")
               .doc().id;
             let body = {
-              guestlist: [
-                {
-                  id: uuid(),
-                  content: addNo,
-                },
-              ],
+              // guestlist: [
+              //   {
+              //     id: uuid(),
+              //     content: addNo,
+              //   },
+              // ],
+              name: addNo,
               status: 'no',
               group: '',
               tag: '',
@@ -319,6 +323,7 @@ function GuestList() {
               id
             };
             onSubmit(body, id);
+            setAddNo()
           }}
         >
           Add Guest
@@ -343,7 +348,7 @@ function GuestList() {
           <tbody>
             {allData.map((data, index) => (
               data.status === 'no' ?
-                <GuestlistPack data={data} index={index}></GuestlistPack>
+                <GuestlistPack data={data} index={index} key={data.id}></GuestlistPack>
                 : <></>
             ))
             }

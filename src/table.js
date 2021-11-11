@@ -8,7 +8,7 @@ import Header from "./components/Header";
 
 const BlockWrap = styled.div`
   position: relative;
-  height: 10rem;
+  /* height: 10rem; */
 `;
 
 const Block = styled.div`
@@ -18,16 +18,16 @@ const Block = styled.div`
   transform: translateX(-50%);
   border: 1px solid #ddd;
   background: #b8ab9b;
-  border-radius: 5px;
-  width: 80%;
-
+  border-radius: 16px;
+  width: 83%;
   text-align: center;
-  z-index: 1;
+  height: 340px;
+  /* z-index: 1; */
 `;
 const BlockTitle = styled.div`
   color: #574e56;
   font-size: 2rem;
-  margin: 16px 0;
+  margin: 20px 0;
 `;
 
 const Button = styled.button`
@@ -64,8 +64,16 @@ const TaskContainer = styled.div`
     z-index: 90;
   }
   & > :nth-child(2) {
-    margin-top: 220px;
+    margin-top: 416px;
   }
+`;
+
+
+
+const PreTable = styled.div`
+  display: flex;
+  margin-bottom: 8px;
+
 `;
 
 const TaskRow = styled.div`
@@ -75,7 +83,7 @@ const TaskRow = styled.div`
   background-color: ${(props) => (props.isDraggingOver ? "#FDFBF4" : "white")};
   flex-grow: 1;
   display: flex;
-  border: 3px solid #ccc;
+  border: 3px solid #B8AB9B;
   border-radius: 16px;
   min-height: 7rem;
   width: 80%;
@@ -84,7 +92,7 @@ const TaskRow = styled.div`
 `;
 
 const Task = styled.div`
-  border: 2px solid lightgrey;
+  border: 2px solid #E0D4C3;
   border-radius: 50%;
   padding: 8px;
   margin: 8px;
@@ -95,101 +103,65 @@ const Task = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #4F3C34;
 `;
 
-// firebase data
-const db = firebase.firestore();
 
-
-//Moves an item from one list to another list.
-
-function Table() {
+function Table({ deleteId }) {
   const [tables, setTables] = useState([]);
   const [myList, setMyList] = useState([]);
 
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+
   useEffect(() => {
-    db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+    db.collection("users").doc(user.uid)
       .onSnapshot((doc) => {
+
+
         let getSaveList = (doc.data().guestlist)
         let saveList = JSON.parse(getSaveList)
-        console.log(saveList);// [[{}{}] [{}]]
         setTables(saveList)
+        console.log(saveList);
+
+        // if (doc.exists) {
+        //   let getSaveList = (doc.data().guestlist)
+        //   let saveList = JSON.parse(getSaveList)
+        //   console.log(saveList);
+        //   setTables(saveList)
+        // } else {
+        //   return
+        // }
+
+
       });
   }, [])
 
+  // .where("status", "==", "yes")
+
   useEffect(() => {
     db.collection("users")
-      .doc("0pNg8BybCeidJQXjrYiX")
-      .collection("rsvp").where("status", "==", "yes")
+      .doc(user.uid)
+      .collection("rsvp")
       .onSnapshot((collectionSnapshot) => {
-        const myNewList = [];
-        collectionSnapshot.docs.forEach((doc) => {
-
-          let allList = doc.data().guestlist;
-          const newAllList = allList.map((guest) => {
+        setMyList(collectionSnapshot.docs.filter((doc) => doc.data().status === 'yes')
+          .map((doc) => {
             return {
-              id: guest.id,
-              content: guest.content,
+              id: doc.id,
+              content: doc.data().name,
             };
-          });
-          myNewList.push(...newAllList);
-        });
-        setMyList(myNewList);
-        // console.log(myNewList);
+          }));
       })
   }, []);
 
 
   useEffect(() => {
 
-    console.log(myList)//新資料(少) 以mylist為主，排除historyTable裡的 [{}{}{}]
-    let historyTable = tables.flat();
-    console.log(historyTable)//應該減少的舊資料(多)[{}{}{}]
-    //刪除的事情
-    if (myList.length < historyTable.length) {
-      console.log('different')
-      const guestDelete = historyTable.filter(({ id: id1 }) => !myList.some(({ id: id2 }) => id2 === id1));
-      let guestToDelete = guestDelete[0].id
-      console.log(guestToDelete)
-
-      function findTablesIndex(tables, id) {
-        var tablesInd;
-        var tableInd;
-        for (tablesInd = 0; tablesInd < tables.length; ++tablesInd) {
-          const nsDetails = tables[tablesInd];
-          for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
-            const tempObject = nsDetails[tableInd];
-            if (tempObject.id === id) {
-              console.log(tablesInd, tableInd)
-              return { tablesInd, tableInd };
-            }
-          }
-        }
-        return {};
-      }
-
-      let { tablesInd, tableInd } = findTablesIndex(tables, guestToDelete);
-      console.log(tablesInd, tableInd)
-      let afterDelete = Array.from(tables);
-
-      const [deleteTable] = afterDelete.splice(tablesInd, 1); //把桌子抓出來
-      console.log(deleteTable)
-      deleteTable.splice(tableInd, 1)
-      afterDelete.splice(tablesInd, 0, deleteTable);//再把deleteTable塞回tables[]
-      setTables(afterDelete)
-    }
-
+    //新增的事情
     const myGuestId = tables.reduce((acc, cur) => {
       return [...acc, ...cur.map(guest => guest.id)]
     }, [])
 
-    const myGuestName = tables.reduce((acc, cur) => {
-      return [...acc, ...cur.map(guest => guest.content)]
-    }, [])
-    console.log(myGuestName)  //['','','']
-    //my guest 是歷史資料的所有id
-
-    //新增的事情
     myList.forEach((guest) => {
       //myList是rsvp來源的最新清單[{},{},{}]
       //如果myList的所有id有包含myGuest沒有的，就拿出tables(歷史資料)的第0張桌子
@@ -204,18 +176,6 @@ function Table() {
     });
 
   }, [myList])
-
-  // const result = {
-  //   draggableID: "task-1",
-  //   source: {
-  //     droppableID: "colum-1",
-  //     index: 0,
-  //   },
-  //   destination: {
-  //     droppableID: "colum-1",
-  //     index: 1,
-  //   },
-  // };
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -245,12 +205,12 @@ function Table() {
 
       setTables(reorder);
       // console.log(reorder);
-      //存json, 第0張桌子不存
+      //存json
       const saveReorder = JSON.stringify(reorder)
       const reoderData = {}
       reoderData.guestlist = saveReorder;
 
-      db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+      db.collection("users").doc(user.uid)
         .update(reoderData);
     }
 
@@ -268,12 +228,12 @@ function Table() {
       // let newTables = [];
       setTables(move);
       // console.log(move);
-      //存json，第0張桌子不存
+      //存json
       const saveMove = JSON.stringify(move)
       const reoderMove = {}
       reoderMove.guestlist = saveMove;
 
-      db.collection("users").doc("0pNg8BybCeidJQXjrYiX")
+      db.collection("users").doc(user.uid)
         .update(reoderMove);
     }
   }
@@ -285,7 +245,7 @@ function Table() {
       <DragDropContext onDragEnd={onDragEnd}>
         <BlockWrap>
           <Block>
-            <BlockTitle>Arrange your table here!</BlockTitle>
+            <BlockTitle>Add more tables to arrange your guests here!</BlockTitle>
             <Button
               type="button"
               onClick={() => {
@@ -297,9 +257,7 @@ function Table() {
             </Button>
           </Block>
         </BlockWrap>
-
         <TaskContainer>
-
           {tables.map((table, ind) => (
             <Droppable key={ind} droppableId={`${ind}`} direction="horizontal">
               {(provided, snapshot) => (
