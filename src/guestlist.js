@@ -64,12 +64,13 @@ const MainTitleContainer = styled.div`
 
 const SubTitleContainer = styled(MainTitleContainer)`
   padding: 0px 16px 24px 16px;
+  width:78%;
+  overflow-x:scroll;
 
   &:last-child{
    padding-bottom: 160px;
  }
 `;
-
 
 const Title = styled.div`
   font-size: 20px;
@@ -114,6 +115,9 @@ const Th = styled.th`
 
 function GuestList({ setDeleteId }) {
   const [allData, SetAllData] = useState([]);
+  const [yesCount, setYesCount] = useState('');
+  const [notCount, setNotCount] = useState('');
+  const [noCount, setNoCount] = useState('');
   const [addYes, setAddYes] = useState('');
   const [addNo, setAddNo] = useState('');
   const [addNotSure, setAddNotSure] = useState('');
@@ -131,11 +135,8 @@ function GuestList({ setDeleteId }) {
         querySnapshot.forEach((doc) => {
           // console.log(doc.data())
           data.push(doc.data())
-          // let guestlist = doc.data().guestlist;
-          // console.log(guestlist[0].content)
         });
         SetAllData(data);
-        // console.log(data.map(data => data.guestlist[0].content))
       })
   }, []);
 
@@ -148,12 +149,28 @@ function GuestList({ setDeleteId }) {
     rsvp.set(body);
   }
 
+  useEffect(() => {
+    const copyData = Array.from(allData);
+    const yes = copyData.filter(status => status.status === 'yes');
+    const not = copyData.filter(status => status.status === 'notSure');
+    const no = copyData.filter(status => status.status === 'no');
+
+    const yesNumber = (String(yes.length));
+    const notNumber = (String(not.length));
+    const noNumber = (String(no.length));
+    setYesCount(yesNumber)
+    setNotCount(notNumber)
+    setNoCount(noNumber)
+
+  }, [allData]);
+
+
   return (
     <>
       <Header />
       <MainTitleContainer>
         <Title>Joyfully Attend</Title>
-        <Count>50</Count>
+        <Count>{yesCount}</Count>
         <DropBtn >▼</DropBtn>
         <InputNew
           type="text"
@@ -168,12 +185,6 @@ function GuestList({ setDeleteId }) {
               .collection("users")
               .doc().id;
             let body = {
-              // guestlist: [
-              //   {
-              //     id: uuid(),
-              //     content: addYes,
-              //   },
-              // ],
               name: addYes,
               status: 'yes',
               group: '',
@@ -214,14 +225,13 @@ function GuestList({ setDeleteId }) {
                 : <></>
             ))
             }
-
           </tbody>
         </table>
       </SubTitleContainer>
 
       <MainTitleContainer>
         <Title>Not Sure</Title>
-        <Count>8</Count>
+        <Count>{notCount}</Count>
         <DropBtn>▼</DropBtn>
         <InputNew
           type="text"
@@ -236,12 +246,6 @@ function GuestList({ setDeleteId }) {
               .collection("users")
               .doc().id;
             let body = {
-              // guestlist: [
-              //   {
-              //     id: uuid(),
-              //     content: addNotSure,
-              //   },
-              // ],
               name: addNotSure,
               status: 'notSure',
               group: '',
@@ -251,7 +255,6 @@ function GuestList({ setDeleteId }) {
               veggie: '',
               note: '',
               id
-              // userid
             };
             onSubmit(body, id);
             setAddNotSure('');
@@ -291,7 +294,7 @@ function GuestList({ setDeleteId }) {
 
       <MainTitleContainer>
         <Title>Regretfully Decline</Title>
-        <Count>5</Count>
+        <Count>{noCount}</Count>
         <DropBtn>▼</DropBtn>
         <InputNew
           type="text"
@@ -306,12 +309,6 @@ function GuestList({ setDeleteId }) {
               .collection("users")
               .doc().id;
             let body = {
-              // guestlist: [
-              //   {
-              //     id: uuid(),
-              //     content: addNo,
-              //   },
-              // ],
               name: addNo,
               status: 'no',
               group: '',
@@ -323,7 +320,7 @@ function GuestList({ setDeleteId }) {
               id
             };
             onSubmit(body, id);
-            setAddNo()
+            setAddNo('')
           }}
         >
           Add Guest

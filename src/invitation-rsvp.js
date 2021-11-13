@@ -30,7 +30,7 @@ const TemplateWrap = styled.div`
 const FormWrap = styled.div`
   position: absolute;
   right: 0;
-  top: 12rem;
+  top: 10rem;
   width: 40%;
 `;
 

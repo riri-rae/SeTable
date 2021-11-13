@@ -10,118 +10,157 @@ import Bg from "../images/invitation.jpeg";
 //import { useParams } from "react-router";
 
 const Template = styled.div`
-  /* border: 1px solid #ccc; */
-  /* flex: 2; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: 100vh; */
-  /* background-color: #F8EFE9; */
-  /* background-color: rgba(0, 0, 0, 0.1); */
+  height: 100vh;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  box-shadow: 0px 0px 10px 6px rgba(138, 105, 90, 0.7);
 `;
 
-const PicTopWrap = styled.div`
+const PicWrap = styled.div`
   width: 100%;
-  /* background-color: rgba(248, 239, 233, 0.8); */
+  height:100%;
   position: relative;
   box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
+
 `;
 
-const PicTop = styled.div`
-background-image: url('/images/red_flower.jpg');
-background-position: left;
-/* background-attachment: fixed; */
-background-repeat: no-repeat;
-background-size: cover;
+const BackGround = styled.div`
+  background-image: url("/images/red_flower.jpg");
+  background-position: left;
+  /* background-attachment: fixed; */
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 60vw;
   height: 100vh;
 `;
 
 const ContentWrap = styled.div`
-  width: 100%;
+  width: 50%;
   position: absolute;
-  top:180px;
-  /* background-color: rgba(0, 0, 0, 0.1); */
-  /* background-color: rgba(248, 239, 233, 0.8); */
+  top:  7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0px 0px 10px 5px rgba(183, 143, 149, 0.3);
+  /* box-shadow: 2px 2px 30px 5px #b78f95; */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  font-family: 'Stalemate', cursive;
-  /* padding-bottom: 100px; */
+  font-family: "Stalemate", cursive;
+  max-height: 100vh;
+  text-align: center;
+  padding: 36px 8px;
+  overflow: hidden;
 `;
 
-// const SaveDate = styled.div`
-//   font-size: 24px;
-//   margin: -76px 16px 24px 16px;
-// `;
-
-const BrideName = styled.div`
-  font-size: 146px;
-  margin: 0 16px 0 16px;
+const Name = styled.div`
+  font-size: 126px;
+  margin: -8px 16px;
+  height: 180px;
 `;
-const GroomName = styled(BrideName)``;
 
 const And = styled.div`
   font-size: 72px;
+  margin-top: -30px;
 `;
+
 const DateTimeWrap = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   margin: 16px;
-  margin-top: 48px;
-  font-family: 'Dancing Script', cursive;
-  letter-spacing:3px;
-  font-size: 36px;
-  font-weight: 600;
+  margin-top: 28px;
+  font-family: "Dancing Script", cursive;
+  letter-spacing: 3px;
+  font-size:24px;
+  padding-bottom: 28px;
+;
+`;
+
+const Side = styled.div`
+    font-family: "Dancing Script", cursive;
+    padding: 16px 0;
+    border-top: 2px solid rgba(23, 43, 77, 0.5);
+    border-bottom: 2px solid rgba(23, 43, 77, 0.5);
+    width: 180px;
+`;
+
+
+const DateWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 5vw;
+
+`;
+
+const Month = styled.div`
+   font-family: "Dancing Script", cursive;
 `;
 
 const Date = styled.div`
-
-  margin-right: 6px;
+   font-family: "Dancing Script", cursive;
+   font-size: 28px;
 `;
 
-const Time = styled.div`
-
-  margin-left: 36px;
+const Year = styled.div`
+ font-size: 20px;
 `;
+
 const Address = styled.div`
-  font-size: 36px;
-  margin-left: 16px;
-  margin-right: 16px;
-  font-family: 'Dancing Script', cursive;
-  font-weight: 600;
-  letter-spacing:3px;
+  font-size: 24px;
+  font-family: "Dancing Script";
+  letter-spacing: 3px;
 `;
 
 const RsvpTemplate = (props) => {
   // const  { id } = useParams();
 
-  let dateAndTime = props.dateTime.split('T')
-  let showDate = dateAndTime[0]
-  let showTime = `${dateAndTime[1]}pm`
-  //console.log(showDate, showTime)
+  const dateAndTime = props.dateTime.split("T");
+  const date = new window.Date(dateAndTime);
+  const year = date.getFullYear();
+  const month = date.toLocaleString('en-US', { month: "short" })
+  const mm = month.toUpperCase();
+  const dd = date.getDate();
+  const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  const getwd = date.toLocaleString('en-US', { weekday: "long" })
+  const wd = getwd.toUpperCase();
+
+  console.log(year, month, dd, time, wd)
+
 
   return (
     <Template>
-      <PicTopWrap>
-        <PicTop src={Bg} />
+      <PicWrap>
+        <BackGround src={Bg} />
         <ContentWrap>
           {/* <SaveDate>Save the Date</SaveDate> */}
-          <BrideName>{props.bride}</BrideName>
+          <Name>{props.bride}</Name>
           <And>&</And>
-          <GroomName>{props.groom}</GroomName>
+          <Name>{props.groom}</Name>
           <DateTimeWrap>
-            <Date>{showDate}</Date>
-            <Time>{showTime}</Time>
+            <Side>{wd}</Side>
+            <DateWrap>
+              <Month>{mm}</Month>
+              <Date>{dd}</Date>
+              <Year>{year}</Year>
+            </DateWrap>
+            <Side>{time}</Side>
           </DateTimeWrap>
           <Address>{props.add}</Address>
         </ContentWrap>
-      </PicTopWrap>
-      {/* <PicTopWrap>
+      </PicWrap>
+      {/* <PicWrap>
         <PicBt src={picbt} />
-      </PicTopWrap> */}
+      </PicWrap> */}
     </Template>
   );
 };

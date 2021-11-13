@@ -156,20 +156,18 @@ function Table({ deleteId }) {
 
 
   useEffect(() => {
-
     //新增的事情
     const myGuestId = tables.reduce((acc, cur) => {
       return [...acc, ...cur.map(guest => guest.id)]
     }, [])
 
     myList.forEach((guest) => {
-      //myList是rsvp來源的最新清單[{},{},{}]
-      //如果myList的所有id有包含myGuest沒有的，就拿出tables(歷史資料)的第0張桌子
+
       if (!myGuestId.includes(guest.id)) {
         const newTables = Array.from(tables);
-        const [preTable] = newTables.splice(0, 1); //pretable會是桌子０舊的人
-        preTable.push(guest) //把原本沒有的guest塞回去pretable
-        newTables.splice(0, 0, preTable);//再把pretable塞回tables[]
+        const [preTable] = newTables.splice(0, 1);
+        preTable.push(guest)
+        newTables.splice(0, 0, preTable);
         setTables(newTables)
         console.log(newTables)
       }

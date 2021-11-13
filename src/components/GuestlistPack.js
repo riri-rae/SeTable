@@ -2,9 +2,78 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
-import 'firebase/auth';
+import "firebase/auth";
+//import Select from 'react-select'
 import { v4 as uuid } from "uuid";
 
+const Input = styled.input`
+  display: flex;
+  align-items: center;
+  margin: 0px auto;
+  /* margin-left:24px; */
+  padding: 0.5rem;
+  color: #000;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 120px;
+  text-align: center;
+`;
+const NameDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px auto;
+  padding: 0.5rem;
+  color: #000;
+  cursor: pointer;
+  font-size: 14px;
+  width: 120px;
+  font-size: 20px;
+`;
+
+const Td = styled.td`
+  text-align: center;
+  color: #574e56;
+  line-height: 36px;
+  border-bottom: 1px solid #ddd;
+
+  &:nth-child(7) {
+    width: 12rem;
+  }
+`;
+// const SelectStyle = styled(Select)`
+//  width: 146px;
+//  font-size: 16px;
+//  line-height: 18px!important;
+//  margin: 0 auto;
+// `;
+
+const Select = styled.select`
+  box-shadow: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  background-image: none;
+  flex: 1;
+  padding: 0 0.5em;
+  color: #000;
+  cursor: pointer;
+  font-size: 1em;
+  height: 32px;
+  width: 120px;
+  text-align: center;
+`;
+
+const Textarea = styled.textarea`
+  resize: none;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  vertical-align:middle;
+  height:30px;
+  line-height:30px;
+`;
 const Button = styled.button`
   display: flex;
   align-items: center;
@@ -33,53 +102,31 @@ const DelButton = styled(Button)`
   cursor: pointer;
 `;
 
-const Input = styled.input`
-  display: flex;
-  align-items: center;
-  margin: 4px;
-  /* margin-left:24px; */
-  padding: 0.5rem;
-  color: #000;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  /* text-align: center;
-  max-width: 6rem; */
-`;
-
-const Td = styled.td`
-  text-align: center;
-  color: #574e56;
-  line-height: 36px;
-  border-bottom: 1px solid #ddd;
-
-  &:nth-child(7) {
-    width: 12rem;
-  }
-`;
-
-const Select = styled.select`
-  color: #000;
-  text-align: center;
-  margin-left:8px;
-`;
-
-const Textarea = styled.textarea`
-  resize: none;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 8px;
-`;
-
-function GuestlistPack({ data, setDeleteId }) {
+function GuestlistPack({ data }) {
   const [name, setName] = useState(data.name);
   const [group, setGroup] = useState(data.group);
-  const [tag, setTag] = useState(data.tag);
-  const [role, setRole] = useState(data.role);
-  const [veggie, setVeggie] = useState(data.veggie);
-  const [baby, setBaby] = useState(data.baby);
   const [note, setNote] = useState(data.note);
+
+  const [tag, setTag] = useState(data.tag);
+  // const tags = [
+  //   { value: 'brides-side', label: 'Bride Side' },
+  //   { value: 'groom-side', label: 'Groom Side' }
+  // ]
+  const [role, setRole] = useState(data.role);
+  // const roles = [
+  //   { value: 'friend', label: 'Friend' },
+  //   { value: 'family', label: 'Family' }
+  // ]
+  const [veggie, setVeggie] = useState(data.veggie);
+  // const veggies = [
+  //   { value: 'yes', label: 'Yes' },
+  //   { value: 'no', label: 'No' }
+  // ]
+  const [baby, setBaby] = useState(data.baby);
+  // const babys = [
+  //   { value: 'yes', label: 'Yes' },
+  //   { value: 'no', label: 'No' }
+  // ]
 
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
@@ -96,72 +143,14 @@ function GuestlistPack({ data, setDeleteId }) {
         role,
         baby,
         veggie,
-        note
+        note,
       })
       .then(() => {
         window.alert("Change Saved!");
-      })
+      });
   }
 
   function handelDel() {
-    // setDeleteId(data.id);
-
-    // db.collection("users")
-    //   .doc(user.uid)
-    //   .collection("rsvp")
-    //   .doc(data.id)
-    //   .get().then((doc) => {
-    //     let guestToDelete = doc.data()
-    //     console.log(guestToDelete)
-    //   })
-
-    //const guestToDelete = db.collection("users").doc(user.uid).collection("rsvp").doc(data.id)
-    const guestToDelete = data.id
-    console.log(guestToDelete)
-
-    db.collection("users").doc(user.uid).get().then((doc) => {
-      const history = (doc.data().guestlist)
-      const historyList = JSON.parse(history)
-      console.log(historyList)
-
-      function findTablesIndex(historyList, id) {
-        var tablesInd;
-        var tableInd;
-        for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
-          const nsDetails = historyList[tablesInd];
-          for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
-            const tempObject = nsDetails[tableInd];
-            if (tempObject.id === id) {
-              console.log(tablesInd, tableInd)
-              return { tablesInd, tableInd };
-            }
-          }
-        }
-        return {};
-      }
-
-      let { tablesInd, tableInd } = findTablesIndex(historyList, guestToDelete);
-      console.log(tablesInd, tableInd)
-      // let afterDelete = Array.from(historyList);
-
-      const [deleteTable] = historyList.splice(tablesInd, 1); //把桌子抓出來
-      console.log(deleteTable)
-      deleteTable.splice(tableInd, 1)
-      historyList.splice(tablesInd, 0, deleteTable);//再把deleteTable塞回tables[]
-      // setTables(afterDelete)
-      console.log(historyList)
-
-      const updateHistory = JSON.stringify(historyList)
-      const update = {}
-      update.guestlist = updateHistory;
-      console.log(updateHistory)
-
-      db.collection("users").doc(user.uid)
-        .update(update);
-
-    })
-
-
     db.collection("users")
       .doc(user.uid)
       .collection("rsvp")
@@ -169,21 +158,69 @@ function GuestlistPack({ data, setDeleteId }) {
       .delete()
       .then(() => {
         window.alert("Document successfully deleted!");
-      })
+      });
 
+    const guestToDelete = data.id;
+    console.log(guestToDelete);
+
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        const history = doc.data().guestlist;
+        const historyList = JSON.parse(history);
+        console.log(historyList);
+
+        function findTablesIndex(historyList, id) {
+          var tablesInd;
+          var tableInd;
+          for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
+            const nsDetails = historyList[tablesInd];
+            for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
+              const tempObject = nsDetails[tableInd];
+              if (tempObject.id === id) {
+                console.log(tablesInd, tableInd);
+                return { tablesInd, tableInd };
+              }
+            }
+          }
+          return {};
+        }
+
+        let { tablesInd, tableInd } = findTablesIndex(
+          historyList,
+          guestToDelete
+        );
+        console.log(tablesInd, tableInd);
+        // let afterDelete = Array.from(historyList);
+
+        const [deleteTable] = historyList.splice(tablesInd, 1); //把桌子抓出來
+        console.log(deleteTable);
+        deleteTable.splice(tableInd, 1);
+        historyList.splice(tablesInd, 0, deleteTable); //再把deleteTable塞回tables[]
+        // setTables(afterDelete)
+        console.log(historyList);
+
+        const updateHistory = JSON.stringify(historyList);
+        const update = {};
+        update.guestlist = updateHistory;
+        //console.log(updateHistory);
+
+        db.collection("users").doc(user.uid).update(update);
+      });
   }
-
 
   return (
     <tr>
       <Td>
-        <Input
+        {/* <Input
           type="text"
           id="bride-name"
           placeholder="Edit"
           value={name}
           onChange={(e) => setName(e.target.value)}
-        />
+        /> */}
+        <NameDiv>{name}</NameDiv>
       </Td>
       <Td>
         <Input
@@ -197,31 +234,70 @@ function GuestlistPack({ data, setDeleteId }) {
 
       <Td>
         <Select value={tag} onChange={(e) => setTag(e.target.value)}>
-          <option value="" disabled selected>Please Select</option>
-          <option value="brides-side">Brides' side</option>
-          <option value="grooms-side">Groom's side</option>
+          <option value="" disabled selected>
+            ---
+          </option>
+          <option value="bride-side">Brides' Side</option>
+          <option value="groom-side">Groom's Side</option>
         </Select>
+        {/* 
+        <SelectStyle
+          placeholder="Edit"
+          value={tag}
+          onChange={(value) => {
+            setTag(value)
+          }}
+          options={tags} /> */}
       </Td>
       <Td>
         <Select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="" disabled selected>Please Select</option>
+          <option value="" disabled selected>
+            ---
+          </option>
           <option value="friend">Friend</option>
           <option value="family">Family</option>
         </Select>
+        {/* <SelectStyle
+          placeholder="Edit"
+          value={role}
+          onChange={(value) => {
+            setRole(value)
+          }}
+          options={roles} /> */}
       </Td>
       <Td>
         <Select value={veggie} onChange={(e) => setVeggie(e.target.value)}>
-          <option value="" disabled selected>Please Select</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </Select>
-      </Td>
-      <Td>
-        <Select value={baby} onChange={(e) => setBaby(e.target.value)}>
-          <option value="" disabled selected>Please Select</option>
+          <option value="" disabled selected>
+            ---
+          </option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </Select>
+        {/* 
+        <SelectStyle
+          placeholder="Edit"
+          value={veggie}
+          onChange={(value) => {
+            setVeggie(value)
+          }}
+          options={veggies} /> */}
+      </Td>
+      <Td>
+        <Select value={baby} onChange={(e) => setBaby(e.target.value)}>
+          <option value="" disabled selected>
+            ---
+          </option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </Select>
+        {/* 
+        <SelectStyle
+          placeholder="Edit"
+          value={baby}
+          onChange={(value) => {
+            setBaby(value)
+          }}
+          options={babys} /> */}
       </Td>
 
       <Td>
@@ -230,19 +306,20 @@ function GuestlistPack({ data, setDeleteId }) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
         ></Textarea>
+
+        {/* <Input
+          type="text"
+          id="note"
+          placeholder="Add note"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        /> */}
       </Td>
       <Td>
-        <DelButton
-          onClick={saveChange}
-        >
-          Save
-        </DelButton>
+        <DelButton onClick={saveChange}>Save</DelButton>
       </Td>
       <Td>
-        <DelButton
-          onClick={() => handelDel()}
-        >
-          Delete</DelButton>
+        <DelButton onClick={() => handelDel()}>Delete</DelButton>
       </Td>
     </tr>
   );
