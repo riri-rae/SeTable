@@ -40,11 +40,11 @@ const BackGround = styled.div`
 `;
 
 const ContentWrap = styled.div`
-  width: 50%;
   position: absolute;
-  top:  7rem;
+  top:  9rem;
   left: 50%;
   transform: translateX(-50%);
+  width: 50%;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 10px 5px rgba(183, 143, 149, 0.3);
   /* box-shadow: 2px 2px 30px 5px #b78f95; */
@@ -122,7 +122,6 @@ const Address = styled.div`
 `;
 
 const RsvpTemplate = (props) => {
-  // const  { id } = useParams();
 
   const dateAndTime = props.dateTime.split("T");
   const date = new window.Date(dateAndTime);
@@ -155,7 +154,7 @@ const RsvpTemplate = (props) => {
             </DateWrap>
             <Side>{time}</Side>
           </DateTimeWrap>
-          <Address>{props.add}</Address>
+          <Address>At {props.add}</Address>
         </ContentWrap>
       </PicWrap>
       {/* <PicWrap>

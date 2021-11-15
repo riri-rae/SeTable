@@ -74,18 +74,51 @@ const Textarea = styled.textarea`
   height:30px;
   line-height:30px;
 `;
+// const Button = styled.button`
+//   font-weight: 400;
+//   display: flex;
+//   align-items: center;
+//   margin: 16px;
+//   margin-left: 4px;
+//   padding: 0.5rem;
+//   color: #574e56;
+//   border: 1px solid #574e56;
+//   background: #fff;
+//   border-radius: 16px;
+//   font-size: 1rem;
+//   cursor: pointer;
+//   &:hover{
+//     transition-duration: 0.1s;
+//     background-color: #A49393;
+//     color:#fff
+//   }
+//   :active {
+//   background-color: #DCAE96;
+//   box-shadow: 1px 2px #ccc;
+//   transform: translateY(3px);
+// }
+// `;
+
 const Button = styled.button`
-  display: flex;
-  align-items: center;
-  margin: 16px;
-  margin-left: 4px;
-  padding: 0.5rem;
+font-weight: 600;
+  margin: 0 auto;
+  padding: 0.4rem;
   color: #574e56;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   background: #fff;
   border-radius: 16px;
-  font-size: 1rem;
+  font-size: 14px;
   cursor: pointer;
+  &:hover{
+    transition-duration: 0.1s;
+    background-color: #A49393;
+    color:#fff
+  }
+  :active {
+  background-color: #DCAE96;
+  box-shadow: 1px 2px #ccc;
+  transform: translateY(3px);
+}
 `;
 
 const DelButton = styled(Button)`
@@ -95,11 +128,16 @@ const DelButton = styled(Button)`
   /* margin-left:4px; */
   padding: 0.4rem;
   color: #574e56;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   background: #fff;
   border-radius: 16px;
   font-size: 14px;
   cursor: pointer;
+  &:hover{
+    transition-duration: 0.1s;
+    background-color: #9B5B5B;
+    color:#fff
+  }
 `;
 
 function GuestlistPack({ data }) {
@@ -316,7 +354,7 @@ function GuestlistPack({ data }) {
         /> */}
       </Td>
       <Td>
-        <DelButton onClick={saveChange}>Save</DelButton>
+        <Button onClick={saveChange}>Save</Button>
       </Td>
       <Td>
         <DelButton onClick={() => handelDel()}>Delete</DelButton>

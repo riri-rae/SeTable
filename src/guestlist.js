@@ -7,19 +7,20 @@ import { v4 as uuid } from "uuid";
 import GuestlistPack from "./components/GuestlistPack";
 import Header from "./components/Header";
 
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  margin: 16px;
-  margin-left:4px;
-  padding: 0.5rem;
-  color: #574e56;
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 16px;
-  font-size: 1rem;
-  cursor: pointer;
-`;
+// const Button = styled.button`
+//   display: flex;
+//   align-items: center;
+//   margin: 16px;
+//   margin-left:4px;
+//   padding: 0.5rem;
+//   color: #574e56;
+//   border: 1px solid #ddd;
+//   background: #fff;
+//   border-radius: 16px;
+//   font-size: 1rem;
+//   cursor: pointer;
+// `;
+
 
 
 const Input = styled.input`
@@ -50,6 +51,7 @@ const InputNew = styled(Input)`
   font-size: 14px;
   max-width: 100%;
   text-align: left;
+  letter-spacing: 1px;
 `;
 
 const MainTitleContainer = styled.div`
@@ -87,13 +89,7 @@ const DropBtn = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
-// const button = styled(DropBtn)`
-//   font-size: 14px;
-//   border: 1px solid #ddd;
-//   background: #fff;
-//   border-radius: 5px;
-//   cursor: pointer;
-// `;
+
 
 const Hr = styled.hr`
   width: 100%;
@@ -107,6 +103,56 @@ const Th = styled.th`
  text-align:center;
  color:#574E56;
  font-size: 16px;
+`;
+
+const Button = styled.button`
+font-weight: 400;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 16px;
+  margin-left: 4px;
+  padding: 0.4rem 0.8rem;
+  color: #574e56;
+  border: 1px solid #ddd;
+  /* background: #fff; */
+  border-radius: 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  -webkit-transition-duration: 0.1s; /* Safari */
+  &:hover {
+    transition-duration: 0.2s;
+    background-color: #d48c70;
+    color: #fff;
+  }
+  &:after {
+    content: "";
+    display: white;
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.4s;
+    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
+  }
+
+  &:active:after {
+    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: 0s;
+  }
+
+  &:active {
+    top: 1px;
+  }
 `;
 
 
@@ -130,6 +176,7 @@ function GuestList({ setDeleteId }) {
     db.collection("users")
       .doc(user.uid)
       .collection("rsvp")
+      .orderBy("time", "desc")
       .onSnapshot((querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
@@ -175,7 +222,7 @@ function GuestList({ setDeleteId }) {
         <InputNew
           type="text"
           id="bride-name"
-          placeholder="Enter a new name"
+          placeholder="Enter a guest name"
           value={addYes}
           onChange={(e) => setAddYes(e.target.value)}
         />
@@ -193,6 +240,7 @@ function GuestList({ setDeleteId }) {
               baby: '',
               veggie: '',
               note: '',
+              time: firebase.firestore.Timestamp.now(),
               id
             };
             onSubmit(body, id);
@@ -236,7 +284,7 @@ function GuestList({ setDeleteId }) {
         <InputNew
           type="text"
           id="bride-name"
-          placeholder="Enter a new name"
+          placeholder="Enter a guest name"
           value={addNotSure}
           onChange={(e) => setAddNotSure(e.target.value)}
         />
@@ -254,6 +302,7 @@ function GuestList({ setDeleteId }) {
               baby: '',
               veggie: '',
               note: '',
+              time: firebase.firestore.Timestamp.now(),
               id
             };
             onSubmit(body, id);
@@ -299,7 +348,7 @@ function GuestList({ setDeleteId }) {
         <InputNew
           type="text"
           id="bride-name"
-          placeholder="Enter a new name"
+          placeholder="Enter a guest name"
           value={addNo}
           onChange={(e) => setAddNo(e.target.value)}
         />
@@ -317,6 +366,7 @@ function GuestList({ setDeleteId }) {
               baby: '',
               veggie: '',
               note: '',
+              time: firebase.firestore.Timestamp.now(),
               id
             };
             onSubmit(body, id);

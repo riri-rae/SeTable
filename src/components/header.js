@@ -41,6 +41,12 @@ const Logo = styled(Link)`
   /* margin: 0 0 -2%; */
   /* margin-left: 60px;
   margin-top: 26px; */
+  &:active{
+    color:none;
+  }
+  &:focus{
+    outline:none;
+  }
   @media (max-width: 768px) {
     width: 50%;
     margin-top:2vh;

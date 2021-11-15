@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Select from 'react-select'
+import Select from "react-select";
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import { useParams } from "react-router";
 import "firebase/firestore";
-import 'firebase/auth';
+import "firebase/auth";
 import { v4 as uuid } from "uuid";
 import RsvpPack from "./RsvpPack";
 // import Select from "react-select/dist/declarations/src/Select";
@@ -12,7 +12,7 @@ import RsvpPack from "./RsvpPack";
 //import { useParams } from "react-router";
 
 const Edit = styled.div`
-  font-size: 24px;
+  font-size: 22px;
   max-height: 100%;
   display: flex;
   flex-direction: column;
@@ -20,7 +20,7 @@ const Edit = styled.div`
   align-items: center;
   overflow: scroll;
   margin: 36px 16px;
-  color:#67595E;
+  color: #67595e;
 
   /* @media (min-width: 768px) {
     width: 750px;
@@ -31,88 +31,122 @@ const Edit = styled.div`
   @media (min-width: 1200px) {
     width: 1170px;
   } */
- 
 `;
 const Frame = styled.div`
-background-image: url('/images/fram-brown.png');
-background-position: center;
-/* background-attachment: fixed; */
-background-repeat: no-repeat;
-background-size: 100%;
+  background-image: url("/images/frame-brown.png");
+  background-position: center;
+  /* background-attachment: fixed; */
+  background-repeat: no-repeat;
+  background-size: 100%;
   width: 650px;
   height: 36px;
 `;
-
 const EditTitle = styled.div`
-  font-size: 28px;
-  font-family: 'Dancing Script', cursive;
-  font-weight: 600;
-  letter-spacing:2px;
+  font-weight: 500;
   padding-bottom: 20px;
   /* margin-bottom: 20px; */
-
   text-align: center;
+  letter-spacing: 1px;
+`;
 
-  
+const EditTitleBig = styled(EditTitle)`
+  font-size: 48px;
+  font-family: "Dancing Script", cursive;
+  font-weight: 600;
+  letter-spacing: 4px;
+  padding-bottom: 28px;
+  /* margin-bottom: 20px; */
+  text-align: center;
 `;
 
 const Formwrap = styled.div`
-  font-size: 22px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
 `;
-
 
 const InputWrap = styled.div`
   display: flex;
   /* justify-content: left; */
   height: 32px;
   margin: 16px;
-  vertical-align:middle;
+  vertical-align: middle;
 `;
-
 
 const Input = styled.input`
   border: 1px solid #ddd;
   height: 22px;
   font-size: 16px;
   margin-left: 8px;
-  vertical-align:middle;
+  vertical-align: middle;
   outline: none;
   border-radius: 5px;
   padding: 8px;
   color: #44342d;
+  letter-spacing: 1px;
 `;
 const Label = styled.div`
-  float:left; 
-  text-align:right;
+  float: left;
+  text-align: right;
   line-height: 32px;
 `;
 
 const SelectStyle = styled(Select)`
- min-width: 160px;
- font-size: 16px;
- margin-left:16px;
- min-height: 32px;
- color: #44342d;
- outline: none!important;
-
+  min-width: 160px;
+  font-size: 16px;
+  margin-left: 16px;
+  min-height: 32px;
+  color: #44342d;
+  outline: none !important;
 `;
 
 const Button = styled.button`
+  position: relative;
   display: flex;
   align-items: center;
   margin: 16px;
   margin-left: 4px;
-  padding: 0.2rem 0.6rem;
+  padding: 0.4rem 0.8rem;
   color: #574e56;
   border: 1px solid #ddd;
   /* background: #fff; */
   border-radius: 16px;
   font-size: 1rem;
   cursor: pointer;
+  transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s; /* Safari */
+  &:hover {
+    transition-duration: 0.1s;
+    background-color: #d48c70;
+    color: #fff;
+  }
+  &:after {
+    content: "";
+    display: white;
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.4s;
+    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
+  }
+
+  &:active:after {
+    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: 0s;
+  }
+
+  &:active {
+    top: 1px;
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -139,80 +173,76 @@ const Textarea = styled.textarea`
 // `;
 
 const RsvpMain = () => {
-  const { userid } = useParams()
-  const [group, setGroup] = useState('');
-  const [note, setNote] = useState('');
+  const { userid } = useParams();
+  const [group, setGroup] = useState("");
+  const [note, setNote] = useState("");
 
   const [allData, setAllData] = useState([]);
   // console.log(allData)
 
-  const [tag, setTag] = useState('');
+  const [tag, setTag] = useState("");
   const tags = [
-    { value: 'brides-side', label: 'Bride Side' },
-    { value: 'groom-side', label: 'Groom Side' }
-  ]
+    { value: "brides-side", label: "Bride Side" },
+    { value: "groom-side", label: "Groom Side" },
+  ];
 
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState("");
   const roles = [
-    { value: 'friend', label: 'Friend' },
-    { value: 'family', label: 'Family' }
-  ]
+    { value: "friend", label: "Friend" },
+    { value: "family", label: "Family" },
+  ];
 
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const allstatus = [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' },
-    { value: 'notSure', label: 'Not Sure' }
-  ]
-
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+    { value: "notSure", label: "Not Sure" },
+  ];
 
   const db = firebase.firestore();
 
   function sendForm() {
-
-    if (group === '') {
-      window.alert('Please let us know who is filling this form?')
-    } else if (tag === '') {
-      window.alert('Please let us you are from which side?')
-    } else if (role === '') {
-      window.alert('Please let us you are our?')
-    } else if (status === '') {
-      window.alert('Please let us know if you will attand')
-    }
-    else {
-      let id = db.collection("users").doc(userid).collection('rsvp').doc().id;
+    if (group === "") {
+      window.alert("Please let us know who is filling this form?");
+    } else if (tag === "") {
+      window.alert("Please let us you are from which side?");
+    } else if (role === "") {
+      window.alert("Please let us you are our?");
+    } else if (status === "") {
+      window.alert("Please let us know if you will attand");
+    } else {
+      let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
 
       if (allData.length === 0) {
-        db.collection("users")
-          .doc(userid)
-          .collection("rsvp")
-          .doc(id)
-          .set({
-            name: group,
-            group,
-            status: status.value,
-            tag: tag.value,
-            role: role.value,
-            baby: '',
-            veggie: '',
-            note,
-            id
-          })
-
+        db.collection("users").doc(userid).collection("rsvp").doc(id).set({
+          name: group,
+          group,
+          status: status.value,
+          tag: tag.value,
+          role: role.value,
+          baby: "",
+          veggie: "",
+          note,
+          id,
+          time: firebase.firestore.Timestamp.now(),
+        });
       } else {
-        console.log('more')
-        console.log(allData)
+        console.log("more");
+        console.log(allData);
         allData.forEach((data) => {
           if (!data.name) {
-            window.alert('Please fill in guest name')
+            window.alert("Please fill in guest name");
           } else if (!data.veggie) {
-            window.alert('Veggie???')
+            window.alert("Veggie???");
           } else if (!data.baby) {
-            window.alert('Baby seat???')
-          }
-          else {
-            console.log('yes data')
-            let id = db.collection("users").doc(userid).collection('rsvp').doc().id;
+            window.alert("Baby seat???");
+          } else {
+            console.log("yes data");
+            let id = db
+              .collection("users")
+              .doc(userid)
+              .collection("rsvp")
+              .doc().id;
 
             db.collection("users")
               .doc(userid)
@@ -228,35 +258,45 @@ const RsvpMain = () => {
                 id,
                 baby: data.baby,
                 veggie: data.veggie,
+                time: firebase.firestore.Timestamp.now(),
               })
-
+              .then(() => {
+                window.alert("Thank you! Have a nice day");
+              })
+              .then(() => {
+                setAllData([]);
+                setGroup("");
+                setTag("");
+                setRole("");
+                setNote("");
+                setStatus("");
+              });
           }
-        })
-
+        });
       }
     }
   }
 
   useEffect(() => {
-    if (status.value === 'yes') {
-      setAllData([...allData, {}])
-    } else if (status.value === 'no' || status.value === 'notSure') {
-      setAllData([])
+    if (status.value === "yes") {
+      setAllData([...allData, {}]);
+    } else if (status.value === "no" || status.value === "notSure") {
+      setAllData([]);
     }
-  }, [status.value])
-
-
+  }, [status.value]);
 
   return (
     <Edit>
+      <EditTitleBig>Invitation</EditTitleBig>
       <EditTitle>
-        With jouful hearts,<br />
+        With jouful hearts,
+        <br />
         we ask the honor of your presence on our wedding day！
       </EditTitle>
       <Frame />
       <Formwrap>
         <InputWrap>
-          <Label htmlFor="group-name">This Form is fill by :</Label>
+          <Label htmlFor="group-name">This Form is filled by :</Label>
           <Input
             type="text"
             id="group-name"
@@ -272,9 +312,10 @@ const RsvpMain = () => {
             placeholder="Please Select"
             value={tag}
             onChange={(value) => {
-              setTag(value)
+              setTag(value);
             }}
-            options={tags} />
+            options={tags}
+          />
           {/* 
           <Select value={tag} onChange={(e) => setTag(e.target.value)}>
             <option value="" disabled selected>Please Select</option>
@@ -286,9 +327,10 @@ const RsvpMain = () => {
             placeholder="Please Select"
             value={role}
             onChange={(value) => {
-              setRole(value)
+              setRole(value);
             }}
-            options={roles} />
+            options={roles}
+          />
           {/* 
 
           <Select value={role} onChange={(e) => setRole(e.target.value)}>
@@ -298,17 +340,16 @@ const RsvpMain = () => {
           </Select> */}
         </InputWrap>
 
-
         <InputWrap>
           <Label>Will you be able to join us at our wedding ?</Label>
           <SelectStyle
             placeholder="Please Select"
             value={status}
             onChange={(value) => {
-              setStatus(value)
+              setStatus(value);
             }}
-            options={allstatus} />
-
+            options={allstatus}
+          />
 
           {/* <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="" disabled selected>Please Select</option>
@@ -319,24 +360,24 @@ const RsvpMain = () => {
         </InputWrap>
 
         {allData.map((data, index) => (
-          <RsvpPack allData={allData} setAllData={setAllData} index={index} key={index} />
+          <RsvpPack
+            allData={allData}
+            setAllData={setAllData}
+            index={index}
+            key={index}
+          />
         ))}
         <Frame />
         <InputWrap>
           <Label>Note: </Label>
           <Textarea
             placeholder="Anything we need to know?"
-            onChange={(e) => setNote(e.target.value)}>
-          </Textarea>
+            onChange={(e) => setNote(e.target.value)}
+          ></Textarea>
         </InputWrap>
       </Formwrap>
-      <Button
-        onClick={sendForm}
-      >
-        Send
-      </Button>
+      <Button onClick={sendForm}>Send</Button>
     </Edit>
-
   );
 };
 

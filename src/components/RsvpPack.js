@@ -16,14 +16,19 @@ const InputWrap = styled.div`
   vertical-align:middle;
 `;
 
-const Hr = styled.div`
-background-image: url('/images/hr-light.png');
-background-position: center;
+const Hr = styled.hr`
+/* background-image: url('/images/hr-light.png');
+background-position: center; */
 /* background-attachment: fixed; */
-background-repeat: no-repeat;
-background-size: 100%;
+/* background-repeat: no-repeat; */
+/* background-size: 100%;
   width: 600px;
-  height: 30px;
+  height: 30px; */
+  height: 2px;
+  width: 96%;
+  border-radius: 5px;
+  background-color: rgba(117, 99, 66, 0.5);
+  border-style: none;
 `;
 
 const Input = styled.input`
@@ -61,6 +66,7 @@ const BtnWrap = styled.div`
   flex-direction: row;
 `;
 const Button = styled.button`
+  /* position: relative; */
   display: flex;
   align-items: center;
   margin: 16px;
@@ -72,13 +78,31 @@ const Button = styled.button`
   border-radius: 16px;
   font-size: 1rem;
   cursor: pointer;
+  transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s; /* Safari */
+  
 `;
 
 const AddButton = styled(Button)`
+&:hover{
+    transition-duration: 0.1s;
+    background-color: #A49393;
+    color:#fff
+  }
+  :active {
+  background-color: #DCAE96;
+  box-shadow: 1px 2px #ccc;
+  transform: translateY(3px);
+}
 
 `;
 
 const RemoveButton = styled(Button)`
+&:hover{
+    transition-duration: 0.1s;
+    background-color: #9B5B5B;
+    color:#fff
+  }
 
 `;
 
@@ -120,7 +144,7 @@ function RsvpPack({ allData, setAllData, index }) {
           <Label htmlFor="bride-name">Name:</Label>
           <Input
             type="text"
-            id="bride-name"
+            id="name"
             placeholder="Enter your name"
             // value={name}
             onChange={(e) => {

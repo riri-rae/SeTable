@@ -105,7 +105,6 @@ const Button = styled.button`
   font-size: 1rem;
   cursor: pointer;
   margin-top: 8px;
-  font-family: 'Karla', sans-serif;
 `;
 
 const CheckRsvp = styled(Link)`
