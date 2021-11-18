@@ -123,8 +123,9 @@ const Address = styled.div`
 
 const RsvpTemplate = (props) => {
 
-  const dateAndTime = props.dateTime.split("T");
-  const date = new window.Date(dateAndTime);
+  //const dateAndTime = props.dateTime.split("T");
+  // const dateAndTime = props.dateTime;
+  const date = new window.Date(props.dateTime);
   const year = date.getFullYear();
   const month = date.toLocaleString('en-US', { month: "short" })
   const mm = month.toUpperCase();

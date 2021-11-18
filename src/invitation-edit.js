@@ -6,6 +6,7 @@ import 'firebase/auth';
 import { Link } from 'react-router-dom';
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
+import Swal from 'sweetalert2'
 //import picbt from "../src/images/rose-ring.png";
 
 import "firebase/firestore";
@@ -92,19 +93,66 @@ const Label = styled.label`
   text-align: right;
 `;
 
+// const Button = styled.button`
+
+//   margin-left: 4px;
+
+//   color: #574e56;
+//   border: 1px solid #ddd;
+//   background: #fff;
+//   border-radius: 5px;
+//   font-size: 1rem;
+//   cursor: pointer;
+//   margin-top: 8px;
+// `;
+
 const Button = styled.button`
-  /* display: flex;
-  align-items: center; */
-  /* margin: 16px; */
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 16px;
   margin-left: 4px;
-  /* padding: 0.5rem; */
+  padding: 0.4rem 0.8rem;
   color: #574e56;
   border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 5px;
-  font-size: 1rem;
+  /* background: #fff; */
+  border-radius: 16px;
+  font-size: 20px;
   cursor: pointer;
-  margin-top: 8px;
+  transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s; /* Safari */
+  &:hover {
+    transition-duration: 0.1s;
+    background-color: #d48c70;
+    color: #fff;
+  }
+  &:after {
+    content: "";
+    display: white;
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.4s;
+    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
+  }
+
+  &:active:after {
+    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
+    position: absolute;
+    border-radius: 16px;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: 0s;
+  }
+
+  &:active {
+    top: 1px;
+  }
 `;
 
 const CheckRsvp = styled(Link)`
@@ -112,42 +160,56 @@ const CheckRsvp = styled(Link)`
   align-items: center; */
   /* margin: 16px; */
   margin-left: 4px;
-  /* padding: 0.5rem; */
   color: #574e56;
-  border: 1px solid #ddd;
   background: #fff;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 36px;
   font-family: 'Karla', sans-serif;
+  &:hover{
+    text-decoration:none;
+    color: #d48c70;
+  }
 `;
 
 const InvitationEdit = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
 
-  const [bride, setBride] = useState('Bride');
-  const [groom, setGroom] = useState('Ｇroom');
-  const [dateTime, setDateTime] = useState('2022-01-01T12:00');
-  const [add, setAdd] = useState('Some Where very nice');
+  const [bride, setBride] = useState('');
+  const [groom, setGroom] = useState('');
+  const [dateTime, setDateTime] = useState('');
+  const [add, setAdd] = useState('');
 
   useEffect(() => {
     db.collection("users")
       .doc(user.uid)
       .collection("invitation").doc("template")
       .onSnapshot((doc) => {
-        if (doc.exists) {
+        if (!doc.data()) {
+          console.log("okok")
+          setBride('Bride')
+          setGroom('Groom')
+          setAdd('Some where very nice')
+          setDateTime('2022-12-31T12:00');
+        } else if (doc.data().dateTime && !doc.data().bride && !doc.data().groom && !doc.data().add) {
+          console.log("okok")
+          setBride('Bride')
+          setGroom('Groom')
+          setAdd('Some where very nice')
+          let dateTime = doc.data().dateTime
+          setDateTime(dateTime);
+        }
+        else {
           let bride = doc.data().bride
           let groom = doc.data().groom
           let dateTime = doc.data().dateTime
           let add = doc.data().add
-          setBride(bride)
-          setGroom(groom)
-          setDateTime(dateTime)
-          setAdd(add)
-        } else {
-          return
+          setBride(bride);
+          setGroom(groom);
+          setDateTime(dateTime);
+          setAdd(add);
         }
       });
 
@@ -164,8 +226,14 @@ const InvitationEdit = () => {
         add
       })
       .then(() => {
-        window.alert("Change Saved!");
-      })
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      });
   }
 
 
@@ -177,7 +245,7 @@ const InvitationEdit = () => {
           <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
         </TemplateTop>
         <Edit>
-          <EditTitle>Edit your custom infomation</EditTitle>
+          <EditTitle>Edit your custom information</EditTitle>
           <EditText>
             <InputWrap>
               <Label htmlFor="bride-name">Bride's Name:</Label>
@@ -222,7 +290,11 @@ const InvitationEdit = () => {
             Save
           </Button>
 
-          <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here</CheckRsvp>
+          {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
+
+          <CheckRsvp onClick={() => {
+            window.open(`/invitation-rsvp/${user.uid}`)
+          }} >Check your Rsvp Here</CheckRsvp>
 
         </Edit>
       </Container>
@@ -231,3 +303,5 @@ const InvitationEdit = () => {
 };
 
 export default InvitationEdit;
+
+

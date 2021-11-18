@@ -11,47 +11,48 @@ import InvitationRsvp from "./invitation-rsvp";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
+import ReactLoading from 'react-loading';
 
 
 const App = () => {
-  const [user, setUser] = useState(null);
-  const [deleteId, setDeleteId] = useState('');
+
+  // undefined 抓資料 (isLoading)
+  // null沒有
+  // {}有
+
+  const [user, setUser] = useState();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((currentUser) => {
       setUser(currentUser);
     })
   }, [])
-
+  console.log(user);
   return (
     <>
       <Router>
-        {/* <Route exact path="/" component={LandingPage} /> */}
-        <Route exact path="/">
-          <LandingPage />
-        </Route>
+        <Route exact path="/" component={LandingPage} />
         <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
-        {user ?
+        {user === undefined ? (<ReactLoading color="black" type="Bubbles" />) : (
           <>
-            <Route path="/homepage">
-              <HomePage />
-              {/* {user ? <HomePage /> : <Redirect to="/" />} */}
-            </Route>
-            <Route path="/invitation-edit">
-              <InvitationEdit />
-              {/* {user ? <InvitationEdit /> : <Redirect to="/" />} */}
-            </Route>
-            <Route path="/guestlist">
-              <GuestList setDeleteId={setDeleteId} />
-              {/* {user ? <GuestList /> : <Redirect to="/" />} */}
-            </Route>
-            <Route path="/table">
-              <Table deleteId={deleteId} />
-              {/* {user ? <Table /> : <Redirect to="/" />} */}
-            </Route>
-          </>
-          :
-          null}
+            {user !== null ? (
+              <>
+                <Route path="/homepage">
+                  {user ? <HomePage /> : <Redirect to="/" />}
+                </Route>
+                <Route path="/invitation-edit">
+                  {user ? <InvitationEdit /> : <Redirect to="/" />}
+                </Route>
+                <Route path="/guestlist">
+                  {user ? <GuestList /> : <Redirect to="/" />}
+                </Route>
+                <Route path="/table">
+                  {user ? <Table /> : <Redirect to="/" />}
+                </Route>
+              </>
+            ) : (<LandingPage />)
+            }
+          </>)}
 
       </Router>
     </>
@@ -82,3 +83,29 @@ export default App;
         <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
       </Switch>
     </BrowserRouter> */}
+
+
+    // <Router>
+    //     <Route exact path="/">
+    //       <LandingPage />
+    //     </Route>
+
+    //     <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
+    //     {user ?
+    //       <>
+    //         <Route path="/homepage">
+    //           <HomePage />
+    //         </Route>
+    //         <Route path="/invitation-edit">
+    //           <InvitationEdit />
+    //         </Route>
+    //         <Route path="/guestlist">
+    //           <GuestList setDeleteId={setDeleteId} />
+    //         </Route>
+    //         <Route path="/table">
+    //           <Table deleteId={deleteId} />
+    //         </Route>
+    //       </>
+    //       : <Redirect to="/" />}
+
+    //   </Router>

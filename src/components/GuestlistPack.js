@@ -3,6 +3,7 @@ import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
+import Swal from 'sweetalert2'
 //import Select from 'react-select'
 import { v4 as uuid } from "uuid";
 
@@ -184,7 +185,13 @@ function GuestlistPack({ data }) {
         note,
       })
       .then(() => {
-        window.alert("Change Saved!");
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       });
   }
 
@@ -195,8 +202,18 @@ function GuestlistPack({ data }) {
       .doc(data.id)
       .delete()
       .then(() => {
-        window.alert("Document successfully deleted!");
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Deleted',
+          showConfirmButton: true,
+          timer: 1500
+        })
       });
+    // .then(() => {
+    //   window.alert("Document successfully deleted!");
+    // });
+
 
     const guestToDelete = data.id;
     console.log(guestToDelete);
@@ -242,7 +259,7 @@ function GuestlistPack({ data }) {
         const updateHistory = JSON.stringify(historyList);
         const update = {};
         update.guestlist = updateHistory;
-        //console.log(updateHistory);
+        console.log(updateHistory);
 
         db.collection("users").doc(user.uid).update(update);
       });

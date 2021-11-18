@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "./components/Header";
-import { Parallax } from "react-parallax";
+// import { Parallax } from "react-parallax";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
-
+import Swal from 'sweetalert2'
 
 
 const Container = styled.div`
@@ -13,13 +13,23 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  height: 100vh;
   height: calc(100vh - 80px);
-  width: 100%;
   text-align: center;
   overflow: hidden;
   color: #574e56;
   overflow: hidden;
 `;
+
+const CenterBg = styled.div`
+  background-image: url("/images/homepage-full.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+`;
+
 const CenterWrap = styled.div`
   width: 100%;
   height: 100vh;
@@ -31,15 +41,6 @@ const CenterWrap = styled.div`
   align-items: center;
   max-height: 100vh;
   text-align: center;
-`;
-
-const CenterBg = styled.div`
-  background-image: url("/images/homepage-full.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 100vw;
-  height: 100vh;
 `;
 
 const ContentWrap = styled.div`
@@ -175,14 +176,14 @@ const HomePage = () => {
       });
   }, []);
 
-  useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("invitation").doc("template")
-      .onSnapshot((doc) => {
-        setEnterDate(doc.data().dateTime);
-      });
-  }, []);
+  // useEffect(() => {
+  //   db.collection("users")
+  //     .doc(user.uid)
+  //     .collection("invitation").doc("template")
+  //     .onSnapshot((doc) => {
+  //       setEnterDate(doc.data().dateTime);
+  //     });
+  // }, []);
 
   function saveChange() {
     db.collection("users")
@@ -195,7 +196,13 @@ const HomePage = () => {
         { merge: true }
       )
       .then(() => {
-        window.alert("Change Saved!");
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        })
       });
   }
 
@@ -205,42 +212,54 @@ const HomePage = () => {
       .doc(user.uid)
       .collection("invitation").doc("template")
       .onSnapshot((doc) => {
-        //console.log(doc.data().dateTime)
-        setGetDate(doc.data().dateTime)
+        if (!doc.data()) {
+          setGetDate('2021-12-31T12:00')
+        } else {
+          //console.log(doc.data().dateTime)
+          setGetDate(doc.data().dateTime)
+          setEnterDate(doc.data().dateTime)
+        }
       });
   }, []);
 
   useEffect(() => {
-    const countDownDate = new Date(getDate).getTime();
+    if (!getDate) {
+      setDd('0');
+      setHr('0');
+      setMm('0');
+      setSs('0');
+    } else {
+      const countDownDate = new Date(getDate).getTime();
 
-    const x = setInterval(function () {
-      const now = new Date().getTime();
+      const x = setInterval(function () {
+        const now = new Date().getTime();
 
-      const distance = countDownDate - now;
+        const distance = countDownDate - now;
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      console.log(days)
-      setDd(days);
-      setHr(hours);
-      setMm(minutes);
-      setSs(seconds);
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        //console.log(days)
+        setDd(days);
+        setHr(hours);
+        setMm(minutes);
+        setSs(seconds);
 
-      if (distance < 0) {
+        if (distance < 0) {
+          clearInterval(x);
+          setDd('0');
+          setHr('0');
+          setMm('0');
+          setSs('0');
+        }
+      }, 1000);
+
+      return () => {
         clearInterval(x);
-        setDd('0');
-        setHr('0');
-        setMm('0');
-        setSs('0');
       }
-    }, 1000);
-
-    return () => {
-      clearInterval(x);
     }
   }, [getDate])
 
@@ -285,8 +304,9 @@ const HomePage = () => {
             <Button onClick={saveChange}>Save</Button>
           </InputLine>
         </TopWrap> */}
-        <CenterWrap>
-          <CenterBg>
+        <CenterBg>
+          <CenterWrap>
+
             <ContentWrap>
               <TopWrap>
                 <TextLine>
@@ -324,8 +344,9 @@ const HomePage = () => {
                 </BgWrap>
               </CountDown>
             </ContentWrap>
-          </CenterBg>
-        </CenterWrap>
+
+          </CenterWrap>
+        </CenterBg>
       </Container>
     </>
   );

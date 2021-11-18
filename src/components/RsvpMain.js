@@ -7,6 +7,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import { v4 as uuid } from "uuid";
 import RsvpPack from "./RsvpPack";
+import Swal from "sweetalert2";
+
 // import Select from "react-select/dist/declarations/src/Select";
 
 //import { useParams } from "react-router";
@@ -14,6 +16,7 @@ import RsvpPack from "./RsvpPack";
 const Edit = styled.div`
   font-size: 22px;
   max-height: 100%;
+  min-width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,10 +25,10 @@ const Edit = styled.div`
   margin: 36px 16px;
   color: #67595e;
 
-  /* @media (min-width: 768px) {
+  /* @media (max-width: 1440px) {
     width: 750px;
-  }
-  @media (min-width: 992px) {
+  } */
+  /* @media (min-width: 992px) {
     width: 970px;
   }
   @media (min-width: 1200px) {
@@ -200,10 +203,13 @@ const RsvpMain = () => {
   ];
 
   const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
 
   function sendForm() {
+    let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
+    let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
     if (group === "") {
-      window.alert("Please let us know who is filling this form?");
+      Swal.fire("", "Please let us know who is filling this form?", "question");
     } else if (tag === "") {
       window.alert("Please let us you are from which side?");
     } else if (role === "") {
@@ -211,10 +217,8 @@ const RsvpMain = () => {
     } else if (status === "") {
       window.alert("Please let us know if you will attand");
     } else {
-      let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
-
       if (allData.length === 0) {
-        db.collection("users").doc(userid).collection("rsvp").doc(id).set({
+        rsvpRef.set({
           name: group,
           group,
           status: status.value,
@@ -225,11 +229,23 @@ const RsvpMain = () => {
           note,
           id,
           time: firebase.firestore.Timestamp.now(),
-        });
+        })
+          .then(() => { afterSend() });
       } else {
         console.log("more");
         console.log(allData);
+
         allData.forEach((data) => {
+          let id = db
+            .collection("users")
+            .doc(userid)
+            .collection("rsvp")
+            .doc().id;
+          let rsvpRef = db
+            .collection("users")
+            .doc(userid)
+            .collection("rsvp")
+            .doc(id);
           if (!data.name) {
             window.alert("Please fill in guest name");
           } else if (!data.veggie) {
@@ -237,45 +253,91 @@ const RsvpMain = () => {
           } else if (!data.baby) {
             window.alert("Baby seat???");
           } else {
-            console.log("yes data");
-            let id = db
-              .collection("users")
-              .doc(userid)
-              .collection("rsvp")
-              .doc().id;
-
-            db.collection("users")
-              .doc(userid)
-              .collection("rsvp")
-              .doc(id)
-              .set({
-                name: data.name,
-                group,
-                status: status.value,
-                tag: tag.value,
-                role: role.value,
-                note,
-                id,
-                baby: data.baby,
-                veggie: data.veggie,
-                time: firebase.firestore.Timestamp.now(),
-              })
-              .then(() => {
-                window.alert("Thank you! Have a nice day");
-              })
-              .then(() => {
-                setAllData([]);
-                setGroup("");
-                setTag("");
-                setRole("");
-                setNote("");
-                setStatus("");
-              });
+            rsvpRef.set({
+              name: data.name,
+              group,
+              status: status.value,
+              tag: tag.value,
+              role: role.value,
+              note,
+              id,
+              baby: data.baby,
+              veggie: data.veggie,
+              time: firebase.firestore.Timestamp.now(),
+            });
           }
         });
+        addHistoryTable();
+        // .then(() => {
+        //   Swal.fire("Thank you! Have a nice day • u •");
+        // })
+        // .then(() => {
+        //   setAllData([]);
+        //   setGroup("");
+        //   setTag("");
+        //   setRole("");
+        //   setNote("");
+        //   setStatus("");
+        // })
       }
     }
   }
+
+
+  function addHistoryTable() {
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        console.log(doc);
+        const history = doc.data().guestlist;
+        const historyList = JSON.parse(history);
+        console.log(historyList);
+
+        const [preTable] = historyList.splice(0, 1);
+        console.log(preTable);
+        // preTable.push(addList);
+        // historyList.splice(0, 0, preTable);
+        // console.log(historyList);
+
+        console.log(preTable)
+        historyList.splice(0, 0, preTable);
+
+        const newList = [
+          ...allData.map((data) => ({
+            id: db.collection("users").doc(userid).collection("rsvp").doc().id,
+            content: data.name,
+          })),
+          ...preTable,
+          // [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],
+          // ...historyList.slice(1),
+        ];
+        // console.log(newList);
+
+        const updateHistory = JSON.stringify([newList, ...historyList.slice(1)]);
+        const update = {};
+        update.guestlist = updateHistory;
+        console.log(updateHistory);
+        db.collection("users")
+          .doc(user.uid)
+          .update(update);
+      })
+      .then(() => { afterSend() });
+  }
+
+  function afterSend() {
+    Swal.fire("Thank you! Have a nice day • u •")
+
+      .then(() => {
+        setAllData([]);
+        setGroup("");
+        setTag("");
+        setRole("");
+        setNote("");
+        setStatus("");
+      })
+  }
+
 
   useEffect(() => {
     if (status.value === "yes") {
@@ -289,7 +351,7 @@ const RsvpMain = () => {
     <Edit>
       <EditTitleBig>Invitation</EditTitleBig>
       <EditTitle>
-        With jouful hearts,
+        With joyful hearts,
         <br />
         we ask the honor of your presence on our wedding day！
       </EditTitle>

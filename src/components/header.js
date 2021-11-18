@@ -79,7 +79,7 @@ const DeskTag = styled(Link)`
   }
 `;
 
-const Member = styled(Link)`
+const Member = styled.div`
   margin-left: 42px;
   margin-right: 54px;
   cursor: pointer;
@@ -131,15 +131,17 @@ export default function Header() {
             <DeskTag to="/table">Table</DeskTag>
           </DeskNav>
 
-          <Member to="/">
+          <Member
+            onClick={() => firebase.auth().signOut()}>
+
             <img src={memberImg} height="44" alt="member" />
           </Member>
         </DeskHeaderDiv>
+
         <MobileHeaderDiv>
-          <Logo to="/"
+          <Logo
             onClick={() => firebase.auth().signOut()}>
             <img src={roseLogo} height="44" alt="logo" />
-
           </Logo>
 
           <MobileNav>

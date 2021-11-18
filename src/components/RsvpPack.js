@@ -109,9 +109,6 @@ const RemoveButton = styled(Button)`
 // function RsvpPack({ data, submit, setData, data }) {
 function RsvpPack({ allData, setAllData, index }) {
 
-  const changedForm = [...allData];
-  console.log(changedForm)
-
   function handelRemove(e) {
     console.log(e.target.value)
     console.log(index)
@@ -126,7 +123,7 @@ function RsvpPack({ allData, setAllData, index }) {
     { value: 'yes', label: 'Yes' },
     { value: 'no', label: 'No' }
   ]
-  console.log(veggie)
+  //console.log(veggie)
 
   const [baby, setBaby] = useState('');
   const babys = [

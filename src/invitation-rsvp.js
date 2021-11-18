@@ -7,13 +7,12 @@ import "firebase/firestore";
 import RsvpTemplate from "./components/RsvpTemplate";
 import RsvpMain from "./components/RsvpMain";
 
-//import { useParams } from "react-router";
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  max-width: 1920px;
   max-height: 100%;
   margin: 0 auto;
   /* flex-direction: column; */
@@ -21,17 +20,25 @@ const Container = styled.div`
 `;
 
 const TemplateWrap = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 60%;
+  flex: 2;
+  /* width: 60%; */
+  width: 1152px;
 `;
 
 const FormWrap = styled.div`
   position: absolute;
   right: 0;
   top: 7rem;
-  width: 40%;
+  width: calc(100vw - 1152px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* @media (max-width: 1440px) {
+    width: 400px;
+  } */
 `;
 
 const InvitationRsvp = () => {
