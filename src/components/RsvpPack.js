@@ -4,7 +4,7 @@ import Select from 'react-select'
 
 
 const AddMoreWrap = styled.div`
-  width: 600px;
+  width: 100%;
  
 `;
 
@@ -112,8 +112,11 @@ function RsvpPack({ allData, setAllData, index }) {
   function handelRemove(e) {
     console.log(e.target.value)
     console.log(index)
+    console.log(allData)
     const changedForm = [...allData];
+    console.log(changedForm)
     changedForm.splice(index, 1);
+    console.log(changedForm)
     setAllData(changedForm);
 
   }
@@ -143,7 +146,7 @@ function RsvpPack({ allData, setAllData, index }) {
             type="text"
             id="name"
             placeholder="Enter your name"
-            // value={name}
+            value={allData[index].name}
             onChange={(e) => {
               let allDataInForm = [...allData];
               allDataInForm[index] = { ...allDataInForm[index], name: e.target.value };
@@ -157,7 +160,7 @@ function RsvpPack({ allData, setAllData, index }) {
           <Label>Vegetarian meal?</Label>
           <SelectStyle
             placeholder="Please Select"
-            value={veggie}
+            value={{ value: allData[index].veggie, label: allData[index].veggie }}
             onChange={(value) => {
               setVeggie(value)
               let allDataInForm = [...allData];
@@ -181,7 +184,7 @@ function RsvpPack({ allData, setAllData, index }) {
           <Label>Require baby seat?</Label>
           <SelectStyle
             placeholder="Please Select"
-            value={baby}
+            value={{ value: allData[index].baby, label: allData[index].baby }}
             onChange={(value) => {
               setBaby(value)
               let allDataInForm = [...allData];
@@ -218,6 +221,7 @@ function RsvpPack({ allData, setAllData, index }) {
           </RemoveButton>) : null}
         </BtnWrap>
       </AddMoreWrap>
+
     </>
   );
 }

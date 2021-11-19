@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-import 'firebase/auth';
-import { Link } from 'react-router-dom';
+import "firebase/auth";
+import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 //import picbt from "../src/images/rose-ring.png";
 
 import "firebase/firestore";
@@ -15,49 +15,58 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-height: 100vh;
-  margin: 0 auto;
-  /* flex-direction: column; */
-`;
-
-
-const TemplateTop = styled.div`
-  top:80px;
+  width: 100vw;
+  /* max-height: 100vh; */
   height: calc(100vh - 80px);
-  /* box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2); */
+  overflow: hidden;
+  background-color: #a49393;
+/* @media (max-width: 1440px) {
+    width: 100%;
+  } */
 `;
 
-
-const EditTitle = styled.div`
-  font-size: 36px;
-  margin-bottom: 60px;
-  font-family: 'Karla', sans-serif;
+const TemplateWrap = styled.div`
+  height: 100vh;
+  width: calc(100vw - 40vw);
+  @media (max-width: 1440px) {
+    width: calc(100vw - 36vw);
+  }
 `;
 
 const Edit = styled.div`
   font-size: 24px;
-  /* border: 1px solid #ccc; */
-  flex: 1;
+  min-width: 40vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  @media (max-width: 1440px) {
+    min-width: 36vw;
+  }
+`;
+
+const EditTitle = styled.div`
+  font-size: 36px;
+  margin-bottom: 60px;
+  font-family: "Karla", sans-serif;
+  @media (max-width: 1440px) {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
 `;
 
 const EditText = styled.div`
   font-size: 20px;
   flex-direction: row;
-  background-color: #FFF;
-    width: 600px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding: 0px;
-    text-align:center;
-  font-family: 'Karla', sans-serif;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 0px;
+  padding: 0px;
+  text-align: center;
+  font-family: "Karla", sans-serif;
 `;
 
 const Input = styled.input`
@@ -66,7 +75,7 @@ const Input = styled.input`
   line-height: 22px;
   font-size: 18px;
   margin-left: 8px;
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
   width: 256px;
 `;
 
@@ -76,7 +85,7 @@ const InputWrap = styled.div`
   margin: 16px;
 
   /* background-color: #FFF; */
-    /* height: 600px;
+  /* height: 600px;
     width: 600px;
     margin-right: auto;
     margin-left: auto;
@@ -85,7 +94,6 @@ const InputWrap = styled.div`
     border-top-right-radius: 10px;
     padding: 0px;
     text-align:center; */
-  
 `;
 
 const Label = styled.label`
@@ -166,9 +174,9 @@ const CheckRsvp = styled(Link)`
   font-size: 20px;
   cursor: pointer;
   margin-top: 36px;
-  font-family: 'Karla', sans-serif;
-  &:hover{
-    text-decoration:none;
+  font-family: "Karla", sans-serif;
+  &:hover {
+    text-decoration: none;
     color: #d48c70;
   }
 `;
@@ -177,73 +185,82 @@ const InvitationEdit = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
 
-  const [bride, setBride] = useState('');
-  const [groom, setGroom] = useState('');
-  const [dateTime, setDateTime] = useState('');
-  const [add, setAdd] = useState('');
+  const [bride, setBride] = useState("");
+  const [groom, setGroom] = useState("");
+  const [dateTime, setDateTime] = useState("");
+  const [add, setAdd] = useState("");
 
   useEffect(() => {
     db.collection("users")
       .doc(user.uid)
-      .collection("invitation").doc("template")
+      .collection("invitation")
+      .doc("template")
       .onSnapshot((doc) => {
         if (!doc.data()) {
-          console.log("okok")
-          setBride('Bride')
-          setGroom('Groom')
-          setAdd('Some where very nice')
-          setDateTime('2022-12-31T12:00');
-        } else if (doc.data().dateTime && !doc.data().bride && !doc.data().groom && !doc.data().add) {
-          console.log("okok")
-          setBride('Bride')
-          setGroom('Groom')
-          setAdd('Some where very nice')
-          let dateTime = doc.data().dateTime
+          console.log("okok");
+          setBride("Bride");
+          setGroom("Groom");
+          setAdd("Some where very nice");
+          setDateTime("2022-12-31T12:00");
+        } else if (
+          doc.data().dateTime &&
+          !doc.data().bride &&
+          !doc.data().groom &&
+          !doc.data().add
+        ) {
+          console.log("okok");
+          setBride("Bride");
+          setGroom("Groom");
+          setAdd("Some where very nice");
+          let dateTime = doc.data().dateTime;
           setDateTime(dateTime);
-        }
-        else {
-          let bride = doc.data().bride
-          let groom = doc.data().groom
-          let dateTime = doc.data().dateTime
-          let add = doc.data().add
+        } else {
+          let bride = doc.data().bride;
+          let groom = doc.data().groom;
+          let dateTime = doc.data().dateTime;
+          let add = doc.data().add;
           setBride(bride);
           setGroom(groom);
           setDateTime(dateTime);
           setAdd(add);
         }
       });
-
   }, []);
 
   function saveChange() {
     db.collection("users")
       .doc(user.uid)
-      .collection("invitation").doc("template")
+      .collection("invitation")
+      .doc("template")
       .set({
         bride,
         groom,
         dateTime,
-        add
+        add,
       })
       .then(() => {
         Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
+          position: "center",
+          icon: "success",
+          title: "Your work has been saved",
           showConfirmButton: false,
-          timer: 1500
-        })
+          timer: 1500,
+        });
       });
   }
-
 
   return (
     <>
       <Header />
       <Container>
-        <TemplateTop>
-          <RsvpTemplate bride={bride} groom={groom} add={add} dateTime={dateTime} />
-        </TemplateTop>
+        <TemplateWrap>
+          <RsvpTemplate
+            bride={bride}
+            groom={groom}
+            add={add}
+            dateTime={dateTime}
+          />
+        </TemplateWrap>
         <Edit>
           <EditTitle>Edit your custom information</EditTitle>
           <EditText>
@@ -269,7 +286,11 @@ const InvitationEdit = () => {
             </InputWrap>
             <InputWrap>
               <Label htmlFor="date">Enter the date:</Label>
-              <Input id="date" type="datetime-local" lang="en-US" name="date"
+              <Input
+                id="date"
+                type="datetime-local"
+                lang="en-US"
+                name="date"
                 value={dateTime}
                 onChange={(e) => setDateTime(e.target.value)}
               />
@@ -285,17 +306,17 @@ const InvitationEdit = () => {
               />
             </InputWrap>
           </EditText>
-          <Button onClick={saveChange}
-          >
-            Save
-          </Button>
+          <Button onClick={saveChange}>Save</Button>
 
           {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
 
-          <CheckRsvp onClick={() => {
-            window.open(`/invitation-rsvp/${user.uid}`)
-          }} >Check your Rsvp Here</CheckRsvp>
-
+          <CheckRsvp
+            onClick={() => {
+              window.open(`/invitation-rsvp/${user.uid}`);
+            }}
+          >
+            Check your Rsvp Here
+          </CheckRsvp>
         </Edit>
       </Container>
     </>
@@ -303,5 +324,3 @@ const InvitationEdit = () => {
 };
 
 export default InvitationEdit;
-
-

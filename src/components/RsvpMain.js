@@ -15,19 +15,21 @@ import Swal from "sweetalert2";
 
 const Edit = styled.div`
   font-size: 22px;
-  max-height: 100%;
-  min-width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   overflow: scroll;
-  margin: 36px 16px;
+  padding: 8px 16px;
   color: #67595e;
+  padding-top: 100px;
+  @media (max-width: 1440px) {
+    font-size: 18px;
+    padding: 20px;
+  }
 
-  /* @media (max-width: 1440px) {
-    width: 750px;
-  } */
+
   /* @media (min-width: 992px) {
     width: 970px;
   }
@@ -41,8 +43,8 @@ const Frame = styled.div`
   /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: 100%;
-  width: 650px;
-  height: 36px;
+  width: 100%;
+  min-height: 36px;
 `;
 const EditTitle = styled.div`
   font-weight: 500;
@@ -50,6 +52,7 @@ const EditTitle = styled.div`
   /* margin-bottom: 20px; */
   text-align: center;
   letter-spacing: 1px;
+
 `;
 
 const EditTitleBig = styled(EditTitle)`
@@ -60,6 +63,9 @@ const EditTitleBig = styled(EditTitle)`
   padding-bottom: 28px;
   /* margin-bottom: 20px; */
   text-align: center;
+  @media (max-width: 1440px) {
+    font-size: 46px;
+  }
 `;
 
 const Formwrap = styled.div`
@@ -70,10 +76,19 @@ const Formwrap = styled.div`
 
 const InputWrap = styled.div`
   display: flex;
-  /* justify-content: left; */
-  height: 32px;
+  /* height: 32px; */
   margin: 16px;
   vertical-align: middle;
+  @media (max-width: 1440px) {
+    margin-top:8px;
+    margin-bottom:8px;
+  }
+`;
+
+const InputWrapBlock = styled(InputWrap)`
+  @media (max-width: 1680px) {
+    flex-wrap:wrap;
+  }
 `;
 
 const Input = styled.input`
@@ -87,11 +102,23 @@ const Input = styled.input`
   padding: 8px;
   color: #44342d;
   letter-spacing: 1px;
+ 
 `;
+
+
 const Label = styled.div`
   float: left;
   text-align: right;
   line-height: 32px;
+`;
+
+const LabelBlock = styled(Label)`
+
+  @media (max-width: 1440px) {
+    width: 100%;
+    float: none;
+    text-align: left;
+  }
 `;
 
 const SelectStyle = styled(Select)`
@@ -101,6 +128,25 @@ const SelectStyle = styled(Select)`
   min-height: 32px;
   color: #44342d;
   outline: none !important;
+  &:focus{
+    outline: none !important;
+  }
+  @media (max-width: 1680px) {
+    margin-left: 12px;
+  }
+  @media (max-width: 1440px) {
+    margin-left: 0px;
+  }
+`;
+const SelectStyleLong = styled(SelectStyle)`
+
+  @media (max-width: 1662px) {
+    margin-left: 0px;
+    margin-top: 4px;
+  }
+  /* @media (max-width: 1440px) {
+    margin-left: 0px;
+  } */
 `;
 
 const Button = styled.button`
@@ -181,7 +227,7 @@ const RsvpMain = () => {
   const [note, setNote] = useState("");
 
   const [allData, setAllData] = useState([]);
-  // console.log(allData)
+  console.log(allData)
 
   const [tag, setTag] = useState("");
   const tags = [
@@ -217,6 +263,7 @@ const RsvpMain = () => {
     } else if (status === "") {
       window.alert("Please let us know if you will attand");
     } else {
+      const allId = [];
       if (allData.length === 0) {
         rsvpRef.set({
           name: group,
@@ -241,6 +288,8 @@ const RsvpMain = () => {
             .doc(userid)
             .collection("rsvp")
             .doc().id;
+          allId.push(id);
+
           let rsvpRef = db
             .collection("users")
             .doc(userid)
@@ -267,7 +316,7 @@ const RsvpMain = () => {
             });
           }
         });
-        addHistoryTable();
+        addHistoryTable(allId);
         // .then(() => {
         //   Swal.fire("Thank you! Have a nice day • u •");
         // })
@@ -284,7 +333,7 @@ const RsvpMain = () => {
   }
 
 
-  function addHistoryTable() {
+  function addHistoryTable(allId) {
     db.collection("users")
       .doc(user.uid)
       .get()
@@ -304,8 +353,9 @@ const RsvpMain = () => {
         historyList.splice(0, 0, preTable);
 
         const newList = [
-          ...allData.map((data) => ({
-            id: db.collection("users").doc(userid).collection("rsvp").doc().id,
+          ...allData.map((data, index) => ({
+            // id: db.collection("users").doc(userid).collection("rsvp").doc(id),
+            id: allId[index],
             content: data.name,
           })),
           ...preTable,
@@ -355,7 +405,7 @@ const RsvpMain = () => {
         <br />
         we ask the honor of your presence on our wedding day！
       </EditTitle>
-      <Frame />
+      <Frame></Frame>
       <Formwrap>
         <InputWrap>
           <Label htmlFor="group-name">This Form is filled by :</Label>
@@ -368,8 +418,9 @@ const RsvpMain = () => {
           />
         </InputWrap>
 
-        <InputWrap>
-          <Label>You are ...</Label>
+        <InputWrapBlock>
+          <LabelBlock>You are ...</LabelBlock>
+
           <SelectStyle
             placeholder="Please Select"
             value={tag}
@@ -393,6 +444,7 @@ const RsvpMain = () => {
             }}
             options={roles}
           />
+
           {/* 
 
           <Select value={role} onChange={(e) => setRole(e.target.value)}>
@@ -400,11 +452,12 @@ const RsvpMain = () => {
             <option value="friend">Friend</option>
             <option value="family">Family</option>
           </Select> */}
-        </InputWrap>
+        </InputWrapBlock>
 
-        <InputWrap>
-          <Label>Will you be able to join us at our wedding ?</Label>
-          <SelectStyle
+        <InputWrapBlock>
+          <LabelBlock>Will you be able to join us at our wedding ?</LabelBlock>
+
+          <SelectStyleLong
             placeholder="Please Select"
             value={status}
             onChange={(value) => {
@@ -413,13 +466,14 @@ const RsvpMain = () => {
             options={allstatus}
           />
 
+
           {/* <Select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="" disabled selected>Please Select</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="notSure">Not Sure</option>
           </Select> */}
-        </InputWrap>
+        </InputWrapBlock>
 
         {allData.map((data, index) => (
           <RsvpPack
@@ -429,15 +483,17 @@ const RsvpMain = () => {
             key={index}
           />
         ))}
-        <Frame />
-        <InputWrap>
-          <Label>Note: </Label>
-          <Textarea
-            placeholder="Anything we need to know?"
-            onChange={(e) => setNote(e.target.value)}
-          ></Textarea>
-        </InputWrap>
       </Formwrap>
+      <Frame></Frame>
+      <InputWrap>
+        <Label>Note: </Label>
+        <Textarea
+          placeholder="Anything we need to know?"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        ></Textarea>
+      </InputWrap>
+
       <Button onClick={sendForm}>Send</Button>
     </Edit>
   );

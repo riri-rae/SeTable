@@ -353,6 +353,7 @@ function Table({ deleteId }) {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     isDraggingOver={snapshot.isDraggingOver}
+
                   >
                     {table.map((guest, index) => (
                       <Draggable
@@ -366,6 +367,8 @@ function Table({ deleteId }) {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             isDragging={snapshot.isDragging}
+                          // color={veggie ? 'white': 'green'}
+                          // style={{ color: "#ccc" }}
                           >
                             {guest.content}
                           </Task>

@@ -12,33 +12,49 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 1920px;
-  max-height: 100%;
-  margin: 0 auto;
-  /* flex-direction: column; */
-  position: relative;
+  width: 100vw;
+  height: 100vh;
 `;
+
+// const Container = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   max-width: 1920px;
+//   max-height: 100%;
+//   margin: 0 auto;
+//   position: relative;
+// `;
 
 const TemplateWrap = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  flex: 2;
-  /* width: 60%; */
-  width: 1152px;
+  min-height: 100vh;
+  width: calc(100vw - 40vw);
+  @media (max-width: 1440px) {
+    width: calc(100vw - 36vw);
+  }
 `;
 
+// const TemplateWrap = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   flex: 2;
+//   width: 1152px;
+// `;
+
 const FormWrap = styled.div`
-  position: absolute;
-  right: 0;
-  top: 7rem;
-  width: calc(100vw - 1152px);
+  min-width: 40vw;
+  max-height: 100vh;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  /* @media (max-width: 1440px) {
-    width: 400px;
-  } */
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #fff;
+  /* padding: 0 36px; */
+  @media (max-width: 1440px) {
+    min-width: 36vw;
+  }
 `;
 
 const InvitationRsvp = () => {

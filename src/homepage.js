@@ -6,6 +6,8 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
 import Swal from 'sweetalert2'
+import ReactLoading from 'react-loading';
+
 
 
 const Container = styled.div`
@@ -153,6 +155,15 @@ const Content = styled.div`
   font-size: 22px;
 `;
 
+const LoadingFrame = styled.div`
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+`;
+
+
+
 const HomePage = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
@@ -162,10 +173,10 @@ const HomePage = () => {
   const [getDate, setGetDate] = useState('');
   // 2022-01-01T12:00
 
-  const [dd, setDd] = useState(0);
-  const [hr, setHr] = useState(0);
-  const [mm, setMm] = useState(0);
-  const [ss, setSs] = useState(0);
+  const [dd, setDd] = useState();
+  const [hr, setHr] = useState();
+  const [mm, setMm] = useState();
+  const [ss, setSs] = useState();
 
   useEffect(() => {
     db.collection("users")
@@ -288,8 +299,11 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <Container>
-        {/* <TopWrap>
+      {/* {userName && enterDate !== '' && getDate !== '' && dd && hr && mm & ss ? */}
+      {userName ?
+        <>
+          <Container>
+            {/* <TopWrap>
           <div>Hello {userName} , </div>
           <div>Let's set your event time!</div>
           <InputLine>
@@ -304,50 +318,53 @@ const HomePage = () => {
             <Button onClick={saveChange}>Save</Button>
           </InputLine>
         </TopWrap> */}
-        <CenterBg>
-          <CenterWrap>
+            <CenterBg>
+              <CenterWrap>
 
-            <ContentWrap>
-              <TopWrap>
-                <TextLine>
-                  <div>Hello {userName} , </div>
-                  <div>Let's set your event time!</div>
-                </TextLine>
-                <InputLine>
-                  <Input
-                    id="date"
-                    type="datetime-local"
-                    lang="en-US"
-                    name="date"
-                    value={enterDate}
-                    onChange={(e) => setEnterDate(e.target.value)}
-                  />
-                  <Button onClick={saveChange}>Save</Button>
-                </InputLine>
-              </TopWrap>
-              <CountDown>
-                <BgWrap>
-                  <Time>{dd}</Time>
-                  <Content>Days</Content>
-                </BgWrap>
-                <BgWrap>
-                  <Time>{hr}</Time>
-                  <Content>Hrs</Content>
-                </BgWrap>
-                <BgWrap>
-                  <Time>{mm}</Time>
-                  <Content>Mins</Content>
-                </BgWrap>
-                <BgWrap>
-                  <Time>{ss}</Time>
-                  <Content>Sec</Content>
-                </BgWrap>
-              </CountDown>
-            </ContentWrap>
+                <ContentWrap>
+                  <TopWrap>
+                    <TextLine>
+                      <div>Hello {userName} , </div>
+                      <div>Let's set your event time!</div>
+                    </TextLine>
+                    <InputLine>
+                      <Input
+                        id="date"
+                        type="datetime-local"
+                        lang="en-US"
+                        name="date"
+                        value={enterDate}
+                        onChange={(e) => setEnterDate(e.target.value)}
+                      />
+                      <Button onClick={saveChange}>Save</Button>
+                    </InputLine>
+                  </TopWrap>
+                  <CountDown>
+                    <BgWrap>
+                      <Time>{dd}</Time>
+                      <Content>Days</Content>
+                    </BgWrap>
+                    <BgWrap>
+                      <Time>{hr}</Time>
+                      <Content>Hrs</Content>
+                    </BgWrap>
+                    <BgWrap>
+                      <Time>{mm}</Time>
+                      <Content>Mins</Content>
+                    </BgWrap>
+                    <BgWrap>
+                      <Time>{ss}</Time>
+                      <Content>Sec</Content>
+                    </BgWrap>
+                  </CountDown>
+                </ContentWrap>
 
-          </CenterWrap>
-        </CenterBg>
-      </Container>
+              </CenterWrap>
+            </CenterBg>
+          </Container>
+        </> :
+        <LoadingFrame><ReactLoading color="#a49393" type="bubbles" /></LoadingFrame>}
+
     </>
   );
 };

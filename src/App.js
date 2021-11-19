@@ -12,6 +12,7 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
 import ReactLoading from 'react-loading';
+import styled from "styled-components";
 
 
 const App = () => {
@@ -28,12 +29,22 @@ const App = () => {
     })
   }, [])
   console.log(user);
+
+  const LoadingFrame = styled.div`
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+`;
+
   return (
     <>
       <Router>
-        <Route exact path="/" component={LandingPage} />
+        {/* <Route exact path="/" component={LandingPage} /> */}
+        <Route exact path="/">
+          <LandingPage /> </Route>
         <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
-        {user === undefined ? (<ReactLoading color="black" type="Bubbles" />) : (
+        {user === undefined ? (<LoadingFrame><ReactLoading color="#a49393" type="bubbles" /></LoadingFrame>) : (
           <>
             {user !== null ? (
               <>

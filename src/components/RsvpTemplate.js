@@ -15,6 +15,7 @@ const Template = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
   position: relative;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -31,23 +32,22 @@ const PicWrap = styled.div`
 
 const BackGround = styled.div`
   background-image: url("/images/red_flower.jpg");
-  background-position: left;
+  background-position: center;
   /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: cover;
-  width: 60vw;
+  /* width: 100%; */
   height: 100vh;
 `;
 
 const ContentWrap = styled.div`
   position: absolute;
-  top:  9rem;
+  top:  50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   width: 50%;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 10px 5px rgba(183, 143, 149, 0.3);
-  /* box-shadow: 2px 2px 30px 5px #b78f95; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,7 +55,7 @@ const ContentWrap = styled.div`
   font-family: "Stalemate", cursive;
   max-height: 100vh;
   text-align: center;
-  padding: 36px 8px;
+  padding: 36px 16px;
   overflow: hidden;
 `;
 
@@ -63,11 +63,18 @@ const Name = styled.div`
   font-size: 126px;
   margin: -8px 16px;
   height: 180px;
+  @media (max-width: 1440px) {
+    font-size: 116px;
+    height: 160px;
+  }
 `;
 
 const And = styled.div`
   font-size: 72px;
   margin-top: -30px;
+  @media (max-width: 1440px) {
+    font-size: 64px;
+  }
 `;
 
 const DateTimeWrap = styled.div`
@@ -81,6 +88,11 @@ const DateTimeWrap = styled.div`
   letter-spacing: 3px;
   font-size:24px;
   padding-bottom: 28px;
+
+  @media (max-width: 1440px) {
+  margin-top: 20px;
+  }
+  
 ;
 `;
 
