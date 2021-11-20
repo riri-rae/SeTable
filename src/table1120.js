@@ -81,6 +81,7 @@ const Button = styled.button`
   color: #fff;
   border: 1px solid #dcae96;
   border-radius: 16px;
+  font-size: 1rem;
   font-size: 20px;
   font-weight: 600;
   cursor: pointer;
@@ -101,18 +102,43 @@ const Button = styled.button`
   }
 `;
 
+// const TaskWrap = styled.div`
+//   background-color: #ccc;
+//   width: 80%;
+//   min-height: 100vh;
+//   position:relative;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 0 auto;
+//   background-color: rgba(255, 255, 255, 0.7);
+//   box-shadow: 0px 0px 10px 6px rgba(138, 105, 90, 0.5);
+//   border-top-left-radius: 20px;
+//   border-top-right-radius: 20px;
+//   @media (max-width: 1440px) {
+//     width: 90%;
+//   }
+// `;
+
 const TaskContainer = styled.div`
+  /* margin-top: 212px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 90%;
+  /* position: absolute; */
+  /* top: 0; */
 
   & > :first-child {
     border: 3px
       ${(props) => (props.isDraggingOver ? "solid #A47E84" : "solid #A47E84")};
     position: fixed;
     top: 200px;
+    /* left: 50%;
+    transform: translateX(-50%); */
+    /* top: -16%; */
     flex-wrap: wrap;
     overflow-x: scroll;
     width: 75%;
@@ -137,6 +163,7 @@ const TaskRow = styled.div`
   margin-bottom: 8px;
   transition: background-color 0.2s ease;
   background-color: ${(props) => (props.isDraggingOver ? "#FDFBF4" : "white")};
+  /* flex-grow: 1; */
   display: flex;
   border: 3px solid #b8ab9b;
   border-radius: 16px;
@@ -150,7 +177,6 @@ const TaskRow = styled.div`
     overflow-x: scroll;
   }
 `;
-
 
 const Task = styled.div`
   border: 3px solid #b8ab9b;
@@ -195,13 +221,7 @@ const BackGroundPic = styled.img`
 const RemoveIcon = styled(CgPlayListRemove)`
   font-size: 50px;
   color: #ccc;
-  cursor: pointer;
-  /* position: absolute;
-  left:80%;
-  top: 0; */
 `;
-
-
 
 function Table({ deleteId }) {
   const [tables, setTables] = useState([]);
@@ -336,35 +356,6 @@ function Table({ deleteId }) {
     }
   }
 
-  function removeTable(table, ind) {
-    console.log(ind) //要刪的index
-    console.log(table) //要拿出來的內容
-    console.log(tables) //全部的桌子
-    const afterDel = Array.from(tables);
-    afterDel.splice(ind, 1)
-    afterDel.splice(0, 1)
-    const newList = [
-      [...table, ...tables[0]], ...afterDel
-    ];
-    console.log(newList)
-    setTables(newList)
-
-    const updateHistory = JSON.stringify(newList);
-    const update = {};
-    update.guestlist = updateHistory;
-    db.collection("users").doc(user.uid).update(update);
-  }
-  function addTable() {
-    setTables([...tables, []]);
-    const newTable = [...tables, []]
-    console.log(newTable)
-    const updateHistory = JSON.stringify(newTable);
-    const update = {};
-    update.guestlist = updateHistory;
-    db.collection("users").doc(user.uid).update(update);
-  }
-
-
   return (
     <>
       {/* bgImage={image1}  */}
@@ -383,11 +374,10 @@ function Table({ deleteId }) {
               </Block>
               <Button
                 type="button"
-                // onClick={() => {
-                //   setTables([...tables, []]);
-
-                // }}
-                onClick={addTable}
+                onClick={() => {
+                  setTables([...tables, []]);
+                  // console.log(state);
+                }}
               >
                 + Click to Add Table
               </Button>
@@ -395,24 +385,19 @@ function Table({ deleteId }) {
               <TaskContainer>
 
                 {tables.map((table, ind) => (
-                  <Droppable
-                    key={ind}
-                    droppableId={`${ind}`}
-                    direction="horizontal"
-                  >
-                    {(provided, snapshot) => (
 
-                      <TaskRow
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        isDraggingOver={snapshot.isDraggingOver}
-                      >
-                        <>{ind > 0 ?
-                          <RemoveIcon
-                            onClick={(e) => removeTable(table, ind)}
-                          /> : null}
-                          {/* {Number} */}
-
+                  <div>{ind > 0 ? <RemoveIcon /> : null}
+                    <Droppable
+                      key={ind}
+                      droppableId={`${ind}`}
+                      direction="horizontal"
+                    >
+                      {(provided, snapshot) => (
+                        <TaskRow
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                          isDraggingOver={snapshot.isDraggingOver}
+                        >
                           {table.map((guest, index) => (
                             <Draggable
                               key={guest.id}
@@ -439,11 +424,9 @@ function Table({ deleteId }) {
                             </Draggable>
                           ))}
                           {provided.placeholder}
-                        </>
-                      </TaskRow>
-
-                    )}
-                  </Droppable>
+                        </TaskRow>
+                      )}
+                    </Droppable></div>
                 ))}
               </TaskContainer>
             </DragDropContext>

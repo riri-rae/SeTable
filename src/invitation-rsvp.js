@@ -6,6 +6,7 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import RsvpTemplate from "./components/RsvpTemplate";
 import RsvpMain from "./components/RsvpMain";
+import Loading from "./components/Loading";
 
 
 const Container = styled.div`
@@ -85,20 +86,25 @@ const InvitationRsvp = () => {
   }, []);
 
   return (
-    <Container>
-      <TemplateWrap>
-        <RsvpTemplate
-          bride={bride}
-          groom={groom}
-          add={add}
-          dateTime={dateTime}
-          userid={userid}
-        />
-      </TemplateWrap>
-      <FormWrap>
-        <RsvpMain userid={userid} />
-      </FormWrap>
-    </Container>
+    <>
+      {bride !== '' && groom !== '' && dateTime !== '' && add !== '' ?
+        <>
+          <Container>
+            <TemplateWrap>
+              <RsvpTemplate
+                bride={bride}
+                groom={groom}
+                add={add}
+                dateTime={dateTime}
+                userid={userid}
+              />
+            </TemplateWrap>
+            <FormWrap>
+              <RsvpMain userid={userid} />
+            </FormWrap>
+          </Container>
+        </> : <Loading />}
+    </>
   );
 };
 

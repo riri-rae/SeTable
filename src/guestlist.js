@@ -7,6 +7,7 @@ import { v4 as uuid } from "uuid";
 import GuestlistPack from "./components/GuestlistPack";
 import Header from "./components/Header";
 import Swal from "sweetalert2";
+import Loading from "./components/Loading";
 
 // const Button = styled.button`
 //   display: flex;
@@ -147,7 +148,7 @@ const DropBtn = styled.button`
 const DropIcon = styled.p`
 color: #9B5B5B;
 transform: ${(props) => (props.display ? "rotate(0deg)" : 'rotate(180deg)')};
-
+transition: all 0.3s ease-in-out;
 `;
 
 const Hr = styled.hr`
@@ -218,7 +219,7 @@ const Button = styled.button`
 //const db = firebase.firestore();
 
 function GuestList({ setDeleteId }) {
-  const [allData, SetAllData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [yesCount, setYesCount] = useState("");
   const [notCount, setNotCount] = useState("");
   const [noCount, setNoCount] = useState("");
@@ -265,10 +266,9 @@ function GuestList({ setDeleteId }) {
       .onSnapshot((querySnapshot) => {
         const data = [];
         querySnapshot.forEach((doc) => {
-          // console.log(doc.data())
           data.push(doc.data());
         });
-        SetAllData(data);
+        setAllData(data);
       });
   }, []);
 
@@ -320,244 +320,247 @@ function GuestList({ setDeleteId }) {
   return (
     <>
       <Header />
-      <Wrap>
-        <Container>
-          <BlockWrap>
-            <MainTitleContainer>
-              <Title>Joyfully Attend</Title>
-              <Count>{yesCount}</Count>
-              <InputNew
-                type="text"
-                id="bride-name"
-                placeholder="Enter a guest name"
-                value={addYes}
-                onChange={(e) => setAddYes(e.target.value)}
-              // maxLength="9"
-              />
-              <Button
-                onClick={() => {
-                  if (!addYes) {
-                    Swal.fire("Please enter a name");
-                    return;
-                  } else {
-                    const id = db.collection("users").doc().id;
-                    let body = {
-                      name: addYes,
-                      status: "yes",
-                      group: "",
-                      tag: "",
-                      role: "",
-                      baby: "",
-                      veggie: "",
-                      note: "",
-                      time: firebase.firestore.Timestamp.now(),
-                      id,
-                    };
-                    onSubmit(body, id);
-                    setAddYes("");
-                    changeHistoryTable(id, addYes);
-                  }
-                }}
-              >
-                Add Guest
-              </Button>
-              <DropBtn
-                onClick={clickYes}
-              >
-                <DropIcon display={display1}>▼</DropIcon>
-              </DropBtn>
-              <Hr />
-            </MainTitleContainer>
-            <SubTitleContainer display={display1}>
-              {yesCount !== '0' ?
-                <table>
-                  <thead>
-                    <tr>
-                      <Th>Name</Th>
-                      <Th>Group</Th>
-                      <Th>Tag</Th>
-                      <Th>Role</Th>
-                      <Th>Vegetarian</Th>
-                      <Th>Baby Seat</Th>
-                      <Th>Note</Th>
-                      <Th>Save</Th>
-                      <Th>Delete</Th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allData.map((data, index) =>
-                      data.status === "yes" ? (
-                        <GuestlistPack
-                          data={data}
-                          index={index}
-                          key={data.id}
-                          setDeleteId={setDeleteId}
-                        ></GuestlistPack>
-                      ) : (
-                        <></>
-                      )
-                    )}
-                  </tbody>
-                </table>
-                : <Empty>It's Empty!</Empty>}
-            </SubTitleContainer>
+      {user ?
+        <>
+          <Wrap>
+            <Container>
+              <BlockWrap>
+                <MainTitleContainer>
+                  <Title>Joyfully Attend</Title>
+                  <Count>{yesCount}</Count>
+                  <InputNew
+                    type="text"
+                    id="bride-name"
+                    placeholder="Enter a guest name"
+                    value={addYes}
+                    onChange={(e) => setAddYes(e.target.value)}
+                  // maxLength="9"
+                  />
+                  <Button
+                    onClick={() => {
+                      if (!addYes) {
+                        Swal.fire("Please enter a name");
+                        return;
+                      } else {
+                        const id = db.collection("users").doc().id;
+                        let body = {
+                          name: addYes,
+                          status: "yes",
+                          group: "",
+                          tag: "",
+                          role: "",
+                          baby: "",
+                          veggie: "",
+                          note: "",
+                          time: firebase.firestore.Timestamp.now(),
+                          id,
+                        };
+                        onSubmit(body, id);
+                        setAddYes("");
+                        changeHistoryTable(id, addYes);
+                      }
+                    }}
+                  >
+                    Add Guest
+                  </Button>
+                  <DropBtn
+                    onClick={clickYes}
+                  >
+                    <DropIcon display={display1}>▼</DropIcon>
+                  </DropBtn>
+                  <Hr />
+                </MainTitleContainer>
+                <SubTitleContainer display={display1}>
+                  {yesCount !== '0' ?
+                    <table>
+                      <thead>
+                        <tr>
+                          <Th>Name</Th>
+                          <Th>Group</Th>
+                          <Th>Tag</Th>
+                          <Th>Role</Th>
+                          <Th>Vegetarian</Th>
+                          <Th>Baby Seat</Th>
+                          <Th>Note</Th>
+                          <Th>Save</Th>
+                          <Th>Delete</Th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allData.map((data, index) =>
+                          data.status === "yes" ? (
+                            <GuestlistPack
+                              data={data}
+                              index={index}
+                              key={data.id}
+                              setDeleteId={setDeleteId}
+                            ></GuestlistPack>
+                          ) : (
+                            <></>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                    : <Empty>It's Empty!</Empty>}
+                </SubTitleContainer>
 
-            <MainTitleContainer>
-              <Title>Not Sure</Title>
-              <Count>{notCount}</Count>
-              <InputNew
-                type="text"
-                id="bride-name"
-                placeholder="Enter a guest name"
-                value={addNotSure}
-                onChange={(e) => setAddNotSure(e.target.value)}
-              />
-              <Button
-                onClick={() => {
-                  if (!addNotSure) {
-                    Swal.fire("Please enter a name");
-                    return;
-                  } else {
-                    const id = db.collection("users").doc().id;
-                    let body = {
-                      name: addNotSure,
-                      status: "notSure",
-                      group: "",
-                      tag: "",
-                      role: "",
-                      baby: "",
-                      veggie: "",
-                      note: "",
-                      time: firebase.firestore.Timestamp.now(),
-                      id,
-                    };
-                    onSubmit(body, id);
-                    setAddNotSure("");
-                  }
-                }}
-              >
-                Add Guest
-              </Button>
-              <DropBtn
-                onClick={clickNotSure}
-              >
-                <DropIcon display={display2}>▼</DropIcon>
-              </DropBtn>
-              <Hr />
-            </MainTitleContainer>
+                <MainTitleContainer>
+                  <Title>Not Sure</Title>
+                  <Count>{notCount}</Count>
+                  <InputNew
+                    type="text"
+                    id="bride-name"
+                    placeholder="Enter a guest name"
+                    value={addNotSure}
+                    onChange={(e) => setAddNotSure(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => {
+                      if (!addNotSure) {
+                        Swal.fire("Please enter a name");
+                        return;
+                      } else {
+                        const id = db.collection("users").doc().id;
+                        let body = {
+                          name: addNotSure,
+                          status: "notSure",
+                          group: "",
+                          tag: "",
+                          role: "",
+                          baby: "",
+                          veggie: "",
+                          note: "",
+                          time: firebase.firestore.Timestamp.now(),
+                          id,
+                        };
+                        onSubmit(body, id);
+                        setAddNotSure("");
+                      }
+                    }}
+                  >
+                    Add Guest
+                  </Button>
+                  <DropBtn
+                    onClick={clickNotSure}
+                  >
+                    <DropIcon display={display2}>▼</DropIcon>
+                  </DropBtn>
+                  <Hr />
+                </MainTitleContainer>
 
-            <SubTitleContainer display={display2}>
+                <SubTitleContainer display={display2}>
 
-              {notCount !== '0' ?
-                <table>
-                  <thead>
-                    <tr>
-                      <Th>Name</Th>
-                      <Th>Group</Th>
-                      <Th>Tag</Th>
-                      <Th>Role</Th>
-                      <Th>Vegetarian</Th>
-                      <Th>Baby Seat</Th>
-                      <Th>Note</Th>
-                      <Th>Save</Th>
-                      <Th>Delete</Th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allData.map((data, index) =>
-                      data.status === "notSure" ? (
-                        <GuestlistPack
-                          data={data}
-                          index={index}
-                          key={data.id}
-                        ></GuestlistPack>
-                      ) : (
-                        <></>
-                      )
-                    )}
-                  </tbody>
-                </table>
-                : <Empty>It's Empty!</Empty>}
-            </SubTitleContainer>
+                  {notCount !== '0' ?
+                    <table>
+                      <thead>
+                        <tr>
+                          <Th>Name</Th>
+                          <Th>Group</Th>
+                          <Th>Tag</Th>
+                          <Th>Role</Th>
+                          <Th>Vegetarian</Th>
+                          <Th>Baby Seat</Th>
+                          <Th>Note</Th>
+                          <Th>Save</Th>
+                          <Th>Delete</Th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allData.map((data, index) =>
+                          data.status === "notSure" ? (
+                            <GuestlistPack
+                              data={data}
+                              index={index}
+                              key={data.id}
+                            ></GuestlistPack>
+                          ) : (
+                            <></>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                    : <Empty>It's Empty!</Empty>}
+                </SubTitleContainer>
 
-            <MainTitleContainer>
-              <Title>Regretfully Decline</Title>
-              <Count>{noCount}</Count>
-              <InputNew
-                type="text"
-                id="bride-name"
-                placeholder="Enter a guest name"
-                value={addNo}
-                onChange={(e) => setAddNo(e.target.value)}
-              />
-              <Button
-                onClick={() => {
-                  if (!addNo) {
-                    Swal.fire("Please enter a name");
-                    return;
-                  } else {
-                    const id = db.collection("users").doc().id;
-                    let body = {
-                      name: addNo,
-                      status: "no",
-                      group: "",
-                      tag: "",
-                      role: "",
-                      baby: "",
-                      veggie: "",
-                      note: "",
-                      time: firebase.firestore.Timestamp.now(),
-                      id,
-                    };
-                    onSubmit(body, id);
-                    setAddNo("");
-                  }
-                }}
-              >
-                Add Guest
-              </Button>
-              <DropBtn
-                onClick={clickNo}
-              >
-                <DropIcon display={display3}>▼</DropIcon>
-              </DropBtn>
-              <Hr />
-            </MainTitleContainer>
-            <SubTitleContainer display={display3}>
-              {noCount !== '0' ?
-                <table>
-                  <thead>
-                    <tr>
-                      <Th>Name</Th>
-                      <Th>Group</Th>
-                      <Th>Tag</Th>
-                      <Th>Role</Th>
-                      <Th>Vegetarian</Th>
-                      <Th>Baby Seat</Th>
-                      <Th>Note</Th>
-                      <Th>Save</Th>
-                      <Th>Delete</Th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allData.map((data, index) =>
-                      data.status === "no" ? (
-                        <GuestlistPack
-                          data={data}
-                          index={index}
-                          key={data.id}
-                        ></GuestlistPack>
-                      ) : (
-                        <></>
-                      )
-                    )}
-                  </tbody>
-                </table>
-                : <Empty>It's Empty!</Empty>}
-            </SubTitleContainer>
-          </BlockWrap>
-        </Container>
-      </Wrap>
+                <MainTitleContainer>
+                  <Title>Regretfully Decline</Title>
+                  <Count>{noCount}</Count>
+                  <InputNew
+                    type="text"
+                    id="bride-name"
+                    placeholder="Enter a guest name"
+                    value={addNo}
+                    onChange={(e) => setAddNo(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => {
+                      if (!addNo) {
+                        Swal.fire("Please enter a name");
+                        return;
+                      } else {
+                        const id = db.collection("users").doc().id;
+                        let body = {
+                          name: addNo,
+                          status: "no",
+                          group: "",
+                          tag: "",
+                          role: "",
+                          baby: "",
+                          veggie: "",
+                          note: "",
+                          time: firebase.firestore.Timestamp.now(),
+                          id,
+                        };
+                        onSubmit(body, id);
+                        setAddNo("");
+                      }
+                    }}
+                  >
+                    Add Guest
+                  </Button>
+                  <DropBtn
+                    onClick={clickNo}
+                  >
+                    <DropIcon display={display3}>▼</DropIcon>
+                  </DropBtn>
+                  <Hr />
+                </MainTitleContainer>
+                <SubTitleContainer display={display3}>
+                  {noCount !== '0' ?
+                    <table>
+                      <thead>
+                        <tr>
+                          <Th>Name</Th>
+                          <Th>Group</Th>
+                          <Th>Tag</Th>
+                          <Th>Role</Th>
+                          <Th>Vegetarian</Th>
+                          <Th>Baby Seat</Th>
+                          <Th>Note</Th>
+                          <Th>Save</Th>
+                          <Th>Delete</Th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {allData.map((data, index) =>
+                          data.status === "no" ? (
+                            <GuestlistPack
+                              data={data}
+                              index={index}
+                              key={data.id}
+                            ></GuestlistPack>
+                          ) : (
+                            <></>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                    : <Empty>It's Empty!</Empty>}
+                </SubTitleContainer>
+              </BlockWrap>
+            </Container>
+          </Wrap>
+        </> : <Loading />}
     </>
   );
 }

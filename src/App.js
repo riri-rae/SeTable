@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 //import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LandingPage from "./landingpage";
 import HomePage from "./homepage";
-// import Login from "./login";
+import Loading from "./components/Loading";
 import Table from "./table";
 import GuestList from "./guestlist";
 import InvitationEdit from "./invitation-edit";
@@ -11,8 +11,6 @@ import InvitationRsvp from "./invitation-rsvp";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
-import ReactLoading from 'react-loading';
-import styled from "styled-components";
 
 
 const App = () => {
@@ -30,13 +28,6 @@ const App = () => {
   }, [])
   console.log(user);
 
-  const LoadingFrame = styled.div`
-  position: fixed;
-  top:50%;
-  left:50%;
-  transform: translate(-50%, -50%);
-`;
-
   return (
     <>
       <Router>
@@ -44,7 +35,7 @@ const App = () => {
         <Route exact path="/">
           <LandingPage /> </Route>
         <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
-        {user === undefined ? (<LoadingFrame><ReactLoading color="#a49393" type="bubbles" /></LoadingFrame>) : (
+        {user === undefined ? (<Loading />) : (
           <>
             {user !== null ? (
               <>

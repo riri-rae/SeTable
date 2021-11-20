@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "./components/Header";
+import Loading from "./components/Loading";
 // import { Parallax } from "react-parallax";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
@@ -362,8 +363,7 @@ const HomePage = () => {
               </CenterWrap>
             </CenterBg>
           </Container>
-        </> :
-        <LoadingFrame><ReactLoading color="#a49393" type="bubbles" /></LoadingFrame>}
+        </> : <Loading />}
 
     </>
   );

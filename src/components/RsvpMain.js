@@ -9,9 +9,6 @@ import { v4 as uuid } from "uuid";
 import RsvpPack from "./RsvpPack";
 import Swal from "sweetalert2";
 
-// import Select from "react-select/dist/declarations/src/Select";
-
-//import { useParams } from "react-router";
 
 const Edit = styled.div`
   font-size: 22px;
@@ -257,11 +254,11 @@ const RsvpMain = () => {
     if (group === "") {
       Swal.fire("", "Please let us know who is filling this form?", "question");
     } else if (tag === "") {
-      window.alert("Please let us you are from which side?");
+      Swal.fire("", "Please let us you are from which side?", "question");
     } else if (role === "") {
-      window.alert("Please let us you are our?");
+      Swal.fire("", "Please let us you are our?", "question");
     } else if (status === "") {
-      window.alert("Please let us know if you will attand");
+      Swal.fire("", "Please let us know if you will attand", "question");
     } else {
       const allId = [];
       if (allData.length === 0) {
@@ -281,7 +278,6 @@ const RsvpMain = () => {
       } else {
         console.log("more");
         console.log(allData);
-
         allData.forEach((data) => {
           let id = db
             .collection("users")
@@ -296,11 +292,11 @@ const RsvpMain = () => {
             .collection("rsvp")
             .doc(id);
           if (!data.name) {
-            window.alert("Please fill in guest name");
+            Swal.fire("", "Please fill in guest name", "question");
           } else if (!data.veggie) {
-            window.alert("Veggie???");
+            Swal.fire("", "Vegetarian meal?", "question");
           } else if (!data.baby) {
-            window.alert("Baby seat???");
+            Swal.fire("", "Require baby seat?", "question");
           } else {
             rsvpRef.set({
               name: data.name,
@@ -317,17 +313,6 @@ const RsvpMain = () => {
           }
         });
         addHistoryTable(allId);
-        // .then(() => {
-        //   Swal.fire("Thank you! Have a nice day • u •");
-        // })
-        // .then(() => {
-        //   setAllData([]);
-        //   setGroup("");
-        //   setTag("");
-        //   setRole("");
-        //   setNote("");
-        //   setStatus("");
-        // })
       }
     }
   }
@@ -376,7 +361,18 @@ const RsvpMain = () => {
   }
 
   function afterSend() {
-    Swal.fire("Thank you! Have a nice day • u •")
+    Swal.fire({
+      icon: 'success',
+      title: 'Thank you! Have a nice day • u •',
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown'
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+      },
+      showConfirmButton: false,
+      timer: 1800
+    })
 
       .then(() => {
         setAllData([]);

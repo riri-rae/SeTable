@@ -7,19 +7,20 @@ import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 import Swal from "sweetalert2";
+import Loading from "./components/Loading";
 //import picbt from "../src/images/rose-ring.png";
 
 import "firebase/firestore";
 
 const Container = styled.div`
+  font-family: "Karla", sans-serif;
+  /* font-family: "Helvetica Neue", sans-serif; */
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
   /* max-height: 100vh; */
   height: calc(100vh - 80px);
-  overflow: hidden;
-  background-color: #a49393;
 /* @media (max-width: 1440px) {
     width: 100%;
   } */
@@ -40,7 +41,10 @@ const Edit = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+  text-align: center;
+  border-top: 4px solid #a49393;
+  border-bottom: 4px solid #a49393;
+   
   padding: 20px;
   @media (max-width: 1440px) {
     min-width: 36vw;
@@ -50,7 +54,7 @@ const Edit = styled.div`
 const EditTitle = styled.div`
   font-size: 36px;
   margin-bottom: 60px;
-  font-family: "Karla", sans-serif;
+
   @media (max-width: 1440px) {
     font-size: 32px;
     margin-bottom: 30px;
@@ -59,14 +63,34 @@ const EditTitle = styled.div`
 
 const EditText = styled.div`
   font-size: 20px;
-  flex-direction: row;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 0px;
   padding: 0px;
   text-align: center;
-  font-family: "Karla", sans-serif;
+  /* font-family: "Karla", sans-serif; */
+`;
+
+
+const Label = styled.label`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+
+
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  line-height: 20px;
+  margin: 16px;
 `;
 
 const Input = styled.input`
@@ -74,31 +98,24 @@ const Input = styled.input`
   border: 2px solid #ddd;
   line-height: 22px;
   font-size: 18px;
-  margin-left: 8px;
   font-family: "Karla", sans-serif;
   width: 256px;
+  padding: 4px;
 `;
 
-const InputWrap = styled.div`
-  display: flex;
-  line-height: 20px;
-  margin: 16px;
 
-  /* background-color: #FFF; */
-  /* height: 600px;
-    width: 600px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding: 0px;
-    text-align:center; */
-`;
-
-const Label = styled.label`
-  width: 200px;
-  text-align: right;
+const Textarea = styled.textarea`
+  resize: none;
+  height: 64px;
+  line-height: 24px;
+  font-family: "Karla", sans-serif;
+  font-size: 18px;
+  width: 256px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  color: #44342d;
+  outline: none;
+  padding: 4px;
 `;
 
 // const Button = styled.button`
@@ -181,6 +198,8 @@ const CheckRsvp = styled(Link)`
   }
 `;
 
+
+
 const InvitationEdit = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
@@ -252,73 +271,82 @@ const InvitationEdit = () => {
   return (
     <>
       <Header />
-      <Container>
-        <TemplateWrap>
-          <RsvpTemplate
-            bride={bride}
-            groom={groom}
-            add={add}
-            dateTime={dateTime}
-          />
-        </TemplateWrap>
-        <Edit>
-          <EditTitle>Edit your custom information</EditTitle>
-          <EditText>
-            <InputWrap>
-              <Label htmlFor="bride-name">Bride's Name:</Label>
-              <Input
-                type="text"
-                id="bride-name"
-                placeholder="Enter the name"
-                value={bride}
-                onChange={(e) => setBride(e.target.value)}
+      {user ?
+        <>
+          <Container>
+            <TemplateWrap>
+              <RsvpTemplate
+                bride={bride}
+                groom={groom}
+                add={add}
+                dateTime={dateTime}
               />
-            </InputWrap>
-            <InputWrap>
-              <Label htmlFor="groom-name">Groom's Name:</Label>
-              <Input
-                type="text"
-                id="groom-name"
-                placeholder="Enter the name"
-                value={groom}
-                onChange={(e) => setGroom(e.target.value)}
-              />
-            </InputWrap>
-            <InputWrap>
-              <Label htmlFor="date">Enter the date:</Label>
-              <Input
-                id="date"
-                type="datetime-local"
-                lang="en-US"
-                name="date"
-                value={dateTime}
-                onChange={(e) => setDateTime(e.target.value)}
-              />
-            </InputWrap>
-            <InputWrap>
-              <Label htmlFor="add">Address:</Label>
-              <Input
-                type="text"
-                id="add"
-                placeholder="Enter the addrsss"
-                value={add}
-                onChange={(e) => setAdd(e.target.value)}
-              />
-            </InputWrap>
-          </EditText>
-          <Button onClick={saveChange}>Save</Button>
+            </TemplateWrap>
+            <Edit>
+              <EditTitle>Edit your custom information</EditTitle>
+              <EditText>
+                <InputWrap>
+                  <Label htmlFor="bride-name">Name one:</Label>
+                  <Input
+                    type="text"
+                    id="bride-name"
+                    placeholder="Enter the name"
+                    value={bride}
+                    onChange={(e) => setBride(e.target.value)}
+                  />
+                </InputWrap>
+                <InputWrap>
+                  <Label htmlFor="groom-name">Name two:</Label>
+                  <Input
+                    type="text"
+                    id="groom-name"
+                    placeholder="Enter the name"
+                    value={groom}
+                    onChange={(e) => setGroom(e.target.value)}
+                  />
+                </InputWrap>
+                <InputWrap>
+                  <Label htmlFor="date">Pick the date:</Label>
+                  <Input
+                    id="date"
+                    type="datetime-local"
+                    lang="en-US"
+                    name="date"
+                    value={dateTime}
+                    onChange={(e) => setDateTime(e.target.value)}
+                  />
+                </InputWrap>
+                <InputWrap>
+                  <Label htmlFor="add">Address:</Label>
+                  {/* <Input
+                    type="text"
+                    id="add"
+                    placeholder="Enter the addrsss"
+                    value={add}
+                    onChange={(e) => setAdd(e.target.value)}
+                  /> */}
 
-          {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
+                  <Textarea
+                    placeholder="Enter the addrsss"
+                    value={add}
+                    onChange={(e) => setAdd(e.target.value)}
+                  ></Textarea>
+                </InputWrap>
+              </EditText>
+              <Button onClick={saveChange}>Save</Button>
 
-          <CheckRsvp
-            onClick={() => {
-              window.open(`/invitation-rsvp/${user.uid}`);
-            }}
-          >
-            Check your Rsvp Here
-          </CheckRsvp>
-        </Edit>
-      </Container>
+              {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
+
+              <CheckRsvp
+                onClick={() => {
+                  window.open(`/invitation-rsvp/${user.uid}`);
+                }}
+              >
+                Check your Rsvp Here
+              </CheckRsvp>
+            </Edit>
+          </Container>
+        </> : <Loading />}
     </>
   );
 };

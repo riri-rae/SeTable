@@ -36,7 +36,7 @@ const Input = styled.input`
   padding: 0px 20px;
   margin: 0 5rem;
   border-bottom: 1.4px solid transparent;
-  transition: all 200ms ease-in-out;
+  transition: all 0.2s ease-in-out;
   font-size: 16px;
   &::placeholder {
     color: rgba(200, 200, 200, 1);

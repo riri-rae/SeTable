@@ -7,6 +7,7 @@ import 'firebase/auth';
 // import logo from "../images/logo.png";
 import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
+import Swal from 'sweetalert2'
 
 const Navbar = styled.header`
   position: sticky;
@@ -117,7 +118,31 @@ const MobileTag = styled.div`
   }
 `;
 
+
 export default function Header() {
+
+  function confirmLogout() {
+    Swal.fire({
+      title: 'Logging out?',
+      text: "Are you sure you want to log out?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5885AF',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Logged out successfully',
+          'Hope to see you soon!',
+          'success'
+        )
+        firebase.auth().signOut()
+
+      }
+    })
+  }
+
   return (
     <Navbar>
       <Container>
@@ -132,7 +157,8 @@ export default function Header() {
           </DeskNav>
 
           <Member
-            onClick={() => firebase.auth().signOut()}>
+            // onClick={() => firebase.auth().signOut()}>
+            onClick={confirmLogout}>
 
             <img src={memberImg} height="44" alt="member" />
           </Member>
@@ -140,7 +166,8 @@ export default function Header() {
 
         <MobileHeaderDiv>
           <Logo
-            onClick={() => firebase.auth().signOut()}>
+            // onClick={() => firebase.auth().signOut()}>
+            onClick={confirmLogout}>
             <img src={roseLogo} height="44" alt="logo" />
           </Logo>
 

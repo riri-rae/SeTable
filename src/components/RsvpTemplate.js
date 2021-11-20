@@ -4,8 +4,6 @@ import styled from "styled-components";
 // import firebase from "../utils/firebase";
 // import "firebase/firestore";
 import Bg from "../images/invitation.jpeg";
-// rose-ring.png
-// frame.jpeg
 
 //import { useParams } from "react-router";
 
@@ -52,7 +50,7 @@ const ContentWrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Stalemate", cursive;
+  font-family: 'Stalemate', cursive, 'Noto Sans TC', sans-serif;
   max-height: 100vh;
   text-align: center;
   padding: 36px 16px;

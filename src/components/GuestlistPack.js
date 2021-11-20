@@ -7,6 +7,12 @@ import Swal from 'sweetalert2'
 //import Select from 'react-select'
 import { v4 as uuid } from "uuid";
 
+const Tr = styled.tr`
+  font-family: "Karla", sans-serif;
+  font-size: 14px;
+`;
+
+
 const Input = styled.input`
   display: flex;
   align-items: center;
@@ -29,9 +35,17 @@ const NameDiv = styled.div`
   padding: 0.5rem;
   color: #000;
   cursor: pointer;
-  font-size: 14px;
-  width: 120px;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: "Karla", sans-serif;
+  @media (max-width: 1440px) {
+    width: 150px;
+  }
+`;
+const GuestName = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
 `;
 
 const Td = styled.td`
@@ -72,8 +86,12 @@ const Textarea = styled.textarea`
   border-radius: 5px;
   border: 1px solid #ddd;
   vertical-align:middle;
-  height:30px;
-  line-height:30px;
+  height:36px;
+  line-height:20px;
+  font-family: "Karla", sans-serif;
+  padding-top: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
 `;
 // const Button = styled.button`
 //   font-weight: 400;
@@ -195,24 +213,31 @@ function GuestlistPack({ data }) {
       });
   }
 
+
   function handelDel() {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("rsvp")
-      .doc(data.id)
-      .delete()
-      .then(() => {
-        Swal.fire({
-          position: 'center',
-          icon: 'warning',
-          title: 'Deleted',
-          showConfirmButton: true,
-          timer: 1500
-        })
-      });
-    // .then(() => {
-    //   window.alert("Document successfully deleted!");
-    // });
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5885AF',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        db.collection("users")
+          .doc(user.uid)
+          .collection("rsvp")
+          .doc(data.id)
+          .delete();
+
+      }
+    })
 
 
     const guestToDelete = data.id;
@@ -266,7 +291,7 @@ function GuestlistPack({ data }) {
   }
 
   return (
-    <tr>
+    <Tr>
       <Td>
         {/* <Input
           type="text"
@@ -275,7 +300,7 @@ function GuestlistPack({ data }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
         /> */}
-        <NameDiv>{name}</NameDiv>
+        <NameDiv><GuestName>{name}</GuestName></NameDiv>
       </Td>
       <Td>
         <Input
@@ -376,7 +401,7 @@ function GuestlistPack({ data }) {
       <Td>
         <DelButton onClick={() => handelDel()}>Delete</DelButton>
       </Td>
-    </tr>
+    </Tr>
   );
 }
 
