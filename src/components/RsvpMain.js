@@ -17,8 +17,8 @@ const Edit = styled.div`
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
-  overflow: scroll;
-  padding: 8px 16px;
+  /* overflow: scroll; */
+  padding: 8px 36px 36px 36px;
   color: #67595e;
   padding-top: 100px;
   @media (max-width: 1440px) {

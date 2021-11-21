@@ -4,14 +4,13 @@ import firebase from "../utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
 import Swal from 'sweetalert2'
-//import Select from 'react-select'
 import { v4 as uuid } from "uuid";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const Tr = styled.tr`
   font-family: "Karla", sans-serif;
   font-size: 14px;
 `;
-
 
 const Input = styled.input`
   display: flex;
@@ -53,7 +52,6 @@ const Td = styled.td`
   color: #574e56;
   line-height: 36px;
   border-bottom: 1px solid #ddd;
-
   &:nth-child(7) {
     width: 12rem;
   }
@@ -140,22 +138,19 @@ font-weight: 600;
 }
 `;
 
+
+const DelIcon = styled(RiDeleteBinLine)`
+font-size: 20px;
+margin-top:6px;
+`
+
 const DelButton = styled(Button)`
   /* display: flex; */
   /* align-items: center; */
-  margin: 0 auto;
-  /* margin-left:4px; */
-  padding: 0.4rem;
-  color: #574e56;
-  border: 2px solid #ddd;
-  background: #fff;
-  border-radius: 16px;
-  font-size: 14px;
-  cursor: pointer;
+  border: none;
   &:hover{
-    transition-duration: 0.1s;
-    background-color: #9B5B5B;
-    color:#fff
+    background-color: #fff;
+    color: #9B5B5B;
   }
 `;
 
@@ -251,14 +246,14 @@ function GuestlistPack({ data }) {
         const historyList = JSON.parse(history);
         console.log(historyList);
 
-        function findTablesIndex(historyList, id) {
+        function findTablesIndex(historyList, guestToDelete) {
           var tablesInd;
           var tableInd;
           for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
             const nsDetails = historyList[tablesInd];
             for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
               const tempObject = nsDetails[tableInd];
-              if (tempObject.id === id) {
+              if (tempObject.id === guestToDelete) {
                 console.log(tablesInd, tableInd);
                 return { tablesInd, tableInd };
               }
@@ -272,19 +267,21 @@ function GuestlistPack({ data }) {
           guestToDelete
         );
         console.log(tablesInd, tableInd);
-        // let afterDelete = Array.from(historyList);
 
-        const [deleteTable] = historyList.splice(tablesInd, 1); //把桌子抓出來
-        console.log(deleteTable);
+        let afterDelete = Array.from(historyList);
+
+        const [deleteTable] = afterDelete.splice(tablesInd, 1);//抓桌子
+        console.log([deleteTable]);
         deleteTable.splice(tableInd, 1);
-        historyList.splice(tablesInd, 0, deleteTable); //再把deleteTable塞回tables[]
-        // setTables(afterDelete)
+        console.log(deleteTable);
+        historyList.splice(tablesInd, 1, deleteTable);//
+
         console.log(historyList);
 
         const updateHistory = JSON.stringify(historyList);
         const update = {};
         update.guestlist = updateHistory;
-        console.log(updateHistory);
+        //console.log(updateHistory);
 
         db.collection("users").doc(user.uid).update(update);
       });
@@ -399,7 +396,7 @@ function GuestlistPack({ data }) {
         <Button onClick={saveChange}>Save</Button>
       </Td>
       <Td>
-        <DelButton onClick={() => handelDel()}>Delete</DelButton>
+        <DelButton onClick={() => handelDel()}><DelIcon /></DelButton>
       </Td>
     </Tr>
   );

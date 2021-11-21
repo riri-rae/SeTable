@@ -41,6 +41,7 @@ const Input = styled.input`
   border-radius: 5px;
   padding: 8px;
   color: #44342d;
+  letter-spacing: 1px;
 `;
 
 const Label = styled.div`

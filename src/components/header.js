@@ -8,6 +8,9 @@ import 'firebase/auth';
 import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
 import Swal from 'sweetalert2'
+import { RiLogoutCircleRLine } from "react-icons/ri";
+
+
 
 const Navbar = styled.header`
   position: sticky;
@@ -24,7 +27,9 @@ const Container = styled.div`
   text-align: center;
   display: flex;
   justify-content: center;
-  /* overflow: hidden; */
+  font-size: 20px;
+  color: #3f3a3a;
+
 `;
 
 const DeskHeaderDiv = styled.div`
@@ -80,10 +85,15 @@ const DeskTag = styled(Link)`
   }
 `;
 
-const Member = styled.div`
-  margin-left: 42px;
-  margin-right: 54px;
+
+const LogoutIcon = styled(RiLogoutCircleRLine)`
+  font-size: 24px;
+  margin-left: 4px;
+  color: #695f5f;
   cursor: pointer;
+  &:hover {
+    color: #d48c70;
+  }
 `;
 
 const MobileHeaderDiv = styled.div`
@@ -108,13 +118,25 @@ const MobileNav = styled.div`
     align-items: center;
   }
 `;
-const MobileTag = styled.div`
+const MobileTag = styled(Link)`
   @media (max-width: 768px) {
     font-size: 18px;
     color: #828282;
     flex-grow: 1;
     text-align: center;
     margin: 2px 8px 8px 8px;
+  }
+  &:hover {
+    text-decoration: none;
+    color: #8b572a;
+    cursor: pointer;
+    /* border-bottom: 2px solid #8b572a; */
+  }
+  &:active{
+    color:none;
+  }
+  &:focus{
+    outline:none;
   }
 `;
 
@@ -156,26 +178,27 @@ export default function Header() {
             <DeskTag to="/table">Table</DeskTag>
           </DeskNav>
 
-          <Member
-            // onClick={() => firebase.auth().signOut()}>
+          <LogoutIcon
             onClick={confirmLogout}>
-
             <img src={memberImg} height="44" alt="member" />
-          </Member>
+          </LogoutIcon>
         </DeskHeaderDiv>
 
         <MobileHeaderDiv>
-          <Logo
-            // onClick={() => firebase.auth().signOut()}>
-            onClick={confirmLogout}>
-            <img src={roseLogo} height="44" alt="logo" />
+          <Logo to="/homepage">
+            <img src={roseLogo} alt="logo" height="44" />
           </Logo>
 
           <MobileNav>
             <MobileTag to="/invitation-edit">Invitation</MobileTag>
             <MobileTag to="/guestlist">Guest List</MobileTag>
             <MobileTag to="/table">Table</MobileTag>
+            <LogoutIcon
+              onClick={confirmLogout}>
+              <img src={memberImg} height="44" alt="member" />
+            </LogoutIcon>
           </MobileNav>
+
         </MobileHeaderDiv>
       </Container>
     </Navbar>

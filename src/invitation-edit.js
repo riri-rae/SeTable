@@ -8,11 +8,12 @@ import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 import Swal from "sweetalert2";
 import Loading from "./components/Loading";
-//import picbt from "../src/images/rose-ring.png";
+import { HiOutlineArrowCircleRight } from "react-icons/hi";
 
 import "firebase/firestore";
 
 const Container = styled.div`
+background-color: #FCF6EF;
   font-family: "Karla", sans-serif;
   /* font-family: "Helvetica Neue", sans-serif; */
   display: flex;
@@ -20,8 +21,9 @@ const Container = styled.div`
   align-items: center;
   width: 100vw;
   /* max-height: 100vh; */
-  height: calc(100vh - 80px);
-/* @media (max-width: 1440px) {
+  max-height: calc(100vh - 80px);
+  overflow: hidden;
+  /* @media (max-width: 1440px) {
     width: 100%;
   } */
 `;
@@ -34,7 +36,19 @@ const TemplateWrap = styled.div`
   }
 `;
 
+const Frame = styled.div`
+  background-image: url("/images/hr-light.png");
+  background-position: center;
+  /* background-attachment: fixed; */
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 100%;
+  min-height: 36px;
+`;
+
 const Edit = styled.div`
+  color:#5B5151;
+  box-sizing: border-box ;
   font-size: 24px;
   min-width: 40vw;
   display: flex;
@@ -42,9 +56,11 @@ const Edit = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-top: 4px solid #a49393;
-  border-bottom: 4px solid #a49393;
-   
+  /* border: 4px solid #a49393; */
+  margin: 16px;
+
+  /* border-bottom: 4px solid #a49393; */
+
   padding: 20px;
   @media (max-width: 1440px) {
     min-width: 36vw;
@@ -53,7 +69,7 @@ const Edit = styled.div`
 
 const EditTitle = styled.div`
   font-size: 36px;
-  margin-bottom: 60px;
+  margin-bottom: 30px;
 
   @media (max-width: 1440px) {
     font-size: 32px;
@@ -73,14 +89,11 @@ const EditText = styled.div`
   /* font-family: "Karla", sans-serif; */
 `;
 
-
 const Label = styled.label`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 4px;
-
-
 `;
 
 const InputWrap = styled.div`
@@ -100,6 +113,25 @@ const Input = styled.input`
   font-size: 18px;
   font-family: "Karla", sans-serif;
   width: 256px;
+  padding: 4px;
+`;
+
+const Select = styled.select`
+  box-shadow: none;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  background-image: none;
+  flex: 1;
+  padding: 4px;
+  cursor: pointer;
+  height: 32px;
+  width: 256px;
+  text-align: left;
+  line-height: 22px;
+  font-size: 18px;
+  font-family: "Karla", sans-serif;
+  width: 269px;
   padding: 4px;
 `;
 
@@ -136,7 +168,6 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   margin: 16px;
-  margin-left: 4px;
   padding: 0.4rem 0.8rem;
   color: #574e56;
   border: 1px solid #ddd;
@@ -181,29 +212,47 @@ const Button = styled.button`
 `;
 
 const CheckRsvp = styled(Link)`
-  /* display: flex;
-  align-items: center; */
-  /* margin: 16px; */
-  margin-left: 4px;
   color: #574e56;
-  background: #fff;
-  border-radius: 5px;
-  font-size: 20px;
-  cursor: pointer;
-  margin-top: 36px;
-  font-family: "Karla", sans-serif;
   &:hover {
     text-decoration: none;
     color: #d48c70;
   }
 `;
 
+const CheckWrap = styled.div`
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 36px;
+  font-family: "Karla", sans-serif;
+  color: #574e56;
+  &:hover {
+    color: #d48c70;
+  }
+  &:hover ${CheckRsvp} {
+    text-decoration: none;
+    color: #d48c70;
+  }
+`;
+
+const ArrowIcon = styled(HiOutlineArrowCircleRight)`
+  font-size: 30px;
+  margin-left: 4px;
+  /* color: #574e56; */
+  /* &:hover {
+    color: #d48c70;
+  } */
+`;
 
 
 const InvitationEdit = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
 
+
+  const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
   const [groom, setGroom] = useState("");
   const [dateTime, setDateTime] = useState("");
@@ -219,18 +268,19 @@ const InvitationEdit = () => {
           console.log("okok");
           setBride("Bride");
           setGroom("Groom");
-          setAdd("Some where very nice");
+          setAdd("some where very nice");
           setDateTime("2022-12-31T12:00");
+          setPic("/images/red_flower.jpeg")
         } else if (
           doc.data().dateTime &&
           !doc.data().bride &&
           !doc.data().groom &&
           !doc.data().add
         ) {
-          console.log("okok");
           setBride("Bride");
           setGroom("Groom");
-          setAdd("Some where very nice");
+          setAdd("some where very nice");
+          // setPic("/images/red_flower.jpeg")
           let dateTime = doc.data().dateTime;
           setDateTime(dateTime);
         } else {
@@ -238,40 +288,47 @@ const InvitationEdit = () => {
           let groom = doc.data().groom;
           let dateTime = doc.data().dateTime;
           let add = doc.data().add;
+          let pic = doc.data().pic;
           setBride(bride);
           setGroom(groom);
           setDateTime(dateTime);
           setAdd(add);
+          setPic(pic);
         }
       });
   }, []);
 
   function saveChange() {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("invitation")
-      .doc("template")
-      .set({
-        bride,
-        groom,
-        dateTime,
-        add,
-      })
-      .then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
+    if (!bride || !groom || !dateTime || !add) {
+      Swal.fire("", "Can't save with an emty column ", "warning");
+    } else {
+      db.collection("users")
+        .doc(user.uid)
+        .collection("invitation")
+        .doc("template")
+        .set({
+          bride,
+          groom,
+          dateTime,
+          add,
+          pic
+        })
+        .then(() => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         });
-      });
+    }
   }
 
   return (
     <>
       <Header />
-      {user ?
+      {pic ? (
         <>
           <Container>
             <TemplateWrap>
@@ -280,11 +337,25 @@ const InvitationEdit = () => {
                 groom={groom}
                 add={add}
                 dateTime={dateTime}
+                pic={pic}
               />
             </TemplateWrap>
+
             <Edit>
+              <Frame />
               <EditTitle>Edit your custom information</EditTitle>
               <EditText>
+                <InputWrap>
+                  <Label>Theme:</Label>
+                  <Select
+                    value={pic}
+                    onChange={(e) => setPic(e.target.value)}
+                  >
+                    <option value="/images/red_flower.jpeg">TheOne</option>
+                    <option value="/images/orange.jpeg">Passionate</option>
+                    <option value="/images/yellowbg.jpeg">SunShine</option>
+                  </Select>
+                </InputWrap>
                 <InputWrap>
                   <Label htmlFor="bride-name">Name one:</Label>
                   <Input
@@ -336,17 +407,23 @@ const InvitationEdit = () => {
               <Button onClick={saveChange}>Save</Button>
 
               {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
-
-              <CheckRsvp
-                onClick={() => {
-                  window.open(`/invitation-rsvp/${user.uid}`);
-                }}
-              >
-                Check your Rsvp Here
-              </CheckRsvp>
+              <CheckWrap>
+                <CheckRsvp
+                  onClick={() => {
+                    window.open(`/invitation-rsvp/${user.uid}`);
+                  }}
+                >
+                  Check your Rsvp Here
+                </CheckRsvp>
+                <ArrowIcon />
+              </CheckWrap>
+              <Frame />
             </Edit>
           </Container>
-        </> : <Loading />}
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

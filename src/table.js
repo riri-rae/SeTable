@@ -12,7 +12,17 @@ import { CgPlayListRemove } from "react-icons/cg";
 // const BlockWrap = styled.div`
 //   position: relative;
 // `;
+
+const Bg = styled.div`
+  background-image: url("/images/greenbg.jpeg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+`;
 const Container = styled.div`
+  font-family: "Karla", sans-serif;
   width: 80%;
   min-height: 100vh;
   background-color: rgba(255, 255, 255, 0.7);
@@ -26,7 +36,7 @@ const Container = styled.div`
   /* justify-content: center; */
   margin: 0 auto;
   /* margin-top: 300px; */
-  padding-top: 400px;
+  padding-top: 420px;
   @media (max-width: 1440px) {
     width: 90%;
   }
@@ -45,7 +55,7 @@ const Block = styled.div`
   border-bottom-right-radius: 4px;
   width: 80%;
   text-align: center;
-  height: 346px;
+  height: 380px;
   box-shadow: 0px 0px 10px 3px rgba(112, 100, 100, 0.3);
   @media (max-width: 1440px) {
     width: 90%;
@@ -69,7 +79,7 @@ const BlockTitleSmall = styled(BlockTitle)`
 const Button = styled.button`
   z-index: 5;
   position: fixed;
-  top: 385px;
+  top: 422px;
   /* margin-top:20px; */
   display: flex;
   align-items: center;
@@ -107,7 +117,6 @@ const TaskContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 90%;
-
   & > :first-child {
     border: 3px
       ${(props) => (props.isDraggingOver ? "solid #A47E84" : "solid #A47E84")};
@@ -116,7 +125,7 @@ const TaskContainer = styled.div`
     flex-wrap: wrap;
     overflow-x: scroll;
     width: 75%;
-    height: 190px;
+    height: 210px;
     padding: 8px;
 
     @media (max-width: 1440px) {
@@ -130,6 +139,25 @@ const TaskContainer = styled.div`
   & > :last-child {
     margin-bottom: 30px;
   }
+`;
+
+const IconColum = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const RemoveIcon = styled(CgPlayListRemove)`
+  font-size: 50px;
+  color: #ddd;
+  cursor: pointer;
+`;
+
+const CountNumber = styled.div`
+  font-size: 16px;
+  margin-left: -4px;
+  font-weight: 600;
+  color: #b8ab9b;
 `;
 
 const TaskRow = styled.div`
@@ -151,17 +179,46 @@ const TaskRow = styled.div`
   }
 `;
 
-
 const Task = styled.div`
   border: 3px solid #b8ab9b;
   border-radius: 50%;
   padding: 6px;
   margin: 8px;
   transition: background-color 0.2s ease;
-  /* background-color: ${(props) => (props.isDragging ? "red" : "white")}; */
-  background-color: ${(props) => (props.color ? "#9BC6B2" : "#fff")};
-  border: 3px ${(props) => (props.color ? "solid #E9DDD4" : "solid #EBBBB0")};
-  color: ${(props) => (props.color ? "#F4FCF9" : "#A47E84")};
+  background-color: ${(props) => (props.isDragging ? "fff" : "white")};
+  background-color: ${(props) => {
+    switch (props.color) {
+      case 'veggie':
+        return "#9BC6B2";
+      case 'baby':
+        return "#FCEBCF";
+      default:
+        return "FFF9F2";
+    }
+  }};
+  /* border: 3px ${(props) => (props.color ? "solid #E9DDD4" : "solid #EBBBB0")}; */
+  border: 3px ${(props) => {
+    switch (props.color) {
+      case 'veggie':
+        return "solid #E9DDD4";
+      case 'baby':
+        return "solid #e6d2c3";
+      default:
+        return "solid #EBBBB0";
+    }
+  }};
+  /* border: 3px ${(props) => (props.color ? "solid #E9DDD4" : "solid #EBBBB0")}; */
+  /* color: ${(props) => (props.color ? "#F4FCF9" : "#A47E84")}; */
+  color: ${(props) => {
+    switch (props.color) {
+      case 'veggie':
+        return "#F4FCF9";
+      case 'baby':
+        return "#C48E75";
+      default:
+        return "#89605B";
+    }
+  }};
   -webkit-box-shadow: 5px 5px 6px -1px rgba(203, 175, 165, 0.6);
   box-shadow: 5px 5px 6px -1px rgba(203, 175, 165, 0.6);
   width: 60px;
@@ -192,20 +249,10 @@ const BackGroundPic = styled.img`
 //   height: 100vh;
 // `;
 
-const RemoveIcon = styled(CgPlayListRemove)`
-  font-size: 50px;
-  color: #ccc;
-  cursor: pointer;
-  /* position: absolute;
-  left:80%;
-  top: 0; */
-`;
-
-
-
 function Table({ deleteId }) {
   const [tables, setTables] = useState([]);
   const [veggie, setVeggie] = useState([]);
+  const [baby, setBaby] = useState([]);
   // const [myList, setMyList] = useState([]);
   // const [userName, setUserName] = useState(null);
 
@@ -228,7 +275,7 @@ function Table({ deleteId }) {
         let getSaveList = doc.data().guestlist;
         let saveList = JSON.parse(getSaveList);
         setTables(saveList);
-        console.log(saveList);
+        //console.log(saveList);
       });
   }, []);
 
@@ -245,6 +292,29 @@ function Table({ deleteId }) {
         setVeggie(getVeggie);
       });
   }, []);
+
+  useEffect(() => {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("rsvp")
+      .where("baby", "==", "yes")
+      .onSnapshot((querySnapshot) => {
+        const getBaby = [];
+        querySnapshot.docs.forEach((doc) => {
+          getBaby.push(doc.data().id);
+        });
+        setBaby(getBaby);
+      });
+  }, []);
+
+  function getColor(id) {
+    if (veggie.includes(id)) {
+      return 'veggie';
+    } else if (baby.includes(id)) {
+      return 'baby';
+    }
+  }
+
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -328,49 +398,40 @@ function Table({ deleteId }) {
     };
   }
 
-  function getColor(id) {
-    if (veggie.includes(id)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   function removeTable(table, ind) {
-    console.log(ind) //要刪的index
-    console.log(table) //要拿出來的內容
-    console.log(tables) //全部的桌子
+    console.log(ind); //要刪的index
+    console.log(table); //要拿出來的內容
+    console.log(tables); //全部的桌子
     const afterDel = Array.from(tables);
-    afterDel.splice(ind, 1)
-    afterDel.splice(0, 1)
-    const newList = [
-      [...table, ...tables[0]], ...afterDel
-    ];
-    console.log(newList)
-    setTables(newList)
+    afterDel.splice(ind, 1);
+    afterDel.splice(0, 1);
+    const newList = [[...table, ...tables[0]], ...afterDel];
+    console.log(newList);
+    setTables(newList);
 
     const updateHistory = JSON.stringify(newList);
     const update = {};
     update.guestlist = updateHistory;
     db.collection("users").doc(user.uid).update(update);
   }
+
   function addTable() {
     setTables([...tables, []]);
-    const newTable = [...tables, []]
-    console.log(newTable)
+    const newTable = [...tables, []];
+    console.log(newTable);
     const updateHistory = JSON.stringify(newTable);
     const update = {};
     update.guestlist = updateHistory;
     db.collection("users").doc(user.uid).update(update);
   }
 
-
   return (
     <>
       {/* bgImage={image1}  */}
       <Header />
       {tables !== undefined ? (
-        <>
+        <Bg>
           {/* <ParallaxDiv strength={200} bgImage={image1}> */}
           {/* <BackGroundPic /> */}
           <Container>
@@ -383,17 +444,12 @@ function Table({ deleteId }) {
               </Block>
               <Button
                 type="button"
-                // onClick={() => {
-                //   setTables([...tables, []]);
-
-                // }}
                 onClick={addTable}
               >
                 + Click to Add Table
               </Button>
 
               <TaskContainer>
-
                 {tables.map((table, ind) => (
                   <Droppable
                     key={ind}
@@ -401,17 +457,20 @@ function Table({ deleteId }) {
                     direction="horizontal"
                   >
                     {(provided, snapshot) => (
-
                       <TaskRow
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         isDraggingOver={snapshot.isDraggingOver}
                       >
-                        <>{ind > 0 ?
-                          <RemoveIcon
-                            onClick={(e) => removeTable(table, ind)}
-                          /> : null}
-                          {/* {Number} */}
+                        <>
+                          {ind > 0 ? (
+                            <IconColum>
+                              <RemoveIcon
+                                onClick={(e) => removeTable(table, ind)}
+                              />
+                              <CountNumber>{table.length}</CountNumber>
+                            </IconColum>
+                          ) : null}
 
                           {table.map((guest, index) => (
                             <Draggable
@@ -425,8 +484,10 @@ function Table({ deleteId }) {
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
                                   // isDragging={snapshot.isDragging}
-                                  isDragging={snapshot.isDragging &&
-                                    !snapshot.isDropAnimating}
+                                  isDragging={
+                                    snapshot.isDragging &&
+                                    !snapshot.isDropAnimating
+                                  }
                                   style={getStyle(
                                     provided.draggableProps.style,
                                     snapshot
@@ -441,14 +502,13 @@ function Table({ deleteId }) {
                           {provided.placeholder}
                         </>
                       </TaskRow>
-
                     )}
                   </Droppable>
                 ))}
               </TaskContainer>
             </DragDropContext>
           </Container>
-        </>
+        </Bg>
       ) : (
         <Loading />
       )}

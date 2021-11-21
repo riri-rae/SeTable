@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 // import firebase from "../utils/firebase";
 // import "firebase/firestore";
-import Bg from "../images/invitation.jpeg";
 
 //import { useParams } from "react-router";
 
@@ -29,13 +28,16 @@ const PicWrap = styled.div`
 `;
 
 const BackGround = styled.div`
-  background-image: url("/images/red_flower.jpg");
+  /* background-image: url("/images/red_flower.jpeg"); */
+  /* background-image: url("/images/orange.jpg"); */
+  /* background-image: url("/images/invitation1.png"); */
   background-position: center;
   /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: cover;
   /* width: 100%; */
   height: 100vh;
+  transition: all 0.5s;
 `;
 
 const ContentWrap = styled.div`
@@ -133,8 +135,34 @@ const Address = styled.div`
 
 const RsvpTemplate = (props) => {
 
-  //const dateAndTime = props.dateTime.split("T");
-  // const dateAndTime = props.dateTime;
+  // const [year, setYear] = useState("");
+  // const [mm, setMm] = useState("");
+  // const [dd, setDd] = useState("");
+  // const [wd, setWd] = useState("");
+  // const [time, setTime] = useState("");
+
+  // if (!props.dateTime) {
+  //   setYear('Year');
+  //   setMm('Month');
+  //   setDd('Date');
+  //   setTime('Time');
+  //   setWd('Weekday')
+
+  // } else {
+  //   const date = new window.Date(props.dateTime);
+  //   const year = date.getFullYear();
+  //   const month = date.toLocaleString('en-US', { month: "short" })
+  //   const mm = month.toUpperCase();
+  //   const dd = date.getDate();
+  //   const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  //   const getwd = date.toLocaleString('en-US', { weekday: "long" })
+  //   const wd = getwd.toUpperCase();
+
+  //   console.log(year, month, dd, time, wd)
+  // }
+
+
+
   const date = new window.Date(props.dateTime);
   const year = date.getFullYear();
   const month = date.toLocaleString('en-US', { month: "short" })
@@ -150,7 +178,7 @@ const RsvpTemplate = (props) => {
   return (
     <Template>
       <PicWrap>
-        <BackGround src={Bg} />
+        <BackGround style={{ backgroundImage: `url(${props.pic})` }} />
         <ContentWrap>
           {/* <SaveDate>Save the Date</SaveDate> */}
           <Name>{props.bride}</Name>

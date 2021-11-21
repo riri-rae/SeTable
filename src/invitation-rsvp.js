@@ -9,6 +9,8 @@ import RsvpMain from "./components/RsvpMain";
 import Loading from "./components/Loading";
 
 
+
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -35,17 +37,9 @@ const TemplateWrap = styled.div`
   }
 `;
 
-// const TemplateWrap = styled.div`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   flex: 2;
-//   width: 1152px;
-// `;
-
 const FormWrap = styled.div`
   min-width: 40vw;
-  max-height: 100vh;
+  max-height: 100%;
   overflow: scroll;
   display: flex;
   flex-direction: column;
@@ -67,6 +61,7 @@ const InvitationRsvp = () => {
   const [groom, setGroom] = useState("");
   const [dateTime, setDateTime] = useState("");
   const [add, setAdd] = useState("");
+  const [pic, setPic] = useState("/images/red_flower.jpeg");
 
   useEffect(() => {
     db.collection("users")
@@ -74,14 +69,26 @@ const InvitationRsvp = () => {
       .collection("invitation")
       .doc("template")
       .onSnapshot((doc) => {
-        let bride = doc.data().bride;
-        let groom = doc.data().groom;
-        let dateTime = doc.data().dateTime;
-        let add = doc.data().add;
-        setBride(bride);
-        setGroom(groom);
-        setDateTime(dateTime);
-        setAdd(add);
+        if (!doc.data()) {
+          console.log("okok");
+          setBride("Bride");
+          setGroom("Groom");
+          setAdd("some where very nice");
+          setDateTime("2022-12-31T12:00");
+          setPic("/images/red_flower.jpeg")
+        }
+        else {
+          let bride = doc.data().bride;
+          let groom = doc.data().groom;
+          let dateTime = doc.data().dateTime;
+          let add = doc.data().add;
+          let pic = doc.data().pic;
+          setBride(bride);
+          setGroom(groom);
+          setDateTime(dateTime);
+          setAdd(add);
+          setPic(pic);
+        }
       });
   }, []);
 
@@ -97,6 +104,7 @@ const InvitationRsvp = () => {
                 add={add}
                 dateTime={dateTime}
                 userid={userid}
+                pic={pic}
               />
             </TemplateWrap>
             <FormWrap>

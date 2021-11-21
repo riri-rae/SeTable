@@ -8,6 +8,8 @@ import GuestlistPack from "./components/GuestlistPack";
 import Header from "./components/Header";
 import Swal from "sweetalert2";
 import Loading from "./components/Loading";
+import { RiStickyNoteLine } from "react-icons/ri";
+
 
 // const Button = styled.button`
 //   display: flex;
@@ -22,6 +24,15 @@ import Loading from "./components/Loading";
 //   font-size: 1rem;
 //   cursor: pointer;
 // `;
+
+const Bg = styled.div`
+  background-image: url("/images/tablebg.jpeg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+`;
 const Wrap = styled.div`
   box-shadow: 0px 0px 10px 6px rgba(138, 105, 90, 0.5);
   min-height: 100vh;
@@ -105,18 +116,24 @@ const SubTitleContainer = styled(MainTitleContainer)`
   margin-right: 20px;
   overflow-x: scroll;
   background-color: #fff;
-  &:last-child {
+  /* &:last-child {
     padding-bottom: 20px;
-  }
+  } */
 `;
 // const Table = styled.table`
 //   overflow-x: scroll;
 //   white-space: nowrap;
 // `;
 
-const Empty = styled.div`
-  height:20px;
+// const Empty = styled.div`
+//   height: 46px;
+// `;
 
+const EmptyIcon = styled(RiStickyNoteLine)`
+  font-size: 50px;
+  color: #ddd;
+  min-height: 50px important;
+ 
 `;
 
 const Title = styled.div`
@@ -135,21 +152,7 @@ const Count = styled(Title)`
  
 `;
 
-const DropBtn = styled.button`
-  /* transform: rotate(90deg); */
-  margin-left: 16px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
-const DropIcon = styled.p`
-color: #9B5B5B;
-transform: ${(props) => (props.display ? "rotate(0deg)" : 'rotate(180deg)')};
-transition: all 0.3s ease-in-out;
-`;
 
 const Hr = styled.hr`
   width: 100%;
@@ -164,6 +167,7 @@ const Th = styled.th`
   color: #574e56;
   font-size: 16px;
 `;
+
 
 const Button = styled.button`
   font-weight: 400;
@@ -213,6 +217,26 @@ const Button = styled.button`
   &:active {
     top: 1px;
   }
+`;
+const DropBtn = styled.button`
+  margin-left: 16px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 7px 1px rgba(114, 114, 114,0.8);
+  position: relative;
+  &:active {
+    top: 2px;
+  }
+
+`;
+
+const DropIcon = styled.p`
+color: #9B5B5B;
+transform: ${(props) => (props.display ? "rotate(0deg)" : 'rotate(180deg)')};
+transition: all 0.3s ease-in-out;
 `;
 
 
@@ -321,7 +345,7 @@ function GuestList({ setDeleteId }) {
     <>
       <Header />
       {user ?
-        <>
+        <Bg>
           <Wrap>
             <Container>
               <BlockWrap>
@@ -401,7 +425,7 @@ function GuestList({ setDeleteId }) {
                         )}
                       </tbody>
                     </table>
-                    : <Empty>It's Empty!</Empty>}
+                    : <EmptyIcon />}
                 </SubTitleContainer>
 
                 <MainTitleContainer>
@@ -479,7 +503,7 @@ function GuestList({ setDeleteId }) {
                         )}
                       </tbody>
                     </table>
-                    : <Empty>It's Empty!</Empty>}
+                    : <EmptyIcon />}
                 </SubTitleContainer>
 
                 <MainTitleContainer>
@@ -555,12 +579,12 @@ function GuestList({ setDeleteId }) {
                         )}
                       </tbody>
                     </table>
-                    : <Empty>It's Empty!</Empty>}
+                    : <EmptyIcon />}
                 </SubTitleContainer>
               </BlockWrap>
             </Container>
           </Wrap>
-        </> : <Loading />}
+        </Bg> : <Loading />}
     </>
   );
 }

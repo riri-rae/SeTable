@@ -25,7 +25,7 @@ const Container = styled.div`
 `;
 
 const CenterBg = styled.div`
-  background-image: url("/images/homepage-full.jpg");
+  background-image: url("/images/homepage-full.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -225,7 +225,7 @@ const HomePage = () => {
       .collection("invitation").doc("template")
       .onSnapshot((doc) => {
         if (!doc.data()) {
-          setGetDate('2021-12-31T12:00')
+          setGetDate('')
         } else {
           //console.log(doc.data().dateTime)
           setGetDate(doc.data().dateTime)
