@@ -50,10 +50,6 @@ const Label = styled.div`
   line-height: 32px;
 `;
 
-const EditText = styled.div`
-  font-size: 20px;
-  flex-direction: row;
-`;
 
 const SelectStyle = styled(Select)`
  min-width: 160px;
@@ -107,7 +103,6 @@ const RemoveButton = styled(Button)`
 
 `;
 
-// function RsvpPack({ data, submit, setData, data }) {
 function RsvpPack({ allData, setAllData, index }) {
 
   function handelRemove(e) {

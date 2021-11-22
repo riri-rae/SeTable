@@ -47,16 +47,19 @@ const CenterWrap = styled.div`
 `;
 
 const ContentWrap = styled.div`
-  position: absolute;
-  top:  7rem;
+  position: fixed;
+  top:  50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 `;
 
 const TopWrap = styled.div`
   font-size: 28px;
   letter-spacing: 2px;
   font-weight: 600;
+  font-size: 36px;
+  letter-spacing: 4px;
+
 `;
 
 const TextLine = styled.div`
@@ -64,10 +67,7 @@ const TextLine = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 30%;
-  @media (max-width: 1440px) {
-    padding-top: 10%;
-  }
+  font-family: 'Dancing Script';
 `;
 
 const InputLine = styled.div`
@@ -119,18 +119,17 @@ const CountDown = styled.div`
   font-size: 24px;
   display: flex;
   justify-content: center;
-  background-color: rgb(221, 177, 154, 0.5);
+  /* background-color: rgb(221, 177, 154, 0.5); */
   padding: 16px 24px;
-  border: 3px solid rgb(221, 177, 154, 0.7);;
-  box-shadow: 0px 0px 5px 5px rgba(221, 177, 154, 0.3);
+  /* border: 3px solid rgb(221, 177, 154, 0.7);;
+  box-shadow: 0px 0px 5px 5px rgba(221, 177, 154, 0.3); */
   /* background-color: rgba(184, 171, 155, 0.2); */
  
 `;
 const BgWrap = styled.div`
-  width: 80px;
-  /* height: 200px; */
+  width: 120px;
+  height: 120px;
   margin: 30px;
-  /* position: relative; */
   border-radius: 5px;
   background-color: rgb(246, 235, 229);
   box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
@@ -149,11 +148,13 @@ const CountDownbg = styled.div`
 `;
 
 const Time = styled.div`
-  font-size: 36px;
+  font-size: 42px;
+  padding: 8px;
+  font-family: 'Dancing Script';
 `;
 
 const Content = styled.div`
-  font-size: 22px;
+  font-size: 20px;
 `;
 
 const LoadingFrame = styled.div`
@@ -304,21 +305,6 @@ const HomePage = () => {
       {userName ?
         <>
           <Container>
-            {/* <TopWrap>
-          <div>Hello {userName} , </div>
-          <div>Let's set your event time!</div>
-          <InputLine>
-            <Input
-              id="date"
-              type="datetime-local"
-              lang="en-US"
-              name="date"
-              value={getDate}
-              onChange={(e) => setGetDate(e.target.value)}
-            />
-            <Button onClick={saveChange}>Save</Button>
-          </InputLine>
-        </TopWrap> */}
             <CenterBg>
               <CenterWrap>
 

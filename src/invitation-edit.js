@@ -13,14 +13,13 @@ import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import "firebase/firestore";
 
 const Container = styled.div`
-background-color: #FCF6EF;
+  background-color: #fcf6ef;
   font-family: "Karla", sans-serif;
   /* font-family: "Helvetica Neue", sans-serif; */
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100vw;
-  /* max-height: 100vh; */
   max-height: calc(100vh - 80px);
   overflow: hidden;
   /* @media (max-width: 1440px) {
@@ -47,8 +46,8 @@ const Frame = styled.div`
 `;
 
 const Edit = styled.div`
-  color:#5B5151;
-  box-sizing: border-box ;
+  color: #5b5151;
+  box-sizing: border-box;
   font-size: 24px;
   min-width: 40vw;
   display: flex;
@@ -56,11 +55,7 @@ const Edit = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* border: 4px solid #a49393; */
   margin: 16px;
-
-  /* border-bottom: 4px solid #a49393; */
-
   padding: 20px;
   @media (max-width: 1440px) {
     min-width: 36vw;
@@ -86,7 +81,6 @@ const EditText = styled.div`
   width: 100%;
   padding: 0px;
   text-align: center;
-  /* font-family: "Karla", sans-serif; */
 `;
 
 const Label = styled.label`
@@ -104,6 +98,9 @@ const InputWrap = styled.div`
   justify-content: flex-start;
   line-height: 20px;
   margin: 16px;
+  @media (max-width: 1440px) {
+    margin: 8px;
+  }
 `;
 
 const Input = styled.input`
@@ -135,7 +132,6 @@ const Select = styled.select`
   padding: 4px;
 `;
 
-
 const Textarea = styled.textarea`
   resize: none;
   height: 64px;
@@ -149,19 +145,6 @@ const Textarea = styled.textarea`
   outline: none;
   padding: 4px;
 `;
-
-// const Button = styled.button`
-
-//   margin-left: 4px;
-
-//   color: #574e56;
-//   border: 1px solid #ddd;
-//   background: #fff;
-//   border-radius: 5px;
-//   font-size: 1rem;
-//   cursor: pointer;
-//   margin-top: 8px;
-// `;
 
 const Button = styled.button`
   position: relative;
@@ -235,22 +218,22 @@ const CheckWrap = styled.div`
     text-decoration: none;
     color: #d48c70;
   }
+  &:active ${CheckRsvp} {
+    outline: none;
+  }
+  @media (max-width: 1440px) {
+    margin-top: 20px;
+  }
 `;
 
 const ArrowIcon = styled(HiOutlineArrowCircleRight)`
   font-size: 30px;
   margin-left: 4px;
-  /* color: #574e56; */
-  /* &:hover {
-    color: #d48c70;
-  } */
 `;
-
 
 const InvitationEdit = () => {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
-
 
   const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
@@ -270,17 +253,18 @@ const InvitationEdit = () => {
           setGroom("Groom");
           setAdd("some where very nice");
           setDateTime("2022-12-31T12:00");
-          setPic("/images/red_flower.jpeg")
+          setPic("/images/red_flower.jpeg");
         } else if (
           doc.data().dateTime &&
           !doc.data().bride &&
           !doc.data().groom &&
-          !doc.data().add
+          !doc.data().add &&
+          !doc.data().pic
         ) {
           setBride("Bride");
           setGroom("Groom");
           setAdd("some where very nice");
-          // setPic("/images/red_flower.jpeg")
+          setPic("/images/red_flower.jpeg");
           let dateTime = doc.data().dateTime;
           setDateTime(dateTime);
         } else {
@@ -311,7 +295,7 @@ const InvitationEdit = () => {
           groom,
           dateTime,
           add,
-          pic
+          pic,
         })
         .then(() => {
           Swal.fire({
@@ -343,14 +327,11 @@ const InvitationEdit = () => {
 
             <Edit>
               <Frame />
-              <EditTitle>Edit your custom information</EditTitle>
+              <EditTitle>Edit Your Custom Information</EditTitle>
               <EditText>
                 <InputWrap>
                   <Label>Theme:</Label>
-                  <Select
-                    value={pic}
-                    onChange={(e) => setPic(e.target.value)}
-                  >
+                  <Select value={pic} onChange={(e) => setPic(e.target.value)}>
                     <option value="/images/red_flower.jpeg">TheOne</option>
                     <option value="/images/orange.jpeg">Passionate</option>
                     <option value="/images/yellowbg.jpeg">SunShine</option>
@@ -389,14 +370,6 @@ const InvitationEdit = () => {
                 </InputWrap>
                 <InputWrap>
                   <Label htmlFor="add">Address:</Label>
-                  {/* <Input
-                    type="text"
-                    id="add"
-                    placeholder="Enter the addrsss"
-                    value={add}
-                    onChange={(e) => setAdd(e.target.value)}
-                  /> */}
-
                   <Textarea
                     placeholder="Enter the addrsss"
                     value={add}

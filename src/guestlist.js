@@ -11,20 +11,6 @@ import Loading from "./components/Loading";
 import { RiStickyNoteLine } from "react-icons/ri";
 
 
-// const Button = styled.button`
-//   display: flex;
-//   align-items: center;
-//   margin: 16px;
-//   margin-left:4px;
-//   padding: 0.5rem;
-//   color: #574e56;
-//   border: 1px solid #ddd;
-//   background: #fff;
-//   border-radius: 16px;
-//   font-size: 1rem;
-//   cursor: pointer;
-// `;
-
 const Bg = styled.div`
   background-image: url("/images/tablebg.jpeg");
   background-position: right;

@@ -19,16 +19,6 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-// const Container = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   max-width: 1920px;
-//   max-height: 100%;
-//   margin: 0 auto;
-//   position: relative;
-// `;
-
 const TemplateWrap = styled.div`
   min-height: 100vh;
   width: calc(100vw - 40vw);

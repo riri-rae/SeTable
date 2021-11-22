@@ -5,13 +5,10 @@ import "firebase/firestore";
 import "firebase/auth";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "./components/Header";
-import { Parallax } from "react-parallax";
 import Loading from "./components/Loading";
 import { CgPlayListRemove } from "react-icons/cg";
 
-// const BlockWrap = styled.div`
-//   position: relative;
-// `;
+
 
 const Bg = styled.div`
   background-image: url("/images/greenbg.jpeg");
@@ -428,12 +425,9 @@ function Table({ deleteId }) {
 
   return (
     <>
-      {/* bgImage={image1}  */}
       <Header />
       {tables !== undefined ? (
         <Bg>
-          {/* <ParallaxDiv strength={200} bgImage={image1}> */}
-          {/* <BackGroundPic /> */}
           <Container>
             <DragDropContext onDragEnd={onDragEnd}>
               <Block>
@@ -512,7 +506,6 @@ function Table({ deleteId }) {
       ) : (
         <Loading />
       )}
-      {/* </ParallaxDiv> */}
     </>
   );
 }
