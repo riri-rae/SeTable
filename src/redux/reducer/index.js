@@ -1,15 +1,10 @@
 import { combineReducers } from 'redux';
 
-import currentTimezone from './currentTimezone';
-import timezones from './timezones';
-import clocks from './clocks';
-import user from './user';
+import getUserReducer from './getUserReducer';
 
 const reducers = combineReducers({
-  currentTimezone,
-  timezones,
-  clocks,
-  user,
+  user: getUserReducer
 });
 
 export default reducers;
+

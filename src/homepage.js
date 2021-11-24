@@ -5,9 +5,9 @@ import Loading from "./components/Loading";
 // import { Parallax } from "react-parallax";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-import "firebase/auth";
 import Swal from 'sweetalert2'
 import ReactLoading from 'react-loading';
+import { useSelector } from "react-redux";
 
 
 
@@ -134,7 +134,7 @@ const Content = styled.div`
 
 const HomePage = () => {
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
+  const user = useSelector((state) => state.user);
 
   const [userName, setUserName] = useState(null);
   const [enterDate, setEnterDate] = useState('');
@@ -228,27 +228,6 @@ const HomePage = () => {
       }
     }
   }, [getDate])
-
-
-
-  // function capitalizeFirstLetter(string) {
-  //   return string.charAt(0).toUpperCase() + string.slice(1);
-  // }
-  // const date = new window.Date(getDate);
-  // const year = date.getFullYear();
-  // const month = date.toLocaleString("en-US", { month: "long" });
-  // const mm = capitalizeFirstLetter(month);
-  // const dd = date.getDate();
-  // const weekday = date.toLocaleString("en-US", { weekday: "long" });
-  // const wd = capitalizeFirstLetter(weekday);
-
-  // setYear(getyear)
-  // setMm(getmm)
-  // setDd(getdd)
-  // setWd(getwd)
-
-  // console.log(year, mm, dd, wd)
-
 
 
   return (

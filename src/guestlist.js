@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-import "firebase/auth";
 import GuestlistPack from "./components/guestlist/GuestlistPack";
 import GuestlistMain from "./components/guestlist/GuestlistMain";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import { RiStickyNoteLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 
 const Bg = styled.div`
@@ -84,6 +84,8 @@ const Th = styled.th`
 
 
 function GuestList({ setDeleteId }) {
+  const user = useSelector((state) => state.user);
+
   const [allData, setAllData] = useState([]);
   const [yesCount, setYesCount] = useState("");
   const [notCount, setNotCount] = useState("");
@@ -119,7 +121,6 @@ function GuestList({ setDeleteId }) {
   }
 
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
 
   useEffect(() => {
     db.collection("users")

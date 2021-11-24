@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
@@ -99,10 +99,6 @@ const Login = () => {
                     console.log(user.uid, name, user.email);
                     setUserInfo(user);
                 })
-                .then(() => {
-                    history.push('/homepage');
-                    // isLoading(false);
-                })
                 .catch((error) => {
                     switch (error.code) {
                         case "auth/invalid-email":
@@ -122,10 +118,6 @@ const Login = () => {
         } else if (activeItem === 'login') {
             firebase.auth()
                 .signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    history.push('/homepage');
-                    // isLoading(false);
-                })
                 .catch((error) => {
                     switch (error.code) {
                         case "auth/invalid-email":

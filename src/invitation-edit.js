@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-import "firebase/auth";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
+import { Button } from "./components/style/generalStyle";
+import { saveChange } from "./utils/firebaseFunction";
 import Swal from "sweetalert2";
 import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
+import { useSelector } from "react-redux";
+import { onSnapshotInvitationDfault } from "./utils/firebaseFunction";
 
 import "firebase/firestore";
 
@@ -143,53 +146,6 @@ const Textarea = styled.textarea`
   padding: 4px;
 `;
 
-const Button = styled.button`
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 16px;
-  padding: 0.4rem 0.8rem;
-  color: #574e56;
-  border: 1px solid #ddd;
-  border-radius: 16px;
-  font-size: 20px;
-  cursor: pointer;
-  transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s; /* Safari */
-  &:hover {
-    transition-duration: 0.1s;
-    background-color: #d48c70;
-    color: #fff;
-  }
-  &:after {
-    content: "";
-    display: white;
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: all 0.4s;
-    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
-  }
-
-  &:active:after {
-    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    transition: 0s;
-  }
-
-  &:active {
-    top: 1px;
-  }
-`;
-
 const CheckRsvp = styled.div`
   color: #574e56;
   &:hover {
@@ -229,7 +185,7 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
 
 const InvitationEdit = () => {
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
+  const user = useSelector((state) => state.user);
 
   const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
@@ -238,6 +194,41 @@ const InvitationEdit = () => {
   const [add, setAdd] = useState("");
 
   useEffect(() => {
+    // function getDefault(doc) {
+    //   if (!doc.data()) {
+    //     setBride("Bride");
+    //     setGroom("Groom");
+    //     setAdd("some where very nice");
+    //     setDateTime("2022-12-31T12:00");
+    //     setPic("/images/red_flower.jpeg");
+    //   } else if (
+    //     doc.data().dateTime &&
+    //     !doc.data().bride &&
+    //     !doc.data().groom &&
+    //     !doc.data().add &&
+    //     !doc.data().pic
+    //   ) {
+    //     setBride("Bride");
+    //     setGroom("Groom");
+    //     setAdd("some where very nice");
+    //     setPic("/images/red_flower.jpeg");
+    //     let dateTime = doc.data().dateTime;
+    //     setDateTime(dateTime);
+    //   } else {
+    //     let bride = doc.data().bride;
+    //     let groom = doc.data().groom;
+    //     let dateTime = doc.data().dateTime;
+    //     let add = doc.data().add;
+    //     let pic = doc.data().pic;
+    //     setBride(bride);
+    //     setGroom(groom);
+    //     setDateTime(dateTime);
+    //     setAdd(add);
+    //     setPic(pic);
+    //   }
+    // }
+    // onSnapshotInvitationDfault(user.uid, getDefault);
+
     db.collection("users")
       .doc(user.uid)
       .collection("invitation")
@@ -373,6 +364,8 @@ const InvitationEdit = () => {
                 </InputWrap>
               </EditText>
               <Button onClick={saveChange}>Save</Button>
+              {/* <Button onClick={(uid, bride, groom, dateTime, add, db, pic, Swal) => saveChange(uid, bride, groom, dateTime, add, db, pic, Swal)}>Save</Button> */}
+
               <CheckWrap>
                 <CheckRsvp
                   onClick={() => {

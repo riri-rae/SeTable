@@ -3,12 +3,12 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import updateHistory from "./utils/updateHistory";
 import "firebase/firestore";
-import "firebase/auth";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import { CgPlayListRemove } from "react-icons/cg";
 import { RiCheckboxBlankCircleFill } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 const Bg = styled.div`
   background-image: url("/images/greenbg.jpeg");
@@ -247,9 +247,9 @@ function Table() {
   const [tables, setTables] = useState([]);
   const [veggie, setVeggie] = useState([]);
   const [baby, setBaby] = useState([]);
+  const user = useSelector((state) => state.user);
 
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
 
   useEffect(() => {
     db.collection("users")
@@ -304,14 +304,12 @@ function Table() {
     if (!destination) {
       return tables;
     }
-
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) {
       return tables;
     }
-
     if (
       source.droppableId === destination.droppableId &&
       source.index !== destination.index
@@ -365,11 +363,7 @@ function Table() {
     afterDel.splice(0, 1);
     const newList = [[...table, ...tables[0]], ...afterDel];
     setTables(newList);
-
-    const updateHistory = JSON.stringify(newList);
-    const update = {};
-    update.guestlist = updateHistory;
-    db.collection("users").doc(user.uid).update(update);
+    updateHistory(newList);
   }
 
   function addTable() {
@@ -377,7 +371,6 @@ function Table() {
     const newTable = [...tables, []];
     updateHistory(newTable)
   }
-
 
 
   return (

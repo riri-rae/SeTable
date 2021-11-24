@@ -11,14 +11,18 @@ import InvitationRsvp from "./invitation-rsvp";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { getUser } from "./redux/action-cretors";
 
 
 const App = () => {
 
+  const dispatch = useDispatch();
   const [user, setUser] = useState();
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((currentUser) => {
+      dispatch(getUser(currentUser))
       setUser(currentUser);
     })
   }, [])
@@ -30,7 +34,8 @@ const App = () => {
           {user === undefined ? (<Loading />) : (
             <Switch>
               <Route exact path="/">
-                <LandingPage />
+                {user ? <Redirect to="/homepage" /> : <LandingPage />}
+
               </Route>
               <Route exact path="/invitation-rsvp/404" component={Notfound} />
               <Route exact path="/invitation-rsvp/:userid" component={InvitationRsvp} />

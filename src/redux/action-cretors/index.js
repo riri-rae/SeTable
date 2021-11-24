@@ -1,22 +1,6 @@
-export const getTimeZone = (timezone) => {
+export const getUser = (user) => {
     return {
-        type: "TIMEZONE",
-        payload: timezone
-    }
-
-}
-
-export const getAllCountry = (country) => {
-    return {
-        type: "ALL_COUNTRIES",
-        payload: country
-    }
-
-}
-
-export const getSelectClocks = (slelctedClocks) => {
-    return {
-        type: "SELECTED_CLOCKS",
-        payload: slelctedClocks
+        type: "User",
+        payload: user
     }
 }

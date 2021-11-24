@@ -55,17 +55,6 @@ const InputWrap = styled.div`
   display: flex;
   line-height: 20px;
   margin: 16px;
-
-  /* background-color: #FFF; */
-    /* height: 600px;
-    width: 600px;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 0px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding: 0px;
-    text-align:center; */
   
 `;
 
