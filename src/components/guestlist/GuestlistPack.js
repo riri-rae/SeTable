@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import firebase from "../utils/firebase";
+import firebase from "../../utils/firebase";
+import updateHistory from "../../utils/updateHistory";
 import "firebase/firestore";
 import "firebase/auth";
 import Swal from 'sweetalert2'
-import { v4 as uuid } from "uuid";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const Tr = styled.tr`
@@ -56,12 +56,6 @@ const Td = styled.td`
     width: 12rem;
   }
 `;
-// const SelectStyle = styled(Select)`
-//  width: 146px;
-//  font-size: 16px;
-//  line-height: 18px!important;
-//  margin: 0 auto;
-// `;
 
 const Select = styled.select`
   box-shadow: none;
@@ -91,30 +85,6 @@ const Textarea = styled.textarea`
   box-sizing: border-box;
   font-size: 14px;
 `;
-// const Button = styled.button`
-//   font-weight: 400;
-//   display: flex;
-//   align-items: center;
-//   margin: 16px;
-//   margin-left: 4px;
-//   padding: 0.5rem;
-//   color: #574e56;
-//   border: 1px solid #574e56;
-//   background: #fff;
-//   border-radius: 16px;
-//   font-size: 1rem;
-//   cursor: pointer;
-//   &:hover{
-//     transition-duration: 0.1s;
-//     background-color: #A49393;
-//     color:#fff
-//   }
-//   :active {
-//   background-color: #DCAE96;
-//   box-shadow: 1px 2px #ccc;
-//   transform: translateY(3px);
-// }
-// `;
 
 const Button = styled.button`
 font-weight: 600;
@@ -160,25 +130,10 @@ function GuestlistPack({ data }) {
   const [note, setNote] = useState(data.note);
 
   const [tag, setTag] = useState(data.tag);
-  // const tags = [
-  //   { value: 'brides-side', label: 'Bride Side' },
-  //   { value: 'groom-side', label: 'Groom Side' }
-  // ]
   const [role, setRole] = useState(data.role);
-  // const roles = [
-  //   { value: 'friend', label: 'Friend' },
-  //   { value: 'family', label: 'Family' }
-  // ]
   const [veggie, setVeggie] = useState(data.veggie);
-  // const veggies = [
-  //   { value: 'yes', label: 'Yes' },
-  //   { value: 'no', label: 'No' }
-  // ]
   const [baby, setBaby] = useState(data.baby);
-  // const babys = [
-  //   { value: 'yes', label: 'Yes' },
-  //   { value: 'no', label: 'No' }
-  // ]
+
 
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
@@ -275,28 +230,16 @@ function GuestlistPack({ data }) {
         deleteTable.splice(tableInd, 1);
         console.log(deleteTable);
         historyList.splice(tablesInd, 1, deleteTable);//
+        // console.log(historyList);
+        updateHistory(historyList)
 
-        console.log(historyList);
-
-        const updateHistory = JSON.stringify(historyList);
-        const update = {};
-        update.guestlist = updateHistory;
-        //console.log(updateHistory);
-
-        db.collection("users").doc(user.uid).update(update);
       });
   }
 
   return (
+
     <Tr>
       <Td>
-        {/* <Input
-          type="text"
-          id="bride-name"
-          placeholder="Edit"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        /> */}
         <NameDiv><GuestName>{name}</GuestName></NameDiv>
       </Td>
       <Td>
@@ -317,14 +260,6 @@ function GuestlistPack({ data }) {
           <option value="bride-side">Brides' Side</option>
           <option value="groom-side">Groom's Side</option>
         </Select>
-        {/* 
-        <SelectStyle
-          placeholder="Edit"
-          value={tag}
-          onChange={(value) => {
-            setTag(value)
-          }}
-          options={tags} /> */}
       </Td>
       <Td>
         <Select value={role} onChange={(e) => setRole(e.target.value)}>
@@ -334,13 +269,6 @@ function GuestlistPack({ data }) {
           <option value="friend">Friend</option>
           <option value="family">Family</option>
         </Select>
-        {/* <SelectStyle
-          placeholder="Edit"
-          value={role}
-          onChange={(value) => {
-            setRole(value)
-          }}
-          options={roles} /> */}
       </Td>
       <Td>
         <Select value={veggie} onChange={(e) => setVeggie(e.target.value)}>
@@ -350,14 +278,6 @@ function GuestlistPack({ data }) {
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </Select>
-        {/* 
-        <SelectStyle
-          placeholder="Edit"
-          value={veggie}
-          onChange={(value) => {
-            setVeggie(value)
-          }}
-          options={veggies} /> */}
       </Td>
       <Td>
         <Select value={baby} onChange={(e) => setBaby(e.target.value)}>
@@ -367,14 +287,6 @@ function GuestlistPack({ data }) {
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </Select>
-        {/* 
-        <SelectStyle
-          placeholder="Edit"
-          value={baby}
-          onChange={(value) => {
-            setBaby(value)
-          }}
-          options={babys} /> */}
       </Td>
 
       <Td>
@@ -383,14 +295,6 @@ function GuestlistPack({ data }) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
         ></Textarea>
-
-        {/* <Input
-          type="text"
-          id="note"
-          placeholder="Add note"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-        /> */}
       </Td>
       <Td>
         <Button onClick={saveChange}>Save</Button>

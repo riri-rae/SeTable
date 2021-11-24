@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-//import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import LandingPage from "./landingpage";
 import HomePage from "./homepage";
 import Loading from "./components/Loading";
+import Notfound from "./components/Notfound";
 import Table from "./table";
 import GuestList from "./guestlist";
 import InvitationEdit from "./invitation-edit";
@@ -15,10 +15,6 @@ import 'firebase/auth';
 
 const App = () => {
 
-  // undefined 抓資料 (isLoading)
-  // null沒有
-  // {}有
-
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -26,36 +22,35 @@ const App = () => {
       setUser(currentUser);
     })
   }, [])
-  console.log(user);
 
   return (
     <>
       <Router>
-        {/* <Route exact path="/" component={LandingPage} /> */}
-        <Route exact path="/">
-          <LandingPage /> </Route>
-        <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
-        {user === undefined ? (<Loading />) : (
-          <>
-            {user !== null ? (
-              <>
-                <Route path="/homepage">
-                  {user ? <HomePage /> : <Redirect to="/" />}
-                </Route>
-                <Route path="/invitation-edit">
-                  {user ? <InvitationEdit /> : <Redirect to="/" />}
-                </Route>
-                <Route path="/guestlist">
-                  {user ? <GuestList /> : <Redirect to="/" />}
-                </Route>
-                <Route path="/table">
-                  {user ? <Table /> : <Redirect to="/" />}
-                </Route>
-              </>
-            ) : (<LandingPage />)
-            }
-          </>)}
-
+        <Switch>
+          {user === undefined ? (<Loading />) : (
+            <Switch>
+              <Route exact path="/">
+                <LandingPage />
+              </Route>
+              <Route exact path="/invitation-rsvp/404" component={Notfound} />
+              <Route exact path="/invitation-rsvp/:userid" component={InvitationRsvp} />
+              <Route path="/homepage">
+                {user ? <HomePage /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/invitation-edit">
+                {user ? <InvitationEdit /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/guestlist">
+                {user ? <GuestList /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/table">
+                {user ? <Table /> : <Redirect to="/" />}
+              </Route>
+              <Route exact path="" component={Notfound} />
+            </Switch>
+          )}
+          <Route exact path="" component={Notfound} />
+        </Switch>
       </Router>
     </>
 

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 //import Select from 'react-select'
 import { useParams } from "react-router";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import RsvpTemplate from "./components/RsvpTemplate";
-import RsvpMain from "./components/RsvpMain";
+import RsvpMain from "./components/rsvp/RsvpMain";
 import Loading from "./components/Loading";
-
-
 
 
 const Container = styled.div`
@@ -43,6 +42,7 @@ const FormWrap = styled.div`
 `;
 
 const InvitationRsvp = () => {
+  const history = useHistory();
   const { userid } = useParams();
 
   const db = firebase.firestore();
@@ -54,13 +54,16 @@ const InvitationRsvp = () => {
   const [pic, setPic] = useState("/images/red_flower.jpeg");
 
   useEffect(() => {
+    console.log(userid);
     db.collection("users")
       .doc(userid)
       .collection("invitation")
       .doc("template")
       .onSnapshot((doc) => {
         if (!doc.data()) {
-          console.log("okok");
+          console.log(userid);
+          history.replace({ pathname: '404' })
+          // console.log("okok");
           setBride("Bride");
           setGroom("Groom");
           setAdd("some where very nice");

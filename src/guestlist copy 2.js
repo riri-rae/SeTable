@@ -199,6 +199,7 @@ function GuestList({ setDeleteId }) {
                 </SubTitleContainer>
                 <GuestlistMain title={'Not Sure'} count={notCount} click={clickNotSure} addValue={addNotSure} setName={setAddNotSure} status={"notSure"} display={display2} />
                 <SubTitleContainer display={display2}>
+
                   {notCount !== '0' ?
                     <table>
                       {renderSubTitle()}

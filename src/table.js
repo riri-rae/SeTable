@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
+import updateHistory from "./utils/updateHistory";
 import "firebase/firestore";
 import "firebase/auth";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import { CgPlayListRemove } from "react-icons/cg";
-
-
+import { RiCheckboxBlankCircleFill } from "react-icons/ri";
 
 const Bg = styled.div`
   background-image: url("/images/greenbg.jpeg");
@@ -24,15 +24,11 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 10px 6px rgba(138, 105, 90, 0.5);
-  /* border-top-left-radius: 20px;
-  border-top-right-radius: 20px; */
   border-bottom: 20px solid #a49393;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   margin: 0 auto;
-  /* margin-top: 300px; */
   padding-top: 420px;
   @media (max-width: 1440px) {
     width: 90%;
@@ -40,14 +36,10 @@ const Container = styled.div`
 `;
 
 const Block = styled.div`
-  /* z-index: 2; */
   position: fixed;
   top: 80px;
-  /* left: 50%;
-  transform: translateX(-50%); */
   border: 1px solid #a49393;
   background: #ccafa5;
-  /* border-radius: 16px; */
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   width: 80%;
@@ -73,15 +65,34 @@ const BlockTitleSmall = styled(BlockTitle)`
   font-weight: 400;
 `;
 
+const Describe = styled.div`
+  display: flex;
+  position: absolute;
+  right: 60px;
+  top: 330px;
+`;
+
+const DescribeText = styled.div`
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+`;
+
+const ColorG = styled(RiCheckboxBlankCircleFill)`
+  font-size: 20px;
+  color: #96baa9;
+  margin: 0 2px;
+`;
+const ColorY = styled(ColorG)`
+  color: #fcebcf;
+`;
+
 const Button = styled.button`
-  z-index: 5;
   position: fixed;
   top: 422px;
-  /* margin-top:20px; */
   display: flex;
   align-items: center;
   margin: 12px auto;
-  /* margin-top: 204px; */
   padding: 0.5rem;
   background-color: #dcae96;
   box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.5);
@@ -132,7 +143,6 @@ const TaskContainer = styled.div`
   & > :nth-child(2) {
     top: 400px;
   }
-
   & > :last-child {
     margin-bottom: 30px;
   }
@@ -182,35 +192,34 @@ const Task = styled.div`
   padding: 6px;
   margin: 8px;
   transition: background-color 0.2s ease;
-  background-color: ${(props) => (props.isDragging ? "fff" : "white")};
+  /* background-color: ${(props) => (props.isDragging ? "fff" : "white")}; */
   background-color: ${(props) => {
     switch (props.color) {
-      case 'veggie':
-        return "#9BC6B2";
-      case 'baby':
+      case "veggie":
+        return "#96BAA9";
+      case "baby":
         return "#FCEBCF";
       default:
         return "FFF9F2";
     }
   }};
-  /* border: 3px ${(props) => (props.color ? "solid #E9DDD4" : "solid #EBBBB0")}; */
-  border: 3px ${(props) => {
+
+  border: 3px
+    ${(props) => {
     switch (props.color) {
-      case 'veggie':
+      case "veggie":
         return "solid #E9DDD4";
-      case 'baby':
+      case "baby":
         return "solid #e6d2c3";
       default:
         return "solid #EBBBB0";
     }
   }};
-  /* border: 3px ${(props) => (props.color ? "solid #E9DDD4" : "solid #EBBBB0")}; */
-  /* color: ${(props) => (props.color ? "#F4FCF9" : "#A47E84")}; */
   color: ${(props) => {
     switch (props.color) {
-      case 'veggie':
+      case "veggie":
         return "#F4FCF9";
-      case 'baby':
+      case "baby":
         return "#C48E75";
       default:
         return "#89605B";
@@ -234,36 +243,13 @@ const GuestName = styled.p`
   box-sizing: border-box;
 `;
 
-const BackGroundPic = styled.img`
-  background-image: url("/images/red_flower.jpg");
-  /* background-position: centers;
-  background-repeat: repeat;
-  background-size: cover;
-  width: 50vw;
-  height: 50vh; */
-`;
-// const ParallaxDiv = styled(Parallax)`
-//   height: 100vh;
-// `;
-
-function Table({ deleteId }) {
+function Table() {
   const [tables, setTables] = useState([]);
   const [veggie, setVeggie] = useState([]);
   const [baby, setBaby] = useState([]);
-  // const [myList, setMyList] = useState([]);
-  // const [userName, setUserName] = useState(null);
 
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
-
-  // useEffect(() => {
-  //   db.collection("users")
-  //     .doc(user.uid)
-  //     .get()
-  //     .then((doc) => {
-  //       setUserName(doc.data().name);
-  //     });
-  // }, []);
 
   useEffect(() => {
     db.collection("users")
@@ -306,12 +292,11 @@ function Table({ deleteId }) {
 
   function getColor(id) {
     if (veggie.includes(id)) {
-      return 'veggie';
+      return "veggie";
     } else if (baby.includes(id)) {
-      return 'baby';
+      return "baby";
     }
   }
-
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -340,13 +325,7 @@ function Table({ deleteId }) {
       reorder[Number(source.droppableId)] = theTable;
 
       setTables(reorder);
-      // console.log(reorder);
-      //存json
-      const saveReorder = JSON.stringify(reorder);
-      const reoderData = {};
-      reoderData.guestlist = saveReorder;
-
-      db.collection("users").doc(user.uid).update(reoderData);
+      updateHistory(reorder)
     }
 
     if (source.droppableId !== destination.droppableId) {
@@ -359,52 +338,32 @@ function Table({ deleteId }) {
 
       move[Number(source.droppableId)] = pickTable;
       move[Number(destination.droppableId)] = desTable;
-
-      // let newTables = [];
       setTables(move);
-      // console.log(move);
-      //存json
-      const saveMove = JSON.stringify(move);
-      const reoderMove = {};
-      reoderMove.guestlist = saveMove;
-
-      db.collection("users").doc(user.uid).update(reoderMove);
+      updateHistory(move)
     }
   }
-
-  const image1 = "/images/F857.jpg";
 
   function getStyle(style, snapshot) {
     if (!snapshot.isDropAnimating) {
       return style;
     }
     const { moveTo, curve, duration } = snapshot.dropAnimation;
-    // move to the right spot
     const translate = `translate(${moveTo.x}px, ${moveTo.y}px)`;
-    // const translate = `translate(${moveTo.x}px, ${moveTo.y}px)`;
-    // add a bit of turn for fun
     const rotate = "rotate(1turn)";
     const scale = "scale(1.2)";
 
-    // patching the existing style
     return {
       ...style,
       transform: `${translate} ${scale} ${rotate}`,
-      // slowing down the drop because we can
       transition: `all ${curve} ${duration + 0.4}s`,
     };
   }
 
-
   function removeTable(table, ind) {
-    console.log(ind); //要刪的index
-    console.log(table); //要拿出來的內容
-    console.log(tables); //全部的桌子
     const afterDel = Array.from(tables);
     afterDel.splice(ind, 1);
     afterDel.splice(0, 1);
     const newList = [[...table, ...tables[0]], ...afterDel];
-    console.log(newList);
     setTables(newList);
 
     const updateHistory = JSON.stringify(newList);
@@ -416,12 +375,10 @@ function Table({ deleteId }) {
   function addTable() {
     setTables([...tables, []]);
     const newTable = [...tables, []];
-    console.log(newTable);
-    const updateHistory = JSON.stringify(newTable);
-    const update = {};
-    update.guestlist = updateHistory;
-    db.collection("users").doc(user.uid).update(update);
+    updateHistory(newTable)
   }
+
+
 
   return (
     <>
@@ -435,11 +392,16 @@ function Table({ deleteId }) {
                 <BlockTitleSmall>
                   -Add tables to arrange your guests-
                 </BlockTitleSmall>
+                <Describe>
+                  <DescribeText>
+                    <ColorG /> Vegetarian
+                  </DescribeText>
+                  <DescribeText>
+                    <ColorY /> Baby Seat
+                  </DescribeText>
+                </Describe>
               </Block>
-              <Button
-                type="button"
-                onClick={addTable}
-              >
+              <Button type="button" onClick={addTable}>
                 + Click to Add Table
               </Button>
 

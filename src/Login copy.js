@@ -4,23 +4,6 @@ import { LoginForm } from "../src/components/accountBox/loginForm";
 import { motion } from "framer-motion"
 import { AccountContext } from "../src/components/accountBox/accountContext";
 import { SignupForm } from "../src/components/accountBox/signupForm";
-// const H1 = styled.h1`
-// width: 100%;
-// text-align: center;
-// margin-bottom: 5rem;
-// `;
-
-// const Button = styled.button`
-// margin-top: 2rem;
-// `;
-
-// const Right = styled.div`
-//  /* border: 1px solid #000;
-//  display: flex;
-//  flex-direction: column;
-//  justify-content: center;
-//  align-items: center; */
-// `;
 
 const BoxContainer = styled.div`
   display: flex;
@@ -118,10 +101,6 @@ const expandingTransition = {
 
 
 const Login = () => {
-    // const [activeItem, setActiveItem] = useState('');
-    // const [name, setName] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
 
     const [isExpanded, setExpanded] = useState(false);
     const [active, setActive] = useState("signin");

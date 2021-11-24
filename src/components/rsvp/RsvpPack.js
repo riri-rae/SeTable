@@ -17,13 +17,6 @@ const InputWrap = styled.div`
 `;
 
 const Hr = styled.hr`
-/* background-image: url('/images/hr-light.png');
-background-position: center; */
-/* background-attachment: fixed; */
-/* background-repeat: no-repeat; */
-/* background-size: 100%;
-  width: 600px;
-  height: 30px; */
   height: 2px;
   width: 96%;
   border-radius: 5px;
@@ -106,9 +99,6 @@ const RemoveButton = styled(Button)`
 function RsvpPack({ allData, setAllData, index }) {
 
   function handelRemove(e) {
-    console.log(e.target.value)
-    console.log(index)
-    console.log(allData)
     const changedForm = [...allData];
     console.log(changedForm)
     changedForm.splice(index, 1);
@@ -165,16 +155,6 @@ function RsvpPack({ allData, setAllData, index }) {
             }}
             options={veggies}
           />
-          {/* <Select
-            onChange={(e) => {
-              let allDataInForm = [...allData];
-              allDataInForm[index] = { ...allDataInForm[index], veggie: e.target.value };
-              setAllData(allDataInForm);
-            }}>
-            <option value="" disabled selected>Please Select</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </Select> */}
         </InputWrap>
         <InputWrap>
           <Label>Require baby seat?</Label>
@@ -189,17 +169,6 @@ function RsvpPack({ allData, setAllData, index }) {
             }}
             options={babys}
           />
-
-          {/* <Select
-            onChange={(e) => {
-              let allDataInForm = [...allData];
-              allDataInForm[index] = { ...allDataInForm[index], baby: e.target.value };
-              setAllData(allDataInForm);
-            }}>
-            <option value="" disabled selected>Please Select</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </Select> */}
         </InputWrap>
         <BtnWrap>
           <AddButton

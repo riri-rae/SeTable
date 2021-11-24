@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-//import { useParams } from "react-router";
+import React from "react";
 import styled from "styled-components";
-// import firebase from "../utils/firebase";
-// import "firebase/firestore";
-
-//import { useParams } from "react-router";
 
 const Template = styled.div`
   display: flex;
@@ -28,14 +23,9 @@ const PicWrap = styled.div`
 `;
 
 const BackGround = styled.div`
-  /* background-image: url("/images/red_flower.jpeg"); */
-  /* background-image: url("/images/orange.jpg"); */
-  /* background-image: url("/images/invitation1.png"); */
   background-position: center;
-  /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: cover;
-  /* width: 100%; */
   height: 100vh;
   transition: all 0.5s;
 `;
@@ -104,7 +94,6 @@ const Side = styled.div`
     width: 180px;
 `;
 
-
 const DateWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -135,36 +124,8 @@ const Address = styled.div`
 
 const RsvpTemplate = (props) => {
 
-  // const [year, setYear] = useState("");
-  // const [mm, setMm] = useState("");
-  // const [dd, setDd] = useState("");
-  // const [wd, setWd] = useState("");
-  // const [time, setTime] = useState("");
-
-  // if (!props.dateTime) {
-  //   setYear('Year');
-  //   setMm('Month');
-  //   setDd('Date');
-  //   setTime('Time');
-  //   setWd('Weekday')
-
-  // } else {
-  //   const date = new window.Date(props.dateTime);
-  //   const year = date.getFullYear();
-  //   const month = date.toLocaleString('en-US', { month: "short" })
-  //   const mm = month.toUpperCase();
-  //   const dd = date.getDate();
-  //   const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-  //   const getwd = date.toLocaleString('en-US', { weekday: "long" })
-  //   const wd = getwd.toUpperCase();
-
-  //   console.log(year, month, dd, time, wd)
-  // }
-
-
-
   const date = new window.Date(props.dateTime);
-  const year = date.getFullYear();
+  const year = props.dateTime ? date.getFullYear() : "Year";
   const month = date.toLocaleString('en-US', { month: "short" })
   const mm = month.toUpperCase();
   const dd = date.getDate();
@@ -180,7 +141,6 @@ const RsvpTemplate = (props) => {
       <PicWrap>
         <BackGround style={{ backgroundImage: `url(${props.pic})` }} />
         <ContentWrap>
-          {/* <SaveDate>Save the Date</SaveDate> */}
           <Name>{props.bride}</Name>
           <And>&</And>
           <Name>{props.groom}</Name>
@@ -196,9 +156,6 @@ const RsvpTemplate = (props) => {
           <Address>At {props.add}</Address>
         </ContentWrap>
       </PicWrap>
-      {/* <PicWrap>
-        <PicBt src={picbt} />
-      </PicWrap> */}
     </Template>
   );
 };

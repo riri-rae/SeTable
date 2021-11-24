@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import firebase from "../utils/firebase";
+import firebase from "../../utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
 import { v4 as uuid } from "uuid";

@@ -100,16 +100,6 @@ const Input = styled.input`
   background-color: #fff;
 `;
 
-
-
-const DateTimeWrap = styled.div`
-  font-size: 16px;
-  border-radius: 5px;
-  margin-top: 36px;
-  color: #44342d;
-  font-size: 24px;
-`;
-
 const CountDown = styled.div`
   font-size: 16px;
   border-radius: 5px;
@@ -119,13 +109,9 @@ const CountDown = styled.div`
   font-size: 24px;
   display: flex;
   justify-content: center;
-  /* background-color: rgb(221, 177, 154, 0.5); */
   padding: 16px 24px;
-  /* border: 3px solid rgb(221, 177, 154, 0.7);;
-  box-shadow: 0px 0px 5px 5px rgba(221, 177, 154, 0.3); */
-  /* background-color: rgba(184, 171, 155, 0.2); */
- 
 `;
+
 const BgWrap = styled.div`
   width: 120px;
   height: 120px;
@@ -133,18 +119,6 @@ const BgWrap = styled.div`
   border-radius: 5px;
   background-color: rgb(246, 235, 229);
   box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const CountDownbg = styled.div`
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Time = styled.div`
@@ -157,14 +131,6 @@ const Content = styled.div`
   font-size: 20px;
 `;
 
-const LoadingFrame = styled.div`
-  position: fixed;
-  top:50%;
-  left:50%;
-  transform: translate(-50%, -50%);
-`;
-
-
 
 const HomePage = () => {
   const db = firebase.firestore();
@@ -173,7 +139,6 @@ const HomePage = () => {
   const [userName, setUserName] = useState(null);
   const [enterDate, setEnterDate] = useState('');
   const [getDate, setGetDate] = useState('');
-  // 2022-01-01T12:00
 
   const [dd, setDd] = useState();
   const [hr, setHr] = useState();
@@ -188,15 +153,6 @@ const HomePage = () => {
         setUserName(doc.data().name);
       });
   }, []);
-
-  // useEffect(() => {
-  //   db.collection("users")
-  //     .doc(user.uid)
-  //     .collection("invitation").doc("template")
-  //     .onSnapshot((doc) => {
-  //       setEnterDate(doc.data().dateTime);
-  //     });
-  // }, []);
 
   function saveChange() {
     db.collection("users")
@@ -219,7 +175,6 @@ const HomePage = () => {
       });
   }
 
-
   useEffect(() => {
     db.collection("users")
       .doc(user.uid)
@@ -228,7 +183,6 @@ const HomePage = () => {
         if (!doc.data()) {
           setGetDate('')
         } else {
-          //console.log(doc.data().dateTime)
           setGetDate(doc.data().dateTime)
           setEnterDate(doc.data().dateTime)
         }
@@ -255,7 +209,6 @@ const HomePage = () => {
         );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        //console.log(days)
         setDd(days);
         setHr(hours);
         setMm(minutes);
@@ -307,11 +260,10 @@ const HomePage = () => {
           <Container>
             <CenterBg>
               <CenterWrap>
-
                 <ContentWrap>
                   <TopWrap>
                     <TextLine>
-                      <div>Hello {userName} , </div>
+                      <div>Welcome to <span style={{ color: "#A47E84" }}>SeTable</span> {userName} , </div>
                       <div>Let's set your event time!</div>
                     </TextLine>
                     <InputLine>
@@ -345,7 +297,6 @@ const HomePage = () => {
                     </BgWrap>
                   </CountDown>
                 </ContentWrap>
-
               </CenterWrap>
             </CenterBg>
           </Container>

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink } from 'react-router-dom';
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
@@ -42,11 +42,8 @@ const DeskHeaderDiv = styled.div`
   }
 `;
 
-const Logo = styled(Link)`
+const Logo = styled(NavLink)`
   width: 100px;
-  /* margin: 0 0 -2%; */
-  /* margin-left: 60px;
-  margin-top: 26px; */
   &:active{
     color:none;
   }
@@ -65,17 +62,17 @@ const DeskNav = styled.div`
   margin-right: 16px;
 `;
 
-const DeskTag = styled(Link)`
+const DeskTag = styled(NavLink)`
   letter-spacing: 2px;
   font-size: 20px;
   color: #3f3a3a;
   line-height: 28px;
   margin: 0 24px;
+
   &:hover {
     text-decoration: none;
     color: #8b572a;
     cursor: pointer;
-    /* border-bottom: 2px solid #8b572a; */
   }
   &:active{
     color:none;
@@ -118,7 +115,7 @@ const MobileNav = styled.div`
     align-items: center;
   }
 `;
-const MobileTag = styled(Link)`
+const MobileTag = styled(NavLink)`
   @media (max-width: 768px) {
     font-size: 18px;
     color: #828282;
@@ -142,6 +139,7 @@ const MobileTag = styled(Link)`
 
 
 export default function Header() {
+
 
   function confirmLogout() {
     Swal.fire({
@@ -173,9 +171,15 @@ export default function Header() {
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
-            <DeskTag to="/invitation-edit">Invitation</DeskTag>
-            <DeskTag to="/guestlist">Guest List</DeskTag>
-            <DeskTag to="/table">Table</DeskTag>
+            <DeskTag to="/invitation-edit"
+              activeStyle={{ color: "#8b572a" }}
+            >Invitation</DeskTag>
+            <DeskTag to="/guestlist"
+              activeStyle={{ color: "#8b572a" }}
+            >Guest List</DeskTag>
+            <DeskTag to="/table"
+              activeStyle={{ color: "#8b572a" }}
+            >Table</DeskTag>
           </DeskNav>
 
           <LogoutIcon

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
-import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 import Swal from "sweetalert2";
@@ -15,7 +14,6 @@ import "firebase/firestore";
 const Container = styled.div`
   background-color: #fcf6ef;
   font-family: "Karla", sans-serif;
-  /* font-family: "Helvetica Neue", sans-serif; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +36,6 @@ const TemplateWrap = styled.div`
 const Frame = styled.div`
   background-image: url("/images/hr-light.png");
   background-position: center;
-  /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: 100%;
   width: 100%;
@@ -154,7 +151,6 @@ const Button = styled.button`
   padding: 0.4rem 0.8rem;
   color: #574e56;
   border: 1px solid #ddd;
-  /* background: #fff; */
   border-radius: 16px;
   font-size: 20px;
   cursor: pointer;
@@ -194,7 +190,7 @@ const Button = styled.button`
   }
 `;
 
-const CheckRsvp = styled(Link)`
+const CheckRsvp = styled.div`
   color: #574e56;
   &:hover {
     text-decoration: none;
@@ -248,7 +244,6 @@ const InvitationEdit = () => {
       .doc("template")
       .onSnapshot((doc) => {
         if (!doc.data()) {
-          console.log("okok");
           setBride("Bride");
           setGroom("Groom");
           setAdd("some where very nice");
@@ -378,8 +373,6 @@ const InvitationEdit = () => {
                 </InputWrap>
               </EditText>
               <Button onClick={saveChange}>Save</Button>
-
-              {/* <CheckRsvp to={`/invitation-rsvp/${user.uid}`} >Check your Rsvp Here →</CheckRsvp> */}
               <CheckWrap>
                 <CheckRsvp
                   onClick={() => {

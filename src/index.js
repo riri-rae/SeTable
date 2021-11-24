@@ -7,12 +7,9 @@ import './css/index.css'
 ReactDOM.render(
   <React.StrictMode>
     <App />
-    {/* <App3 /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// reportWebVitals();
 
 
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import firebase from "../utils/firebase";
+import firebase from "../../utils/firebase";
 import { useParams } from "react-router";
 import "firebase/firestore";
 import "firebase/auth";
@@ -155,7 +155,6 @@ const Button = styled.button`
   padding: 0.4rem 0.8rem;
   color: #574e56;
   border: 1px solid #ddd;
-  /* background: #fff; */
   border-radius: 16px;
   font-size: 1rem;
   cursor: pointer;
@@ -208,15 +207,6 @@ const Textarea = styled.textarea`
   color: #44342d;
   outline: none;
 `;
-
-// const Hr = styled.div`
-// background-image: url('/images/hr-light.png');
-// background-position: center;
-// background-repeat: no-repeat;
-// background-size: 100%;
-//   width: 600px;
-//   height: 30px;
-// `;
 
 const RsvpMain = () => {
   const { userid } = useParams();
@@ -329,25 +319,15 @@ const RsvpMain = () => {
         console.log(historyList);
 
         const [preTable] = historyList.splice(0, 1);
-        console.log(preTable);
-        // preTable.push(addList);
-        // historyList.splice(0, 0, preTable);
-        // console.log(historyList);
-
-        console.log(preTable)
         historyList.splice(0, 0, preTable);
 
         const newList = [
           ...allData.map((data, index) => ({
-            // id: db.collection("users").doc(userid).collection("rsvp").doc(id),
             id: allId[index],
             content: data.name,
           })),
           ...preTable,
-          // [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],
-          // ...historyList.slice(1),
         ];
-        // console.log(newList);
 
         const updateHistory = JSON.stringify([newList, ...historyList.slice(1)]);
         const update = {};
@@ -373,7 +353,6 @@ const RsvpMain = () => {
       showConfirmButton: false,
       timer: 1800
     })
-
       .then(() => {
         setAllData([]);
         setGroup("");
@@ -425,13 +404,6 @@ const RsvpMain = () => {
             }}
             options={tags}
           />
-          {/* 
-          <Select value={tag} onChange={(e) => setTag(e.target.value)}>
-            <option value="" disabled selected>Please Select</option>
-            <option value="brides-side">Brides' side</option>
-            <option value="groom-side">Groom's side</option>
-          </Select> */}
-
           <SelectStyle
             placeholder="Please Select"
             value={role}
@@ -440,14 +412,6 @@ const RsvpMain = () => {
             }}
             options={roles}
           />
-
-          {/* 
-
-          <Select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="" disabled selected>Please Select</option>
-            <option value="friend">Friend</option>
-            <option value="family">Family</option>
-          </Select> */}
         </InputWrapBlock>
 
         <InputWrapBlock>
@@ -461,14 +425,6 @@ const RsvpMain = () => {
             }}
             options={allstatus}
           />
-
-
-          {/* <Select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="" disabled selected>Please Select</option>
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-            <option value="notSure">Not Sure</option>
-          </Select> */}
         </InputWrapBlock>
 
         {allData.map((data, index) => (
