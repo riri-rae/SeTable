@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import firebase from "../../utils/firebase";
-import updateHistory from "../../utils/updateHistory";
+import { updateHistory, getHistory } from "../../utils/firebaseFunction";
+import { Button } from "../../components/style/generalStyle";
 import "firebase/firestore";
 import 'firebase/auth';
 import Swal from "sweetalert2";
-
 
 
 const Input = styled.input`
@@ -66,8 +66,6 @@ const Count = styled(Title)`
   align-items: center;
 `;
 
-
-
 const Hr = styled.hr`
   width: 100%;
   margin-top: 8px;
@@ -76,57 +74,6 @@ const Hr = styled.hr`
   border-style: none;
 `;
 
-
-
-const Button = styled.button`
-  font-weight: 400;
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 16px;
-  margin-left: 4px;
-  padding: 0.4rem 0.8rem;
-  color: #574e56;
-  border: 1px solid #ddd;
-  /* background: #fff; */
-  border-radius: 16px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition-duration: 0.2s;
-  -webkit-transition-duration: 0.1s; /* Safari */
-  &:hover {
-    transition-duration: 0.2s;
-    background-color: #d48c70;
-    color: #fff;
-  }
-  &:after {
-    content: "";
-    display: white;
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: all 0.4s;
-    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
-  }
-
-  &:active:after {
-    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    transition: 0s;
-  }
-
-  &:active {
-    top: 1px;
-  }
-`;
 const DropBtn = styled.button`
   margin-left: 16px;
   font-size: 14px;
@@ -139,7 +86,6 @@ const DropBtn = styled.button`
   &:active {
     top: 2px;
   }
-
 `;
 
 const DropIcon = styled.p`
@@ -171,18 +117,16 @@ function GuestlistMain({
   }
 
   function changeHistoryTable(id, addYes) {
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then((doc) => {
-        const history = doc.data().guestlist;
-        const historyList = JSON.parse(history);
-        const newList = [
-          [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],
-          ...historyList.slice(1),
-        ];
-        updateHistory(newList);
-      });
+    getHistory(user.uid, handelUpdateHistory)
+    function handelUpdateHistory(doc) {
+      const history = doc.data().guestlist;
+      const historyList = JSON.parse(history);
+      const newList = [
+        [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],
+        ...historyList.slice(1),
+      ];
+      updateHistory(user.uid, newList);
+    }
   }
 
   return (

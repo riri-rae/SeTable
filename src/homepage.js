@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
-// import { Parallax } from "react-parallax";
+import { getUserData, saveHomepageDate, getTemplateData } from "./utils/firebaseFunction";
+
 import firebase from "./utils/firebase";
 import "firebase/firestore";
-import Swal from 'sweetalert2'
-import ReactLoading from 'react-loading';
+import Swal from "sweetalert2";
+import ReactLoading from "react-loading";
 import { useSelector } from "react-redux";
-
-
 
 const Container = styled.div`
   display: flex;
@@ -48,7 +47,7 @@ const CenterWrap = styled.div`
 
 const ContentWrap = styled.div`
   position: fixed;
-  top:  50%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
@@ -59,7 +58,6 @@ const TopWrap = styled.div`
   font-weight: 600;
   font-size: 36px;
   letter-spacing: 4px;
-
 `;
 
 const TextLine = styled.div`
@@ -67,7 +65,8 @@ const TextLine = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Dancing Script';
+  /* font-family: 'Dancing Script'; */
+  font-family: "Libre Baskerville", serif;
 `;
 
 const InputLine = styled.div`
@@ -124,21 +123,20 @@ const BgWrap = styled.div`
 const Time = styled.div`
   font-size: 42px;
   padding: 8px;
-  font-family: 'Dancing Script';
+  font-family: "Dancing Script";
 `;
 
 const Content = styled.div`
   font-size: 20px;
 `;
 
-
 const HomePage = () => {
   const db = firebase.firestore();
   const user = useSelector((state) => state.user);
 
   const [userName, setUserName] = useState(null);
-  const [enterDate, setEnterDate] = useState('');
-  const [getDate, setGetDate] = useState('');
+  const [enterDate, setEnterDate] = useState("");
+  const [getDate, setGetDate] = useState("");
 
   const [dd, setDd] = useState();
   const [hr, setHr] = useState();
@@ -146,55 +144,42 @@ const HomePage = () => {
   const [ss, setSs] = useState();
 
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then((doc) => {
-        setUserName(doc.data().name);
-      });
+    getUserData(user.uid, getUserName)
+    function getUserName(doc) {
+      setUserName(doc.data().name);
+    }
   }, []);
 
-  function saveChange() {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("invitation").doc("template")
-      .set(
-        {
-          dateTime: enterDate
-        },
-        { merge: true }
-      )
-      .then(() => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+  function saveDateChange() {
+    saveHomepageDate(user.uid, enterDate).then(() => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
       });
+    });
   }
 
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("invitation").doc("template")
-      .onSnapshot((doc) => {
-        if (!doc.data()) {
-          setGetDate('')
-        } else {
-          setGetDate(doc.data().dateTime)
-          setEnterDate(doc.data().dateTime)
-        }
-      });
+    getTemplateData(user.uid, getDate)
+    function getDate(doc) {
+      if (!doc.data()) {
+        setGetDate("");
+      } else {
+        setGetDate(doc.data().dateTime);
+        setEnterDate(doc.data().dateTime);
+      }
+    }
   }, []);
 
   useEffect(() => {
     if (!getDate) {
-      setDd('0');
-      setHr('0');
-      setMm('0');
-      setSs('0');
+      setDd("0");
+      setHr("0");
+      setMm("0");
+      setSs("0");
     } else {
       const countDownDate = new Date(getDate).getTime();
 
@@ -216,25 +201,24 @@ const HomePage = () => {
 
         if (distance < 0) {
           clearInterval(x);
-          setDd('0');
-          setHr('0');
-          setMm('0');
-          setSs('0');
+          setDd("0");
+          setHr("0");
+          setMm("0");
+          setSs("0");
         }
       }, 1000);
 
       return () => {
         clearInterval(x);
-      }
+      };
     }
-  }, [getDate])
-
+  }, [getDate]);
 
   return (
     <>
       <Header />
       {/* {userName && enterDate !== '' && getDate !== '' && dd && hr && mm & ss ? */}
-      {userName ?
+      {userName ? (
         <>
           <Container>
             <CenterBg>
@@ -242,7 +226,11 @@ const HomePage = () => {
                 <ContentWrap>
                   <TopWrap>
                     <TextLine>
-                      <div>Welcome to <span style={{ color: "#A47E84" }}>SeTable</span> {userName} , </div>
+                      <div>
+                        Welcome to{" "}
+                        <span style={{ color: "#A47E84" }}>SeTable</span>{" "}
+                        {userName} ,{" "}
+                      </div>
                       <div>Let's set your event time!</div>
                     </TextLine>
                     <InputLine>
@@ -254,7 +242,7 @@ const HomePage = () => {
                         value={enterDate}
                         onChange={(e) => setEnterDate(e.target.value)}
                       />
-                      <Button onClick={saveChange}>Save</Button>
+                      <Button onClick={saveDateChange}>Save</Button>
                     </InputLine>
                   </TopWrap>
                   <CountDown>
@@ -279,8 +267,10 @@ const HomePage = () => {
               </CenterWrap>
             </CenterBg>
           </Container>
-        </> : <Loading />}
-
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

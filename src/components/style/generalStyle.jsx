@@ -46,3 +46,35 @@ export const Button = styled.button`
     top: 1px;
   }
 `;
+
+export const AddTableButton = styled.button`
+  position: fixed;
+  top: 422px;
+  display: flex;
+  align-items: center;
+  margin: 12px auto;
+  padding: 0.5rem;
+  background-color: #dcae96;
+  box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: 1px solid #dcae96;
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 50px;
+  letter-spacing: 1px;
+  transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s; /* Safari */
+  &:hover {
+    transition-duration: 0.1s;
+    background-color: #dba083;
+    color: #fff;
+  }
+  :active {
+    background-color: #a06043;
+    box-shadow: 1px 2px #ccc;
+    transform: translateY(3px);
+    border: none;
+  }
+`;

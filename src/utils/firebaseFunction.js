@@ -1,41 +1,164 @@
 import firebase from "./firebase";
-import Swal from "sweetalert2";
+import "firebase/firestore";
+import "firebase/auth";
 
-const db = firebase.firestore()
+const db = firebase.firestore();
 
-function onSnapshotInvitationDfault(uid, callback) {
+//invitation edit
+function snapshotEditDefault(uid, callback) {
     db.collection("users")
         .doc(uid)
         .collection("invitation")
         .doc("template")
-        .onSnapshot(doc => callback(doc))
+        .onSnapshot((doc) => callback(doc));
 }
 
-function saveChange(uid, bride, groom, dateTime, add, pic) {
-    if (!bride || !groom || !dateTime || !add) {
-        Swal.fire("", "Can't save with an emty column ", "warning");
-    } else {
-        db.collection("users")
-            .doc(uid)
-            .collection("invitation")
-            .doc("template")
-            .set({
-                bride,
-                groom,
-                dateTime,
-                add,
-                pic,
-            })
-            .then(() => {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Your work has been saved",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
+function saveEditTemplate(uid, bride, groom, dateTime, add, pic) {
+    return db
+        .collection("users")
+        .doc(uid)
+        .collection("invitation")
+        .doc("template")
+        .set({
+            bride,
+            groom,
+            dateTime,
+            add,
+            pic,
+        });
+}
+
+//table
+function updateHistory(uid, data) {
+    // const updateHistory = JSON.stringify(data);
+    const update = {};
+    update.guestlist = JSON.stringify(data);
+    db.collection("users").doc(uid).update(update);
+}
+
+function setHistory(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .onSnapshot((doc) => {
+            let getSaveList = doc.data().guestlist;
+            let saveList = JSON.parse(getSaveList);
+            callback(saveList);
+        });
+}
+
+function getHistory(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .get()
+        .then((doc) => callback(doc));
+}
+
+function getVeggie(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .collection("rsvp")
+        .where("veggie", "==", "yes")
+        .onSnapshot((querySnapshot) => {
+            const getVeggie = [];
+            querySnapshot.docs.forEach((doc) => {
+                getVeggie.push(doc.data().id);
             });
-    }
+            callback(getVeggie);
+        });
 }
 
-export { onSnapshotInvitationDfault, saveChange }
+function getBaby(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .collection("rsvp")
+        .where("baby", "==", "yes")
+        .onSnapshot((querySnapshot) => {
+            const getBaby = [];
+            querySnapshot.docs.forEach((doc) => {
+                getBaby.push(doc.data().id);
+            });
+            callback(getBaby);
+        });
+}
+
+//guestlist pack
+function saveGuestlistPack(
+    uid,
+    id,
+    name,
+    group,
+    tag,
+    role,
+    baby,
+    veggie,
+    note
+) {
+    return db.collection("users").doc(uid).collection("rsvp").doc(id).update({
+        name,
+        group,
+        tag,
+        role,
+        baby,
+        veggie,
+        note,
+    });
+}
+
+function deleteGuestlistPack(uid, id) {
+    db.collection("users").doc(uid).collection("rsvp").doc(id).delete();
+}
+
+function getUserData(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .get()
+        .then((doc) => callback(doc));
+}
+
+//homepage
+
+function saveHomepageDate(uid, enterDate) {
+    return db
+        .collection("users")
+        .doc(uid)
+        .collection("invitation")
+        .doc("template")
+        .set(
+            {
+                dateTime: enterDate,
+            },
+            { merge: true }
+        );
+}
+
+function getTemplateData(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .collection("invitation")
+        .doc("template")
+        .onSnapshot((doc) => callback(doc));
+}
+
+function getRsvpData(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .collection("rsvp")
+        .orderBy("time", "desc")
+        .onSnapshot((doc) => callback(doc));
+}
+
+export {
+    snapshotEditDefault,
+    saveEditTemplate,
+    updateHistory,
+    getHistory,
+    setHistory,
+    getVeggie,
+    getBaby,
+    saveGuestlistPack,
+    deleteGuestlistPack,
+    getUserData,
+    saveHomepageDate,
+    getTemplateData,
+    getRsvpData,
+};

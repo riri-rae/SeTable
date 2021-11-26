@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import firebase from "../../utils/firebase";
-import updateHistory from "../../utils/updateHistory";
+import { updateHistory, saveGuestlistPack, deleteGuestlistPack, getUserData } from "../../utils/firebaseFunction";
 import "firebase/firestore";
 import "firebase/auth";
 import Swal from 'sweetalert2'
@@ -87,7 +87,7 @@ const Textarea = styled.textarea`
 `;
 
 const Button = styled.button`
-font-weight: 600;
+  font-weight: 600;
   margin: 0 auto;
   padding: 0.4rem;
   color: #574e56;
@@ -108,15 +108,12 @@ font-weight: 600;
 }
 `;
 
-
 const DelIcon = styled(RiDeleteBinLine)`
 font-size: 20px;
 margin-top:6px;
 `
 
 const DelButton = styled(Button)`
-  /* display: flex; */
-  /* align-items: center; */
   border: none;
   &:hover{
     background-color: #fff;
@@ -134,24 +131,10 @@ function GuestlistPack({ data }) {
   const [veggie, setVeggie] = useState(data.veggie);
   const [baby, setBaby] = useState(data.baby);
 
-
-  const db = firebase.firestore();
   const user = firebase.auth().currentUser;
 
   function saveChange() {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("rsvp")
-      .doc(data.id)
-      .update({
-        name,
-        group,
-        tag,
-        role,
-        baby,
-        veggie,
-        note,
-      })
+    saveGuestlistPack(user.uid, data.id, name, group, tag, role, baby, veggie, note)
       .then(() => {
         Swal.fire({
           position: 'center',
@@ -180,60 +163,50 @@ function GuestlistPack({ data }) {
           'Your file has been deleted.',
           'success'
         )
-        db.collection("users")
-          .doc(user.uid)
-          .collection("rsvp")
-          .doc(data.id)
-          .delete();
-
+        deleteGuestlistPack(user.uid, data.id)
       }
     })
 
-
     const guestToDelete = data.id;
-    console.log(guestToDelete);
+    // console.log(guestToDelete);
 
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then((doc) => {
-        const history = doc.data().guestlist;
-        const historyList = JSON.parse(history);
-        console.log(historyList);
+    getUserData(user.uid, handelDelHistory)
+    function handelDelHistory(doc) {
+      const history = doc.data().guestlist;
+      const historyList = JSON.parse(history);
+      console.log(historyList);
 
-        function findTablesIndex(historyList, guestToDelete) {
-          var tablesInd;
-          var tableInd;
-          for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
-            const nsDetails = historyList[tablesInd];
-            for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
-              const tempObject = nsDetails[tableInd];
-              if (tempObject.id === guestToDelete) {
-                console.log(tablesInd, tableInd);
-                return { tablesInd, tableInd };
-              }
+      function findTablesIndex(historyList, guestToDelete) {
+        var tablesInd;
+        var tableInd;
+        for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
+          const nsDetails = historyList[tablesInd];
+          for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
+            const tempObject = nsDetails[tableInd];
+            if (tempObject.id === guestToDelete) {
+              console.log(tablesInd, tableInd);
+              return { tablesInd, tableInd };
             }
           }
-          return {};
         }
+        return {};
+      }
 
-        let { tablesInd, tableInd } = findTablesIndex(
-          historyList,
-          guestToDelete
-        );
-        console.log(tablesInd, tableInd);
+      let { tablesInd, tableInd } = findTablesIndex(
+        historyList,
+        guestToDelete
+      );
+      console.log(tablesInd, tableInd);
 
-        let afterDelete = Array.from(historyList);
+      let afterDelete = Array.from(historyList);
 
-        const [deleteTable] = afterDelete.splice(tablesInd, 1);//抓桌子
-        console.log([deleteTable]);
-        deleteTable.splice(tableInd, 1);
-        console.log(deleteTable);
-        historyList.splice(tablesInd, 1, deleteTable);//
-        // console.log(historyList);
-        updateHistory(historyList)
-
-      });
+      const [deleteTable] = afterDelete.splice(tablesInd, 1);//抓桌子
+      console.log([deleteTable]);
+      deleteTable.splice(tableInd, 1);
+      console.log(deleteTable);
+      historyList.splice(tablesInd, 1, deleteTable);//
+      updateHistory(user.uid, historyList)
+    };
   }
 
   return (
@@ -297,7 +270,9 @@ function GuestlistPack({ data }) {
         ></Textarea>
       </Td>
       <Td>
-        <Button onClick={saveChange}>Save</Button>
+        <Button onClick={() => {
+          saveChange(user.uid, data.id, name, group, tag, role, baby, veggie, note)
+        }}>Save</Button>
       </Td>
       <Td>
         <DelButton onClick={() => handelDel()}><DelIcon /></DelButton>

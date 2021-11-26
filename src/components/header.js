@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from 'react-router-dom';
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
-// import logo from "../images/logo.png";
 import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
 import Swal from 'sweetalert2'
 import { RiLogoutCircleRLine } from "react-icons/ri";
-
 
 
 const Navbar = styled.header`
@@ -82,7 +80,6 @@ const DeskTag = styled(NavLink)`
   }
 `;
 
-
 const LogoutIcon = styled(RiLogoutCircleRLine)`
   font-size: 24px;
   margin-left: 4px;
@@ -90,6 +87,9 @@ const LogoutIcon = styled(RiLogoutCircleRLine)`
   cursor: pointer;
   &:hover {
     color: #d48c70;
+  }
+  @media (max-width: 768px) {
+    margin-bottom: 8px;
   }
 `;
 
@@ -127,7 +127,6 @@ const MobileTag = styled(NavLink)`
     text-decoration: none;
     color: #8b572a;
     cursor: pointer;
-    /* border-bottom: 2px solid #8b572a; */
   }
   &:active{
     color:none;
@@ -137,9 +136,7 @@ const MobileTag = styled(NavLink)`
   }
 `;
 
-
 export default function Header() {
-
 
   function confirmLogout() {
     Swal.fire({
@@ -192,7 +189,6 @@ export default function Header() {
           <Logo to="/homepage">
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
-
           <MobileNav>
             <MobileTag to="/invitation-edit">Invitation</MobileTag>
             <MobileTag to="/guestlist">Guest List</MobileTag>
@@ -202,7 +198,6 @@ export default function Header() {
               <img src={memberImg} height="44" alt="member" />
             </LogoutIcon>
           </MobileNav>
-
         </MobileHeaderDiv>
       </Container>
     </Navbar>

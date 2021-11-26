@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
+import { getRsvpData } from "./utils/firebaseFunction";
+
 import GuestlistPack from "./components/guestlist/GuestlistPack";
 import GuestlistMain from "./components/guestlist/GuestlistMain";
 import Header from "./components/Header";
@@ -120,20 +122,26 @@ function GuestList({ setDeleteId }) {
     }
   }
 
-  const db = firebase.firestore();
-
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("rsvp")
-      .orderBy("time", "desc")
-      .onSnapshot((querySnapshot) => {
-        const data = [];
-        querySnapshot.forEach((doc) => {
-          data.push(doc.data());
-        });
-        setAllData(data);
+    getRsvpData(user.uid, renderRsvpData)
+    function renderRsvpData(querySnapshot) {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push(doc.data());
       });
+      setAllData(data);
+    }
+    // db.collection("users")
+    //   .doc(user.uid)
+    //   .collection("rsvp")
+    //   .orderBy("time", "desc")
+    //   .onSnapshot((querySnapshot) => {
+    //     const data = [];
+    //     querySnapshot.forEach((doc) => {
+    //       data.push(doc.data());
+    //     });
+    //     setAllData(data);
+    //   });
   }, []);
 
   useEffect(() => {

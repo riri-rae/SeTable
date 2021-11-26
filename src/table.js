@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import firebase from "./utils/firebase";
-import updateHistory from "./utils/updateHistory";
+import { useSelector } from "react-redux";
 import "firebase/firestore";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import styled from "styled-components";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
+import { updateHistory, setHistory, getVeggie, getBaby } from "./utils/firebaseFunction";
+import { AddTableButton } from "./components/style/generalStyle";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { CgPlayListRemove } from "react-icons/cg";
 import { RiCheckboxBlankCircleFill } from "react-icons/ri";
-import { useSelector } from "react-redux";
 
 const Bg = styled.div`
   background-image: url("/images/greenbg.jpeg");
@@ -85,38 +85,6 @@ const ColorG = styled(RiCheckboxBlankCircleFill)`
 `;
 const ColorY = styled(ColorG)`
   color: #fcebcf;
-`;
-
-const Button = styled.button`
-  position: fixed;
-  top: 422px;
-  display: flex;
-  align-items: center;
-  margin: 12px auto;
-  padding: 0.5rem;
-  background-color: #dcae96;
-  box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: 1px solid #dcae96;
-  border-radius: 16px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  height: 50px;
-  letter-spacing: 1px;
-  transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s; /* Safari */
-  &:hover {
-    transition-duration: 0.1s;
-    background-color: #dba083;
-    color: #fff;
-  }
-  :active {
-    background-color: #a06043;
-    box-shadow: 1px 2px #ccc;
-    transform: translateY(3px);
-    border: none;
-  }
 `;
 
 const TaskContainer = styled.div`
@@ -249,45 +217,17 @@ function Table() {
   const [baby, setBaby] = useState([]);
   const user = useSelector((state) => state.user);
 
-  const db = firebase.firestore();
+  useEffect(() => {
+    setHistory(user.uid, setTables);
+  }, []);
+
 
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .onSnapshot((doc) => {
-        let getSaveList = doc.data().guestlist;
-        let saveList = JSON.parse(getSaveList);
-        setTables(saveList);
-        //console.log(saveList);
-      });
+    getVeggie(user.uid, setVeggie)
   }, []);
 
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("rsvp")
-      .where("veggie", "==", "yes")
-      .onSnapshot((querySnapshot) => {
-        const getVeggie = [];
-        querySnapshot.docs.forEach((doc) => {
-          getVeggie.push(doc.data().id);
-        });
-        setVeggie(getVeggie);
-      });
-  }, []);
-
-  useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .collection("rsvp")
-      .where("baby", "==", "yes")
-      .onSnapshot((querySnapshot) => {
-        const getBaby = [];
-        querySnapshot.docs.forEach((doc) => {
-          getBaby.push(doc.data().id);
-        });
-        setBaby(getBaby);
-      });
+    getBaby(user.uid, setBaby);
   }, []);
 
   function getColor(id) {
@@ -323,7 +263,7 @@ function Table() {
       reorder[Number(source.droppableId)] = theTable;
 
       setTables(reorder);
-      updateHistory(reorder)
+      updateHistory(user.uid, reorder)
     }
 
     if (source.droppableId !== destination.droppableId) {
@@ -337,7 +277,7 @@ function Table() {
       move[Number(source.droppableId)] = pickTable;
       move[Number(destination.droppableId)] = desTable;
       setTables(move);
-      updateHistory(move)
+      updateHistory(user.uid, move)
     }
   }
 
@@ -363,13 +303,13 @@ function Table() {
     afterDel.splice(0, 1);
     const newList = [[...table, ...tables[0]], ...afterDel];
     setTables(newList);
-    updateHistory(newList);
+    updateHistory(user.uid, newList);
   }
 
   function addTable() {
     setTables([...tables, []]);
     const newTable = [...tables, []];
-    updateHistory(newTable)
+    updateHistory(user.uid, newTable)
   }
 
 
@@ -394,9 +334,9 @@ function Table() {
                   </DescribeText>
                 </Describe>
               </Block>
-              <Button type="button" onClick={addTable}>
+              <AddTableButton type="button" onClick={addTable}>
                 + Click to Add Table
-              </Button>
+              </AddTableButton>
 
               <TaskContainer>
                 {tables.map((table, ind) => (

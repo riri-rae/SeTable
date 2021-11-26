@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-//import Select from 'react-select'
+import { getTemplateData } from "./utils/firebaseFunction";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import firebase from "./utils/firebase";
@@ -16,6 +16,10 @@ const Container = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+  @media (max-width: 1320px) {
+    flex-wrap: wrap;
+    overflow: scroll;
+  }
 `;
 
 const TemplateWrap = styled.div`
@@ -23,6 +27,9 @@ const TemplateWrap = styled.div`
   width: calc(100vw - 40vw);
   @media (max-width: 1440px) {
     width: calc(100vw - 36vw);
+  }
+  @media (max-width: 1320px) {
+    min-width: 100vw;
   }
 `;
 
@@ -54,35 +61,32 @@ const InvitationRsvp = () => {
   const [pic, setPic] = useState("/images/red_flower.jpeg");
 
   useEffect(() => {
-    console.log(userid);
-    db.collection("users")
-      .doc(userid)
-      .collection("invitation")
-      .doc("template")
-      .onSnapshot((doc) => {
-        if (!doc.data()) {
-          console.log(userid);
-          history.replace({ pathname: '404' })
-          // console.log("okok");
-          setBride("Bride");
-          setGroom("Groom");
-          setAdd("some where very nice");
-          setDateTime("2022-12-31T12:00");
-          setPic("/images/red_flower.jpeg")
-        }
-        else {
-          let bride = doc.data().bride;
-          let groom = doc.data().groom;
-          let dateTime = doc.data().dateTime;
-          let add = doc.data().add;
-          let pic = doc.data().pic;
-          setBride(bride);
-          setGroom(groom);
-          setDateTime(dateTime);
-          setAdd(add);
-          setPic(pic);
-        }
-      });
+    getTemplateData(userid, setTemplateDefault)
+    function setTemplateDefault(doc) {
+      if (!doc.data()) {
+        console.log(userid);
+        history.replace({ pathname: '404' })
+        // console.log("okok");
+        setBride("Bride");
+        setGroom("Groom");
+        setAdd("some where very nice");
+        setDateTime("2022-12-31T12:00");
+        setPic("/images/red_flower.jpeg")
+      }
+      else {
+        let bride = doc.data().bride;
+        let groom = doc.data().groom;
+        let dateTime = doc.data().dateTime;
+        let add = doc.data().add;
+        let pic = doc.data().pic;
+        setBride(bride);
+        setGroom(groom);
+        setDateTime(dateTime);
+        setAdd(add);
+        setPic(pic);
+      }
+    }
+
   }, []);
 
   return (

@@ -3,11 +3,18 @@ import styled from "styled-components";
 import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
-import { useHistory } from "react-router-dom";
+import Swal from 'sweetalert2'
+
+const Bg = styled.div`
+  background-image: url("/images//images/landingpagebg.jpeg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+`;
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
   background-color: #E8E4DE;
   display: flex;
   justify-content: center;
@@ -19,6 +26,11 @@ width: 100%;
 /* border: 1px solid #000; */
 text-align: center;
 margin-bottom: 5rem;
+color: #fff;
+font-size: 10vw;
+letter-spacing: 4px;
+font-family: 'Libre Baskerville', serif;
+font-weight: lighter;
 `;
 
 
@@ -29,6 +41,12 @@ const Left = styled.div`
  flex-direction: column;
  justify-content: center;
  align-items: center;
+ background-image: url("/images/landingpagebg.jpeg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
 
 `;
 const Right = styled.div`
@@ -109,9 +127,6 @@ const LandingPage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [isLoading, setIsLoading] = useState(false);
-
-    const history = useHistory();
 
     function onSubmit(e) {
         // isLoading(true)
@@ -124,20 +139,16 @@ const LandingPage = () => {
                     console.log(user.uid, name, user.email);
                     setUserInfo(user);
                 })
-                .then(() => {
-                    history.push('/homepage');
-                    // isLoading(false);
-                })
                 .catch((error) => {
                     switch (error.code) {
                         case "auth/invalid-email":
-                            alert('信箱格式錯誤');
+                            Swal.fire("", "Invalid email format", "warning");
                             break;
                         case "auth/weak-password":
-                            alert('密碼長度至少6碼');
+                            Swal.fire("", "Password must be at least 8 characters long", "warning");
                             break;
                         case "auth/email-already-in-use":
-                            alert('信箱已被註冊');
+                            Swal.fire("", "This mailbox has been registered", "warning");
                             break;
                         default:
                     }
@@ -147,20 +158,16 @@ const LandingPage = () => {
         } else if (activeItem === 'login') {
             firebase.auth()
                 .signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    history.push('/homepage');
-                    // isLoading(false);
-                })
                 .catch((error) => {
                     switch (error.code) {
                         case "auth/invalid-email":
-                            alert('信箱格式錯誤');
+                            Swal.fire("", "Invalid email format", "warning");
                             break;
                         case "auth/user-not-found":
-                            alert('查無此使用者');
+                            Swal.fire("", "Can not find this user", "warning");
                             break;
                         case "auth/wrong-password":
-                            alert('密碼錯誤');
+                            Swal.fire("", "Wrong Password ", "warning");
                             break;
                         default:
                     }
@@ -254,7 +261,6 @@ const LandingPage = () => {
                 <SwitchButton
                     onClick={() => {
                         setActiveItem('login');
-                        // setErrorMessage('');
                         setName('');
                         setEmail('');
                         setPassword('')
@@ -268,7 +274,7 @@ const LandingPage = () => {
     }
     return (
         <Wrapper>
-            <Left> <H1>SeTable</H1> </Left>
+            <Left> <H1>Once in a lifetime</H1> </Left>
             <Right>
                 {activeItem === 'login' ? loginDiv() : signupDiv()}
             </Right>

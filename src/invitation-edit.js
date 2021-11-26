@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import firebase from "./utils/firebase";
 import "firebase/firestore";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 import { Button } from "./components/style/generalStyle";
-import { saveChange } from "./utils/firebaseFunction";
 import Swal from "sweetalert2";
 import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
-import { onSnapshotInvitationDfault } from "./utils/firebaseFunction";
+import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
 
 import "firebase/firestore";
 
@@ -23,27 +21,31 @@ const Container = styled.div`
   width: 100vw;
   max-height: calc(100vh - 80px);
   overflow: hidden;
-  /* @media (max-width: 1440px) {
-    width: 100%;
+  @media (max-width: 1320px) {
+    flex-wrap: wrap;
+    overflow: scroll;
+  }
+  /* @media (max-width: 1320px) {
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow: scroll;
   } */
+
 `;
 
 const TemplateWrap = styled.div`
   height: 100vh;
   width: calc(100vw - 40vw);
+
   @media (max-width: 1440px) {
     width: calc(100vw - 36vw);
   }
+  @media (max-width: 1320px) {
+    min-width: 100vw;
+  }
+
 `;
 
-const Frame = styled.div`
-  background-image: url("/images/hr-light.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  width: 100%;
-  min-height: 36px;
-`;
 
 const Edit = styled.div`
   color: #5b5151;
@@ -61,6 +63,16 @@ const Edit = styled.div`
     min-width: 36vw;
   }
 `;
+
+const Frame = styled.div`
+  background-image: url("/images/hr-light.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 100%;
+  min-height: 36px;
+`;
+
 
 const EditTitle = styled.div`
   font-size: 36px;
@@ -184,9 +196,8 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
 `;
 
 const InvitationEdit = () => {
-  const db = firebase.firestore();
-  const user = useSelector((state) => state.user);
 
+  const user = useSelector((state) => state.user);
   const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
   const [groom, setGroom] = useState("");
@@ -194,95 +205,47 @@ const InvitationEdit = () => {
   const [add, setAdd] = useState("");
 
   useEffect(() => {
-    // function getDefault(doc) {
-    //   if (!doc.data()) {
-    //     setBride("Bride");
-    //     setGroom("Groom");
-    //     setAdd("some where very nice");
-    //     setDateTime("2022-12-31T12:00");
-    //     setPic("/images/red_flower.jpeg");
-    //   } else if (
-    //     doc.data().dateTime &&
-    //     !doc.data().bride &&
-    //     !doc.data().groom &&
-    //     !doc.data().add &&
-    //     !doc.data().pic
-    //   ) {
-    //     setBride("Bride");
-    //     setGroom("Groom");
-    //     setAdd("some where very nice");
-    //     setPic("/images/red_flower.jpeg");
-    //     let dateTime = doc.data().dateTime;
-    //     setDateTime(dateTime);
-    //   } else {
-    //     let bride = doc.data().bride;
-    //     let groom = doc.data().groom;
-    //     let dateTime = doc.data().dateTime;
-    //     let add = doc.data().add;
-    //     let pic = doc.data().pic;
-    //     setBride(bride);
-    //     setGroom(groom);
-    //     setDateTime(dateTime);
-    //     setAdd(add);
-    //     setPic(pic);
-    //   }
-    // }
-    // onSnapshotInvitationDfault(user.uid, getDefault);
-
-    db.collection("users")
-      .doc(user.uid)
-      .collection("invitation")
-      .doc("template")
-      .onSnapshot((doc) => {
-        if (!doc.data()) {
-          setBride("Bride");
-          setGroom("Groom");
-          setAdd("some where very nice");
-          setDateTime("2022-12-31T12:00");
-          setPic("/images/red_flower.jpeg");
-        } else if (
-          doc.data().dateTime &&
-          !doc.data().bride &&
-          !doc.data().groom &&
-          !doc.data().add &&
-          !doc.data().pic
-        ) {
-          setBride("Bride");
-          setGroom("Groom");
-          setAdd("some where very nice");
-          setPic("/images/red_flower.jpeg");
-          let dateTime = doc.data().dateTime;
-          setDateTime(dateTime);
-        } else {
-          let bride = doc.data().bride;
-          let groom = doc.data().groom;
-          let dateTime = doc.data().dateTime;
-          let add = doc.data().add;
-          let pic = doc.data().pic;
-          setBride(bride);
-          setGroom(groom);
-          setDateTime(dateTime);
-          setAdd(add);
-          setPic(pic);
-        }
-      });
+    function getDefault(doc) {
+      if (!doc.data()) {
+        setBride("Bride");
+        setGroom("Groom");
+        setAdd("some where very nice");
+        setDateTime("2022-12-31T12:00");
+        setPic("/images/red_flower.jpeg");
+      } else if (
+        doc.data().dateTime &&
+        !doc.data().bride &&
+        !doc.data().groom &&
+        !doc.data().add &&
+        !doc.data().pic
+      ) {
+        setBride("Bride");
+        setGroom("Groom");
+        setAdd("some where very nice");
+        setPic("/images/red_flower.jpeg");
+        let dateTime = doc.data().dateTime;
+        setDateTime(dateTime);
+      } else {
+        let bride = doc.data().bride;
+        let groom = doc.data().groom;
+        let dateTime = doc.data().dateTime;
+        let add = doc.data().add;
+        let pic = doc.data().pic;
+        setBride(bride);
+        setGroom(groom);
+        setDateTime(dateTime);
+        setAdd(add);
+        setPic(pic);
+      }
+    }
+    snapshotEditDefault(user.uid, getDefault);
   }, []);
 
-  function saveChange() {
+  function saveChange(uid, bride, groom, dateTime, add, pic) {
     if (!bride || !groom || !dateTime || !add) {
       Swal.fire("", "Can't save with an emty column ", "warning");
     } else {
-      db.collection("users")
-        .doc(user.uid)
-        .collection("invitation")
-        .doc("template")
-        .set({
-          bride,
-          groom,
-          dateTime,
-          add,
-          pic,
-        })
+      saveEditTemplate(uid, bride, groom, dateTime, add, pic)
         .then(() => {
           Swal.fire({
             position: "center",
@@ -363,8 +326,7 @@ const InvitationEdit = () => {
                   ></Textarea>
                 </InputWrap>
               </EditText>
-              <Button onClick={saveChange}>Save</Button>
-              {/* <Button onClick={(uid, bride, groom, dateTime, add, db, pic, Swal) => saveChange(uid, bride, groom, dateTime, add, db, pic, Swal)}>Save</Button> */}
+              <Button onClick={() => { saveChange(user.uid, bride, groom, dateTime, add, pic) }}>Save</Button>
 
               <CheckWrap>
                 <CheckRsvp

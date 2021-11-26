@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import styled from "styled-components";
+import { updateHistory } from "../../utils/firebaseFunction";
+import { Button } from "../../components/style/generalStyle";
 import firebase from "../../utils/firebase";
 import { useParams } from "react-router";
 import "firebase/firestore";
 import "firebase/auth";
-import { v4 as uuid } from "uuid";
 import RsvpPack from "./RsvpPack";
 import Swal from "sweetalert2";
 
@@ -15,9 +16,7 @@ const Edit = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-  /* overflow: scroll; */
   padding: 8px 36px 36px 36px;
   color: #67595e;
   padding-top: 100px;
@@ -25,14 +24,10 @@ const Edit = styled.div`
     font-size: 18px;
     padding: 20px;
   }
-
-
-  /* @media (min-width: 992px) {
-    width: 970px;
+  @media (max-width: 1320px) {
+    padding: 60px 10rem;
   }
-  @media (min-width: 1200px) {
-    width: 1170px;
-  } */
+
 `;
 const Frame = styled.div`
   background-image: url("/images/frame-brown.png");
@@ -146,54 +141,6 @@ const SelectStyleLong = styled(SelectStyle)`
   } */
 `;
 
-const Button = styled.button`
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 16px;
-  margin-left: 4px;
-  padding: 0.4rem 0.8rem;
-  color: #574e56;
-  border: 1px solid #ddd;
-  border-radius: 16px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s; /* Safari */
-  &:hover {
-    transition-duration: 0.1s;
-    background-color: #d48c70;
-    color: #fff;
-  }
-  &:after {
-    content: "";
-    display: white;
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: all 0.4s;
-    box-shadow: 0 0 5px 10px rgba(117, 99, 66, 0.5);
-  }
-
-  &:active:after {
-    box-shadow: 0 0 0 0 rgba(117, 99, 66, 0.9);
-    position: absolute;
-    border-radius: 16px;
-    left: 0;
-    top: 0;
-    opacity: 1;
-    transition: 0s;
-  }
-
-  &:active {
-    top: 1px;
-  }
-`;
-
 const Textarea = styled.textarea`
   resize: none;
   height: 36px;
@@ -266,21 +213,10 @@ const RsvpMain = () => {
         })
           .then(() => { afterSend() });
       } else {
-        console.log("more");
-        console.log(allData);
         allData.forEach((data) => {
-          let id = db
-            .collection("users")
-            .doc(userid)
-            .collection("rsvp")
-            .doc().id;
+          let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
           allId.push(id);
-
-          let rsvpRef = db
-            .collection("users")
-            .doc(userid)
-            .collection("rsvp")
-            .doc(id);
+          let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
           if (!data.name) {
             Swal.fire("", "Please fill in guest name", "question");
           } else if (!data.veggie) {
@@ -313,14 +249,10 @@ const RsvpMain = () => {
       .doc(user.uid)
       .get()
       .then((doc) => {
-        console.log(doc);
         const history = doc.data().guestlist;
         const historyList = JSON.parse(history);
-        console.log(historyList);
-
         const [preTable] = historyList.splice(0, 1);
         historyList.splice(0, 0, preTable);
-
         const newList = [
           ...allData.map((data, index) => ({
             id: allId[index],
@@ -328,14 +260,8 @@ const RsvpMain = () => {
           })),
           ...preTable,
         ];
-
-        const updateHistory = JSON.stringify([newList, ...historyList.slice(1)]);
-        const update = {};
-        update.guestlist = updateHistory;
-        console.log(updateHistory);
-        db.collection("users")
-          .doc(user.uid)
-          .update(update);
+        const updateFirebaseHistory = JSON.stringify([newList, ...historyList.slice(1)]);
+        updateHistory(user.uid, updateFirebaseHistory)
       })
       .then(() => { afterSend() });
   }
