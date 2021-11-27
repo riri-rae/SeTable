@@ -42,7 +42,6 @@ const FormWrap = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
-  /* padding: 0 36px; */
   @media (max-width: 1440px) {
     min-width: 36vw;
   }
@@ -51,8 +50,6 @@ const FormWrap = styled.div`
 const InvitationRsvp = () => {
   const history = useHistory();
   const { userid } = useParams();
-
-  const db = firebase.firestore();
 
   const [bride, setBride] = useState("");
   const [groom, setGroom] = useState("");

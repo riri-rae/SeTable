@@ -6,7 +6,7 @@ import "firebase/firestore";
 import 'firebase/auth';
 import roseLogo from "../images/rose-logo.png";
 import memberImg from "../images/member.png";
-import Swal from 'sweetalert2'
+import { reConfirm, alertWithTimer } from "../utils/alert";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 
@@ -41,7 +41,10 @@ const DeskHeaderDiv = styled.div`
 `;
 
 const Logo = styled(NavLink)`
-  width: 100px;
+  width: fit-content;
+  margin-top: 4px;
+  margin-right: 8px;
+
   &:active{
     color:none;
   }
@@ -82,7 +85,7 @@ const DeskTag = styled(NavLink)`
 
 const LogoutIcon = styled(RiLogoutCircleRLine)`
   font-size: 24px;
-  margin-left: 4px;
+  margin: 0 4px;
   color: #695f5f;
   cursor: pointer;
   &:hover {
@@ -96,7 +99,7 @@ const LogoutIcon = styled(RiLogoutCircleRLine)`
 const MobileHeaderDiv = styled.div`
   display: none;
   @media (max-width: 768px) {
-    height: 110px;
+    /* height: 110px; */
     display: flex;
     justify-content: center;
     width: 100%;
@@ -139,25 +142,13 @@ const MobileTag = styled(NavLink)`
 export default function Header() {
 
   function confirmLogout() {
-    Swal.fire({
-      title: 'Logging out?',
-      text: "Are you sure you want to log out?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#5885AF',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          'Logged out successfully',
-          'Hope to see you soon!',
-          'success'
-        )
-        firebase.auth().signOut()
-
-      }
-    })
+    reConfirm('Logging out?', "Are you sure you want to log out?", "Yes!")
+      .then((result) => {
+        if (result.isConfirmed) {
+          alertWithTimer('Logged out successfully', 'Hope to see you soon!', 'success')
+          firebase.auth().signOut()
+        }
+      })
   }
 
   return (

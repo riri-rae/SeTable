@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import firebase from "../../utils/firebase";
+import { alert } from "../../utils/alert";
 import { updateHistory, getHistory } from "../../utils/firebaseFunction";
 import { Button } from "../../components/style/generalStyle";
 import "firebase/firestore";
-import 'firebase/auth';
-import Swal from "sweetalert2";
-
+import "firebase/auth";
 
 const Input = styled.input`
   display: flex;
@@ -37,6 +36,14 @@ const InputNew = styled(Input)`
   max-width: 100%;
   text-align: left;
   letter-spacing: 1px;
+
+  @media (max-width: 768px) {
+    margin:8px;
+  } ;
+
+  @media (max-width: 375px) {
+    margin:6px 4px;
+  } ;
 `;
 
 const MainTitleContainer = styled.div`
@@ -48,22 +55,31 @@ const MainTitleContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #a49393;
+  @media (max-width: 768px) {
+    padding: 8px 8px 0 8px;
+  } ;
 `;
-
-
 
 const Title = styled.div`
   font-size: 24px;
   color: #574e56;
   margin-left: 16px;
-  color:#fff;
-  width: 205px;
-  text-align:center;
+  color: #fff;
+
+  text-align: center;
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-left: 0;
+      width: 200px;
+  } ;
 `;
 const Count = styled(Title)`
   width: 32px;
-  height: 32px;
+  /* height: 32px; */
   align-items: center;
+  @media (max-width: 768px) {
+    margin-left: 8px;
+  } ;
 `;
 
 const Hr = styled.hr`
@@ -72,6 +88,9 @@ const Hr = styled.hr`
   background-color: #ccc;
   height: 2px;
   border-style: none;
+  @media (max-width: 768px) {
+    margin-top: 2px;
+  } ;
 `;
 
 const DropBtn = styled.button`
@@ -81,17 +100,32 @@ const DropBtn = styled.button`
   background: #fff;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 2px 2px 7px 1px rgba(114, 114, 114,0.8);
+  box-shadow: 2px 2px 7px 1px rgba(114, 114, 114, 0.8);
   position: relative;
   &:active {
     top: 2px;
   }
+  @media (max-width: 375px) {
+    margin-left: 8px;
+  } ;
+`;
+
+const ButtonStyled = styled(Button)`
+   font-size: 16px;
+   @media (max-width: 768px) {
+    font-size: 14px;
+  } ;
+  @media (max-width: 375px) {
+    margin: 4px;
+    padding:0.4rem
+  } ;
 `;
 
 const DropIcon = styled.p`
-color: #9B5B5B;
-transform: ${(props) => (props.display ? "rotate(0deg)" : 'rotate(180deg)')};
-transition: all 0.3s ease-in-out;
+  color: #9b5b5b;
+  transform: ${(props) => (props.display ? "rotate(0deg)" : "rotate(180deg)")};
+  transition: all 0.3s ease-in-out;
+  
 `;
 
 function GuestlistMain({
@@ -101,9 +135,8 @@ function GuestlistMain({
   setName,
   status,
   click,
-  display
+  display,
 }) {
-
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
 
@@ -117,10 +150,11 @@ function GuestlistMain({
   }
 
   function changeHistoryTable(id, addYes) {
-    getHistory(user.uid, handelUpdateHistory)
+    getHistory(user.uid, handelUpdateHistory);
     function handelUpdateHistory(doc) {
-      const history = doc.data().guestlist;
-      const historyList = JSON.parse(history);
+      // const history = doc.data().guestlist;
+      // const historyList = JSON.parse(history);
+      const historyList = JSON.parse(doc.data().guestlist);
       const newList = [
         [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],
         ...historyList.slice(1),
@@ -140,10 +174,10 @@ function GuestlistMain({
         value={addValue}
         onChange={(e) => setName(e.target.value)}
       />
-      <Button
+      <ButtonStyled
         onClick={() => {
           if (!addValue) {
-            Swal.fire("Please enter a name");
+            alert("Empty columns!", "Please enter a name", "warning");
             return;
           } else {
             const id = db.collection("users").doc().id;
@@ -161,21 +195,20 @@ function GuestlistMain({
             };
             onSubmit(body, id);
             setName("");
-            if (title === "Joyfully Attend") { changeHistoryTable(id, addValue); }
-
+            if (title === "Joyfully Attend") {
+              changeHistoryTable(id, addValue);
+            }
           }
         }}
       >
-        Add Guest
-      </Button>
-      <DropBtn
-        onClick={click}
-      >
+        Add
+      </ButtonStyled>
+      <DropBtn onClick={click}>
         <DropIcon display={display}>▼</DropIcon>
       </DropBtn>
       <Hr />
     </MainTitleContainer>
-  )
+  );
 }
 
 export default GuestlistMain;

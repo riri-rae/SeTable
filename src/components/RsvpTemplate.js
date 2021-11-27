@@ -265,7 +265,7 @@ const RsvpTemplate = (props) => {
   const getwd = date.toLocaleString("en-US", { weekday: "long" });
   const wd = getwd.toUpperCase();
 
-  console.log(year, month, dd, time, wd);
+  // console.log(year, month, dd, time, wd);
 
   return (
     <Template>

@@ -13,6 +13,13 @@ function snapshotEditDefault(uid, callback) {
         .onSnapshot((doc) => callback(doc));
 }
 
+// function getUserData(uid, callback) {
+//     db.collection("users")
+//         .doc(uid)
+//         .get()
+//         .then((doc) => callback(doc));
+// }
+
 function saveEditTemplate(uid, bride, groom, dateTime, add, pic) {
     return db
         .collection("users")
@@ -29,6 +36,25 @@ function saveEditTemplate(uid, bride, groom, dateTime, add, pic) {
 }
 
 //table
+function getHistory(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .get()
+        .then((doc) => callback(doc));
+}
+
+
+
+function getHistoryParse(uid, callback) {
+    db.collection("users")
+        .doc(uid)
+        .get()
+        .then((doc) => {
+            const historyList = JSON.parse(doc.data().guestlist);
+            callback(historyList)
+        });
+}
+
 function updateHistory(uid, data) {
     // const updateHistory = JSON.stringify(data);
     const update = {};
@@ -40,18 +66,13 @@ function setHistory(uid, callback) {
     db.collection("users")
         .doc(uid)
         .onSnapshot((doc) => {
-            let getSaveList = doc.data().guestlist;
-            let saveList = JSON.parse(getSaveList);
+            // let getSaveList = doc.data().guestlist;
+            let saveList = JSON.parse(doc.data().guestlist);
             callback(saveList);
         });
 }
 
-function getHistory(uid, callback) {
-    db.collection("users")
-        .doc(uid)
-        .get()
-        .then((doc) => callback(doc));
-}
+
 
 function getVeggie(uid, callback) {
     db.collection("users")
@@ -161,4 +182,5 @@ export {
     saveHomepageDate,
     getTemplateData,
     getRsvpData,
+    getHistoryParse
 };

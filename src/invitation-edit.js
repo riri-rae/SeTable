@@ -4,7 +4,7 @@ import "firebase/firestore";
 import Header from "./components/Header";
 import RsvpTemplate from "./components/RsvpTemplate";
 import { Button } from "./components/style/generalStyle";
-import Swal from "sweetalert2";
+import { alert, alertWithTimer } from "./utils/alert";
 import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -243,17 +243,11 @@ const InvitationEdit = () => {
 
   function saveChange(uid, bride, groom, dateTime, add, pic) {
     if (!bride || !groom || !dateTime || !add) {
-      Swal.fire("", "Can't save with an emty column ", "warning");
+      alert("Empty columns!", "Please check again", "warning");
     } else {
       saveEditTemplate(uid, bride, groom, dateTime, add, pic)
         .then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          alertWithTimer("Success!", "Your work has been saved", "success")
         });
     }
   }

@@ -4,129 +4,82 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import "firebase/auth";
 import { alert } from "./utils/alert";
-import ScrollButton from "./components/scrollbutton";
+import ScrollButton from "./components/scrollbutton"
 
-const Container = styled.div`
+const Bg = styled.div`
+  background-image: url("/images//images/landingpagebg.jpeg");
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+`;
+
+
+const Left2 = styled.div`
   background-color: #e8e4de;
-  letter-spacing: 2px;
+   height: 1500px; 
+`;
+const Wrapper = styled.div`
+  background-color: #e8e4de;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow-Y: scroll; 
+   /* height: 1500px;  */
 `;
 
-const WrapperTop = styled.div`
-  max-width: 100vw;
-  min-height: 100vh;
+const H1 = styled.h1`
+  width: 100%;
+  /* border: 1px solid #000; */
+  text-align: center;
+  margin-bottom: 5rem;
+  color: #fff;
+  font-size: 10vw;
+  letter-spacing: 4px;
+  font-family: "Libre Baskerville", serif;
+  font-weight: lighter;
 `;
 
-const MainBackground = styled.div`
+const Left = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   background-image: url("/images/landingpagebg.jpeg");
   background-position: right;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100vw;
-  min-height: 100vh;
+  width: 100%;
+  /* height: 100vh; */
 
-  /* &:before {
-    content: "";
-    background-image: url(${"/images/landingpagebg.jpeg"});
-    background-position-x: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-y: center;
-    opacity: 1;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute; 
-    z-index: -1;
-  }  */
 `;
 
-const TopContent = styled.div`
-  width: 80%;
-  color: #fff;
-  letter-spacing: 4px;
-  font-family: "Libre Baskerville", serif;
-  /* font-weight: lighter; */
-`;
-
-const TopTitleMain = styled.div`
-  font-size: 10rem;
-  line-height: 12rem;
-`;
-
-const TopTitleSub = styled.div`
-  font-size: 5rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  line-height: 10rem;
-`;
-
-const WrapperBottom = styled(WrapperTop)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  margin: 0 5rem;
-`;
-
-const Introduce = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  font-size: 1rem;
-  margin: 3rem;
-  width: calc(100vw - 400px);
-`;
-
-const IntroduceTitle = styled.div`
-  white-space: pre-wrap;
-  text-align: left;
-  font-size: 3rem;
-  margin: 3rem 0;
-`;
-
-const IntroduceText = styled.div`
-  text-align: left;
-  font-size: 1.2rem;
-  line-height: 2.8rem;
-  white-space: pre-wrap;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-`;
-
-const SignIn = styled.div`
+const Right = styled.div`
   border: 1px solid #ccc;
   display: flex;
-  min-width: 400px;
+  /* flex: 1; */
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  min-width: 0;
   box-sizing: border-box;
-  height: 25rem;
-`;
-
-const SignInTitle = styled.div`
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
 `;
 
 const FormContainer = styled.div`
   width: 100%;
   display: flex;
+  /* flex: 1; */
   flex-direction: column;
-  justify-content: left;
-  align-items: center;
+  justify-content: center;
 `;
 
+const MainTitle = styled.div`
+
+`
+
 const Input = styled.input`
-  width: 256px;
+  /* width: 100%; */
   height: 42px;
   outline: none;
   border: 1px solid rgba(200, 200, 200, 0.5);
@@ -150,12 +103,10 @@ const Input = styled.input`
 
 const SubmitButton = styled.button`
   padding: 0.8rem 1rem;
-  margin: 2rem;
+  margin: 2rem 5rem;
   color: #fff;
   font-size: 15px;
-  letter-spacing: 2px;
   font-weight: 600;
-  width: 10rem;
   border: none;
   border-radius: 16px;
   cursor: pointer;
@@ -173,10 +124,10 @@ const SubmitButton = styled.button`
 `;
 
 const SwitchButton = styled.button`
-  font-size: 14px;
-  letter-spacing: 1px;
+  font-size: 13px;
   border: none;
   cursor: pointer;
+  margin: 0 5rem;
   color: #574e56;
   background-color: rgb(0 0 0 / 0%);
   &&:hover {
@@ -195,17 +146,12 @@ const LandingPage = () => {
             e.preventDefault();
             onSubmit();
         }
-    };
+    }
 
     function onSubmit() {
         if (activeItem === "signup") {
-            if (name === "" || email === "" || password === "") {
-                alert(
-                    "Something Missing!",
-                    "Please check your infomation again",
-                    "warning"
-                );
-            } else {
+            if (name === "" || email === "" || password === "") { alert("Something Missing!", "Please check your infomation again", "warning"); }
+            else {
                 firebase
                     .auth()
                     .createUserWithEmailAndPassword(email, password)
@@ -239,13 +185,8 @@ const LandingPage = () => {
                     });
             }
         } else if (activeItem === "login") {
-            if (email === "" || password === "") {
-                alert(
-                    "Something Missing!",
-                    "Please check your infomation again",
-                    "warning"
-                );
-            } else {
+            if (email === "" || password === "") { alert("Something Missing!", "Please check your infomation again", "warning"); }
+            else {
                 firebase
                     .auth()
                     .signInWithEmailAndPassword(email, password)
@@ -255,11 +196,7 @@ const LandingPage = () => {
                                 alert("Invalid email format", "Please check again", "warning");
                                 break;
                             case "auth/user-not-found":
-                                alert(
-                                    "Can not find this user",
-                                    "Please check again",
-                                    "warning"
-                                );
+                                alert("Can not find this user", "Please check again", "warning");
                                 break;
                             case "auth/wrong-password":
                                 alert("Wrong Password", "Please check again", "warning");
@@ -283,10 +220,12 @@ const LandingPage = () => {
         });
     }
 
+
+
     const loginDiv = () => {
         return (
             <FormContainer>
-                <SignInTitle>Login</SignInTitle>
+                <MainTitle>Login</MainTitle>
                 <Input
                     type="email"
                     placeholder="Email"
@@ -329,10 +268,10 @@ const LandingPage = () => {
     const signupDiv = () => {
         return (
             <FormContainer>
-                <SignInTitle>Signup</SignInTitle>
+                <div>Signup</div>
                 <Input
                     type="text"
-                    placeholder="User Name"
+                    placeholder="Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={(e) => enterKey(e)}
@@ -373,33 +312,23 @@ const LandingPage = () => {
         );
     };
 
+
+
     return (
-        <Container>
-            <WrapperTop>
-                <MainBackground>
-                    <TopContent>
-                        <TopTitleMain>For</TopTitleMain>
-                        <TopTitleMain>Once in a lifetime</TopTitleMain>
-                        <TopTitleSub>- SeTable -</TopTitleSub>
-                    </TopContent>
+        <>
+            <Wrapper>
+                <Left>
+                    <H1>Once in a lifetime</H1>
                     <ScrollButton />
-                </MainBackground>
-            </WrapperTop>
-            <WrapperBottom>
-                <Introduce>
-                    <IntroduceTitle>
-                        {`You focus on the big day,\nleave SeTable to focus on you...`}
-                    </IntroduceTitle>
-                    <IntroduceText>
-                        {`- Edit your custom invitation\n- Get real-time responses from your guests\n- Control your guest list easily\nAnd … the best is … \narrange guests with easy drag and drog to visualize your wedding tables\nno worries from table arrangement everlast!`}
-                    </IntroduceText>
-                </Introduce>
-                <SignIn>{activeItem === "login" ? loginDiv() : signupDiv()}</SignIn>
-            </WrapperBottom>
-        </Container>
+                </Left>
+                <Right>{activeItem === "login" ? loginDiv() : signupDiv()}</Right>
+
+            </Wrapper>
+            <Left2 />
+
+
+        </>
     );
 };
 
 export default LandingPage;
-
-// style={{ color: "#A47E84" }}

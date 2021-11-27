@@ -4,7 +4,12 @@ import "firebase/firestore";
 import styled from "styled-components";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
-import { updateHistory, setHistory, getVeggie, getBaby } from "./utils/firebaseFunction";
+import {
+  updateHistory,
+  setHistory,
+  getVeggie,
+  getBaby,
+} from "./utils/firebaseFunction";
 import { AddTableButton } from "./components/style/generalStyle";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { CgPlayListRemove } from "react-icons/cg";
@@ -31,7 +36,14 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 420px;
   @media (max-width: 1440px) {
-    width: 90%;
+    width: 95%;
+  }
+  @media (max-width: 768px) {
+    padding-top: 330px;
+  }
+  @media (max-width: 425px) {
+    width: 100%;
+    padding-top: 324px;
   }
 `;
 
@@ -47,7 +59,18 @@ const Block = styled.div`
   height: 380px;
   box-shadow: 0px 0px 10px 3px rgba(112, 100, 100, 0.3);
   @media (max-width: 1440px) {
-    width: 90%;
+    width: 95%;
+  }
+  @media (max-width: 768px) {
+    top: 100px;
+    height: 295px;
+  }
+  @media (max-width: 425px) {
+    width: 100%;
+    height: 300px;
+  }
+  @media (max-width: 425px) {
+    height: 290px;
   }
 `;
 
@@ -57,12 +80,27 @@ const BlockTitle = styled.div`
   margin-top: 24px;
   font-weight: 600;
   letter-spacing: 1px;
+  @media (max-width: 768px) {
+    font-size: 30px;
+    margin-top: 10px;
+  }
+  @media (max-width: 425px) {
+    font-size: 28px;
+    margin-top: 4px;
+  }
 `;
 
 const BlockTitleSmall = styled(BlockTitle)`
   margin-top: 8px;
   font-size: 20px;
   font-weight: 400;
+  @media (max-width: 768px) {
+    font-size: 18px;
+    margin-top: 4px;
+  }
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const Describe = styled.div`
@@ -70,6 +108,15 @@ const Describe = styled.div`
   position: absolute;
   right: 60px;
   top: 330px;
+  @media (max-width: 768px) {
+    right: 30px;
+    top: 260px;
+  }
+  @media (max-width: 425px) {
+    left: 50%;
+    top: 250px;
+    transform: translate(-50%);
+  }
 `;
 
 const DescribeText = styled.div`
@@ -82,6 +129,10 @@ const ColorG = styled(RiCheckboxBlankCircleFill)`
   font-size: 20px;
   color: #96baa9;
   margin: 0 2px;
+  @media (max-width: 425px) {
+    font-size: 14px;
+    margin: 0 4px;
+  }
 `;
 const ColorY = styled(ColorG)`
   color: #fcebcf;
@@ -93,6 +144,7 @@ const TaskContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 90%;
+  padding: 4px;
   & > :first-child {
     border: 3px
       ${(props) => (props.isDraggingOver ? "solid #A47E84" : "solid #A47E84")};
@@ -102,10 +154,18 @@ const TaskContainer = styled.div`
     overflow-x: scroll;
     width: 75%;
     height: 210px;
-    padding: 8px;
-
     @media (max-width: 1440px) {
       width: 86%;
+    }
+    @media (max-width: 768px) {
+      top: 190px;
+      width: 90%;
+      height: 166px;
+    }
+    @media (max-width: 425px) {
+      top: 180px;
+      width: 95%;
+      height: 166px;
     }
   }
   & > :nth-child(2) {
@@ -126,6 +186,9 @@ const RemoveIcon = styled(CgPlayListRemove)`
   font-size: 50px;
   color: #ddd;
   cursor: pointer;
+  @media (max-width: 768px) {
+    font-size: 40px;
+  }
 `;
 
 const CountNumber = styled.div`
@@ -143,14 +206,18 @@ const TaskRow = styled.div`
   display: flex;
   border: 3px solid #b8ab9b;
   border-radius: 16px;
-  min-height: 7rem;
+  height: 7rem;
   width: 100%;
   flex-wrap: wrap;
   box-sizing: border-box;
-
   @media (max-width: 1440px) {
-    height: 90px;
     overflow-x: scroll;
+  }
+  @media (max-width: 768px) {
+    height: 6rem;
+  }
+  @media (max-width: 768px) {
+    height: 5.6rem;
   }
 `;
 
@@ -202,6 +269,15 @@ const Task = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    width: 56px;
+    height: 56px;
+    padding: 2px;
+    margin: 4px;
+    justify-content: space-evenly;
+  }
 `;
 
 const GuestName = styled.p`
@@ -221,9 +297,8 @@ function Table() {
     setHistory(user.uid, setTables);
   }, []);
 
-
   useEffect(() => {
-    getVeggie(user.uid, setVeggie)
+    getVeggie(user.uid, setVeggie);
   }, []);
 
   useEffect(() => {
@@ -263,7 +338,7 @@ function Table() {
       reorder[Number(source.droppableId)] = theTable;
 
       setTables(reorder);
-      updateHistory(user.uid, reorder)
+      updateHistory(user.uid, reorder);
     }
 
     if (source.droppableId !== destination.droppableId) {
@@ -277,7 +352,7 @@ function Table() {
       move[Number(source.droppableId)] = pickTable;
       move[Number(destination.droppableId)] = desTable;
       setTables(move);
-      updateHistory(user.uid, move)
+      updateHistory(user.uid, move);
     }
   }
 
@@ -309,9 +384,8 @@ function Table() {
   function addTable() {
     setTables([...tables, []]);
     const newTable = [...tables, []];
-    updateHistory(user.uid, newTable)
+    updateHistory(user.uid, newTable);
   }
-
 
   return (
     <>

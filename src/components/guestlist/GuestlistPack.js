@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import firebase from "../../utils/firebase";
+import { alertWithTimer } from "../../utils/alert";
 import { updateHistory, saveGuestlistPack, deleteGuestlistPack, getUserData } from "../../utils/firebaseFunction";
 import "firebase/firestore";
 import "firebase/auth";
-import Swal from 'sweetalert2'
+import { reConfirm } from "../../utils/alert";
 import { RiDeleteBinLine } from "react-icons/ri";
 
 const Tr = styled.tr`
@@ -136,36 +137,19 @@ function GuestlistPack({ data }) {
   function saveChange() {
     saveGuestlistPack(user.uid, data.id, name, group, tag, role, baby, veggie, note)
       .then(() => {
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Your work has been saved',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        alertWithTimer("Success!", "Your work has been saved", "success")
       });
   }
 
 
   function handelDel() {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#5885AF',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
-        deleteGuestlistPack(user.uid, data.id)
-      }
-    })
+    reConfirm('Are you sure?', "You won't be able to revert this!", "Yes, delete it!")
+      .then((result) => {
+        if (result.isConfirmed) {
+          alertWithTimer("Deleted!", "Your file has been deleted", "success")
+          deleteGuestlistPack(user.uid, data.id)
+        }
+      })
 
     const guestToDelete = data.id;
     // console.log(guestToDelete);

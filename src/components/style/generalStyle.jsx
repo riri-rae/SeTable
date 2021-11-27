@@ -77,4 +77,15 @@ export const AddTableButton = styled.button`
     transform: translateY(3px);
     border: none;
   }
+  @media (max-width: 768px) {
+    height: 40px;
+    top: 362px;
+  }
+  @media (max-width: 425px) {
+    height: 30px;
+    top: 362px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+
 `;

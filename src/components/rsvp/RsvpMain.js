@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import { updateHistory } from "../../utils/firebaseFunction";
+import { updateHistory, getHistory, getHistoryParse } from "../../utils/firebaseFunction";
+import { alert, alertThankyou } from "../../utils/alert";
 import { Button } from "../../components/style/generalStyle";
 import firebase from "../../utils/firebase";
 import { useParams } from "react-router";
 import "firebase/firestore";
 import "firebase/auth";
 import RsvpPack from "./RsvpPack";
-import Swal from "sweetalert2";
 
 
 const Edit = styled.div`
@@ -189,13 +189,13 @@ const RsvpMain = () => {
     let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
     let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
     if (group === "") {
-      Swal.fire("", "Please let us know who is filling this form?", "question");
+      alert("Empty Name!", "Please let us know who is filling this form?", "question");
     } else if (tag === "") {
-      Swal.fire("", "Please let us you are from which side?", "question");
+      alert("Empty Selector!", "Please let us you are from which side?", "question");
     } else if (role === "") {
-      Swal.fire("", "Please let us you are our?", "question");
+      alert("Empty Selector!", "Please let us you are our?", "question");
     } else if (status === "") {
-      Swal.fire("", "Please let us know if you will attand", "question");
+      alert("Attending?", "Please let us know if you will attand", "question");
     } else {
       const allId = [];
       if (allData.length === 0) {
@@ -214,15 +214,17 @@ const RsvpMain = () => {
           .then(() => { afterSend() });
       } else {
         allData.forEach((data) => {
+          console.log('yes??')
           let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
           allId.push(id);
           let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
+          console.log(data.name, data.veggie, data.baby)
           if (!data.name) {
-            Swal.fire("", "Please fill in guest name", "question");
+            return alert("Empty Name!", "Please fill in guest name", "question");
           } else if (!data.veggie) {
-            Swal.fire("", "Vegetarian meal?", "question");
+            return alert("Vegetarian meal?", "Please select", "question");
           } else if (!data.baby) {
-            Swal.fire("", "Require baby seat?", "question");
+            return alert("Require baby seat?", "Please select", "question");
           } else {
             rsvpRef.set({
               name: data.name,
@@ -236,21 +238,40 @@ const RsvpMain = () => {
               veggie: data.veggie,
               time: firebase.firestore.Timestamp.now(),
             });
+            addHistoryTable(allId);
           }
         });
-        addHistoryTable(allId);
+
       }
     }
   }
 
+  // function addHistoryTable(allId) {
+  //   getHistoryParse(user.uid, handelAddHistoryTable)
+
+  //   function handelAddHistoryTable(historyList) {
+  //     const [preTable] = historyList.splice(0, 1);
+  //     historyList.splice(0, 0, preTable);
+  //     const newList = [
+  //       ...allData.map((data, index) => ({
+  //         id: allId[index],
+  //         content: data.name,
+  //       })),
+  //       ...preTable,
+  //     ];
+  //     updateHistory(user.uid, [newList, ...historyList.slice(1)])
+  //     afterSend();
+  //   }
+  // }
 
   function addHistoryTable(allId) {
     db.collection("users")
       .doc(user.uid)
       .get()
       .then((doc) => {
-        const history = doc.data().guestlist;
-        const historyList = JSON.parse(history);
+        // const history = doc.data().guestlist;
+        const historyList = JSON.parse(doc.data().guestlist);
+        console.log(historyList);
         const [preTable] = historyList.splice(0, 1);
         historyList.splice(0, 0, preTable);
         const newList = [
@@ -260,25 +281,13 @@ const RsvpMain = () => {
           })),
           ...preTable,
         ];
-        const updateFirebaseHistory = JSON.stringify([newList, ...historyList.slice(1)]);
-        updateHistory(user.uid, updateFirebaseHistory)
+        updateHistory(user.uid, [newList, ...historyList.slice(1)])
       })
       .then(() => { afterSend() });
   }
 
   function afterSend() {
-    Swal.fire({
-      icon: 'success',
-      title: 'Thank you! Have a nice day • u •',
-      showClass: {
-        popup: 'animate__animated animate__fadeInDown'
-      },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
-      },
-      showConfirmButton: false,
-      timer: 1800
-    })
+    alertThankyou()
       .then(() => {
         setAllData([]);
         setGroup("");

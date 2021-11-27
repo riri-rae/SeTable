@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import firebase from "./utils/firebase";
 import "firebase/firestore";
 import { getRsvpData } from "./utils/firebaseFunction";
 
@@ -28,7 +27,7 @@ const Wrap = styled.div`
   border-bottom: 20px solid #a49393 ;
   margin: 0 auto;
   @media (max-width: 1440px) {
-    width: 90%;
+    width: 95%;
   }
 `;
 
@@ -206,7 +205,7 @@ function GuestList({ setDeleteId }) {
                     </table>
                     : <EmptyIcon />}
                 </SubTitleContainer>
-                <GuestlistMain title={'Not Sure'} count={notCount} click={clickNotSure} addValue={addNotSure} setName={setAddNotSure} status={"notSure"} display={display2} />
+                <GuestlistMain title={'Not Sure Yet'} count={notCount} click={clickNotSure} addValue={addNotSure} setName={setAddNotSure} status={"notSure"} display={display2} />
                 <SubTitleContainer display={display2}>
                   {notCount !== '0' ?
                     <table>
