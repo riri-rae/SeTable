@@ -210,8 +210,8 @@ function GuestlistPack({ data }) {
       </Td>
 
       <Td>
-        <Select value={tag} onChange={(e) => setTag(e.target.value)}>
-          <option value="" disabled selected>
+        <Select defaultValue={tag} onChange={(e) => setTag(e.target.value)}>
+          <option value="" disabled>
             ---
           </option>
           <option value="bride-side">Brides' Side</option>
@@ -219,8 +219,8 @@ function GuestlistPack({ data }) {
         </Select>
       </Td>
       <Td>
-        <Select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="" disabled selected>
+        <Select defaultValue={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="" disabled>
             ---
           </option>
           <option value="friend">Friend</option>
@@ -228,8 +228,8 @@ function GuestlistPack({ data }) {
         </Select>
       </Td>
       <Td>
-        <Select value={veggie} onChange={(e) => setVeggie(e.target.value)}>
-          <option value="" disabled selected>
+        <Select defaultValue={veggie} onChange={(e) => setVeggie(e.target.value)}>
+          <option value="" disabled>
             ---
           </option>
           <option value="yes">Yes</option>
@@ -237,8 +237,8 @@ function GuestlistPack({ data }) {
         </Select>
       </Td>
       <Td>
-        <Select value={baby} onChange={(e) => setBaby(e.target.value)}>
-          <option value="" disabled selected>
+        <Select defaultValue={baby} onChange={(e) => setBaby(e.target.value)}>
+          <option value="" disabled>
             ---
           </option>
           <option value="yes">Yes</option>

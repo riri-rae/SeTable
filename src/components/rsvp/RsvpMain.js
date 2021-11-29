@@ -32,7 +32,6 @@ const Edit = styled.div`
 const Frame = styled.div`
   background-image: url("/images/frame-brown.png");
   background-position: center;
-  /* background-attachment: fixed; */
   background-repeat: no-repeat;
   background-size: 100%;
   width: 100%;
@@ -41,7 +40,6 @@ const Frame = styled.div`
 const EditTitle = styled.div`
   font-weight: 500;
   padding-bottom: 20px;
-  /* margin-bottom: 20px; */
   text-align: center;
   letter-spacing: 1px;
 
@@ -159,9 +157,7 @@ const RsvpMain = () => {
   const { userid } = useParams();
   const [group, setGroup] = useState("");
   const [note, setNote] = useState("");
-
   const [allData, setAllData] = useState([]);
-  console.log(allData)
 
   const [tag, setTag] = useState("");
   const tags = [

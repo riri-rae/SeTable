@@ -6,12 +6,12 @@ import { updateHistory, getHistory } from "../../utils/firebaseFunction";
 import { Button } from "../../components/style/generalStyle";
 import "firebase/firestore";
 import "firebase/auth";
+import { useSelector } from "react-redux";
 
 const Input = styled.input`
   display: flex;
   align-items: center;
   margin: 4px;
-  /* margin-left:24px; */
   padding: 0.5rem;
   color: #000;
   border: 1px solid #ddd;
@@ -75,7 +75,6 @@ const Title = styled.div`
 `;
 const Count = styled(Title)`
   width: 32px;
-  /* height: 32px; */
   align-items: center;
   @media (max-width: 768px) {
     margin-left: 8px;
@@ -138,7 +137,7 @@ function GuestlistMain({
   display,
 }) {
   const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
+  const user = useSelector((state) => state.user);
 
   function onSubmit(body, id) {
     const rsvp = db
@@ -152,8 +151,6 @@ function GuestlistMain({
   function changeHistoryTable(id, addYes) {
     getHistory(user.uid, handelUpdateHistory);
     function handelUpdateHistory(doc) {
-      // const history = doc.data().guestlist;
-      // const historyList = JSON.parse(history);
       const historyList = JSON.parse(doc.data().guestlist);
       const newList = [
         [{ id: `${id}`, content: `${addYes}` }, ...historyList[0]],

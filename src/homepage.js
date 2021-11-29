@@ -11,48 +11,36 @@ import {
 import { alertWithTimer } from "./utils/alert";
 
 const Container = styled.div`
-  background-image: url("/images/loginbg.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: calc(100vh - 80px);
   min-width: 100vw;
-  /* text-align: center; */
   color: #574e56;
   overflow: hidden;
   position: relative;
+
+  &:before {
+    content: "";
+    background-image: url("/images/homepagetree.jpeg");
+    background-position-x: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: center;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+  }
 
   @media (max-width: 768px) {
     height: calc(100vh - 100px);
   }
 `;
-
-// const CenterBg = styled.div`
-//   background-image: url("/images/homepage-full.jpeg");
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-//   width: 100%;
-//   height: 100%;
-// `;
-
-// const CenterWrap = styled.div`
-//   width: 100%;
-//   height: 100vh;
-//   position: relative;
-//   box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   max-height: 100vh;
-//   text-align: center;
-// `;
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -60,9 +48,10 @@ const ContentWrap = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: calc(100vh - 80px);
   margin: 0 auto;
-  background-color: rgba(255, 255, 255, 0.4);
+  @media (max-width: 425px) {
+    top: 40%;
+  }
 `;
 
 const TopWrap = styled.div`
@@ -71,18 +60,11 @@ const TopWrap = styled.div`
   font-size: 2.5rem;
   letter-spacing: 4px;
 
-  @media (max-width: 1440px) {
-    font-size: 2rem;
-  }
-  @media (max-width: 1024px) {
-    font-size: 1.5rem;
-  }
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 2.2rem;
   }
   @media (max-width: 425px) {
-    font-size: 0.9rem;
-    margin-top: 36px;
+    font-size: 2rem;
   }
 `;
 
@@ -91,6 +73,13 @@ const TextLine = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: "Libre Baskerville", serif;
+  @media (max-width: 425px) {
+    font-size: 2rem;
+  }
+`;
+
+const Greeting = styled.div`
+  text-align: center;
 `;
 
 const InputLine = styled.div`
@@ -102,13 +91,12 @@ const InputLine = styled.div`
     flex-wrap: wrap;
     margin-top: 24px;
   }
-  
 `;
 
 const Input = styled.input`
   border: 1px solid #ddd;
-  height: 16px;
-  width: 260px;
+  height: 20px;
+  width: 20rem;
   font-size: 16px;
   vertical-align: middle;
   outline: none;
@@ -117,7 +105,7 @@ const Input = styled.input`
   color: #44342d;
   background-color: #fff;
   @media (max-width: 375px) {
-    min-width: 96%;
+    min-width: 90%;
   }
 `;
 
@@ -125,15 +113,15 @@ const Button = styled.button`
   border: 1px solid #ddd;
   background: #fff;
   border-radius: 16px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   margin-left: 8px;
-  height: 34px;
+  height: 36px;
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }
   @media (max-width: 375px) {
-    margin:12px 0 0 0;
+    margin: 12px 0 0 0;
   }
 `;
 
@@ -150,11 +138,11 @@ const CountDown = styled.div`
   @media (max-width: 1024px) {
     margin-top: 20px;
   }
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     flex-wrap: wrap;
   }
   @media (max-width: 375px) {
-   padding: 0;
+    padding: 0;
   }
 `;
 
@@ -166,12 +154,11 @@ const DateWrap = styled.div`
   background-color: rgb(246, 235, 229);
   box-shadow: 0px 0px 10px 6px rgba(0, 0, 0, 0.1);
   @media (max-width: 768px) {
-    width: 100px;
+    width: 30%;
     height: 100px;
-    margin: 24px;
+    margin: 14px;
   }
-  @media (max-width: 600px) {
-    width: 80px;
+  @media (max-width: 425px) {
     height: 80px;
     margin: 12px;
   }
@@ -184,9 +171,6 @@ const Time = styled.div`
 
   @media (max-width: 768px) {
     font-size: 36px;
-  }
-  @media (max-width: 600px) {
-    font-size: 28px;
   }
 `;
 
@@ -280,20 +264,16 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      {/* {userName && enterDate !== '' && getDate !== '' && dd && hr && mm & ss ? */}
       {userName ? (
         <>
           <Container>
-            {/* <CenterBg> */}
-            {/* <CenterWrap> */}
             <ContentWrap>
               <TopWrap>
                 <TextLine>
-                  <div>
-                    Welcome to <span style={{ color: "#A47E84" }}>SeTable</span>{" "}
-                    {userName} ,{" "}
-                  </div>
-                  <div>Let's set your event time!</div>
+                  <Greeting>
+                    Dear <span style={{ color: "#A47E84" }}>{userName},</span>
+                  </Greeting>
+                  <Greeting>Let's set your event time!</Greeting>
                 </TextLine>
                 <InputLine>
                   <Input

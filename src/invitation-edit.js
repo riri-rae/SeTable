@@ -9,6 +9,8 @@ import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
+import ScrollButton from "./utils/scrollbuttonTemplate";
+
 
 import "firebase/firestore";
 
@@ -25,12 +27,6 @@ const Container = styled.div`
     flex-wrap: wrap;
     overflow: scroll;
   }
-  /* @media (max-width: 1320px) {
-    flex-direction: column;
-    flex-wrap: wrap;
-    overflow: scroll;
-  } */
-
 `;
 
 const TemplateWrap = styled.div`
@@ -46,7 +42,6 @@ const TemplateWrap = styled.div`
 
 `;
 
-
 const Edit = styled.div`
   color: #5b5151;
   box-sizing: border-box;
@@ -61,6 +56,7 @@ const Edit = styled.div`
   padding: 20px;
   @media (max-width: 1440px) {
     min-width: 36vw;
+    height: 100vh;
   }
 `;
 
@@ -72,7 +68,6 @@ const Frame = styled.div`
   width: 100%;
   min-height: 36px;
 `;
-
 
 const EditTitle = styled.div`
   font-size: 36px;
@@ -266,8 +261,8 @@ const InvitationEdit = () => {
                 dateTime={dateTime}
                 pic={pic}
               />
+              <ScrollButton />
             </TemplateWrap>
-
             <Edit>
               <Frame />
               <EditTitle>Edit Your Custom Information</EditTitle>

@@ -89,3 +89,51 @@ export const AddTableButton = styled.button`
   }
 
 `;
+
+export const SubmitButton = styled.button`
+  padding: 0.8rem 1rem;
+  margin: 2rem;
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  width: 10rem;
+  border: none;
+  border-radius: 36px;
+  cursor: pointer;
+  transition: all, 0.3s ease-in-out;
+  box-shadow: 0px 0px 5px rgb(0 0 0 / 20%);
+  background: rgb(244, 185, 184);
+  background: linear-gradient(
+    315deg,
+    rgba(244, 185, 184, 1) 0%,
+    rgba(235, 187, 176, 1) 35%,
+    rgba(212, 140, 112, 1) 100%
+  );
+  &:hover {
+    filter: brightness(1.05);
+  }
+`;
+
+export const SignSubmitButton = styled(SubmitButton)`
+  background: rgb(236, 210, 210);
+  background: linear-gradient(
+    315deg,
+    rgba(236, 210, 210, 1) 0%,
+    rgba(235, 187, 176, 1) 35%,
+    rgba(200, 131, 142, 1) 100%
+  );
+`;
+
+export const SwitchButton = styled.button`
+  font-size: 14px;
+  letter-spacing: 1px;
+  border: none;
+  cursor: pointer;
+  color: #574e56;
+  margin: 1rem;
+  background-color: rgb(0 0 0 / 0%);
+  &&:hover {
+    color: #391306;
+  }
+`;

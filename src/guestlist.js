@@ -130,17 +130,6 @@ function GuestList({ setDeleteId }) {
       });
       setAllData(data);
     }
-    // db.collection("users")
-    //   .doc(user.uid)
-    //   .collection("rsvp")
-    //   .orderBy("time", "desc")
-    //   .onSnapshot((querySnapshot) => {
-    //     const data = [];
-    //     querySnapshot.forEach((doc) => {
-    //       data.push(doc.data());
-    //     });
-    //     setAllData(data);
-    //   });
   }, []);
 
   useEffect(() => {
