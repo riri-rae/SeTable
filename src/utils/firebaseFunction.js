@@ -13,13 +13,6 @@ function snapshotEditDefault(uid, callback) {
         .onSnapshot((doc) => callback(doc));
 }
 
-// function getUserData(uid, callback) {
-//     db.collection("users")
-//         .doc(uid)
-//         .get()
-//         .then((doc) => callback(doc));
-// }
-
 function saveEditTemplate(uid, bride, groom, dateTime, add, pic) {
     return db
         .collection("users")
@@ -42,8 +35,6 @@ function getHistory(uid, callback) {
         .get()
         .then((doc) => callback(doc));
 }
-
-
 
 function getHistoryParse(uid, callback) {
     db.collection("users")
@@ -71,8 +62,6 @@ function setHistory(uid, callback) {
             callback(saveList);
         });
 }
-
-
 
 function getVeggie(uid, callback) {
     db.collection("users")
@@ -167,6 +156,8 @@ function getRsvpData(uid, callback) {
         .orderBy("time", "desc")
         .onSnapshot((doc) => callback(doc));
 }
+
+
 
 export {
     snapshotEditDefault,

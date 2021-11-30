@@ -158,9 +158,7 @@ function GuestlistPack({ data }) {
 
       db.collection("users").doc(user.uid)
         .update(update);
-
     })
-
 
     db.collection("users")
       .doc(user.uid)
@@ -170,9 +168,7 @@ function GuestlistPack({ data }) {
       .then(() => {
         window.alert("Document successfully deleted!");
       })
-
   }
-
 
   return (
     <tr>

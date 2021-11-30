@@ -32,14 +32,12 @@ const Container = styled.div`
 const TemplateWrap = styled.div`
   height: 100vh;
   width: calc(100vw - 40vw);
-
   @media (max-width: 1440px) {
     width: calc(100vw - 36vw);
   }
   @media (max-width: 1320px) {
     min-width: 100vw;
   }
-
 `;
 
 const Edit = styled.div`
