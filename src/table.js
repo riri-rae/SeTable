@@ -151,9 +151,10 @@ const TaskContainer = styled.div`
     position: fixed;
     top: 200px;
     flex-wrap: wrap;
-    overflow-x: scroll;
     width: 75%;
     height: 210px;
+    padding: 8px;
+
     @media (max-width: 1440px) {
       width: 86%;
     }
@@ -182,6 +183,7 @@ const IconColum = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const RemoveIcon = styled(CgPlayListRemove)`
   font-size: 50px;
   color: #ddd;
@@ -210,9 +212,25 @@ const TaskRow = styled.div`
   width: 100%;
   flex-wrap: wrap;
   box-sizing: border-box;
-  @media (max-width: 1440px) {
-    overflow-x: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 5px;
   }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 30%;
+    border: none;
+    margin: 8px 0;
+
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(137, 96, 91, 0.3);
+    border-radius: 30px;
+    border: none;
+  }
+  
   @media (max-width: 768px) {
     height: 6rem;
   }
@@ -224,7 +242,7 @@ const TaskRow = styled.div`
 const Task = styled.div`
   border: 3px solid #b8ab9b;
   border-radius: 50%;
-  padding: 6px;
+  padding: 4px;
   margin: 8px;
   transition: background-color 0.2s ease;
   /* background-color: ${(props) => (props.isDragging ? "fff" : "white")}; */

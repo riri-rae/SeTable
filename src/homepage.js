@@ -16,7 +16,7 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   height: calc(100vh - 80px);
-  min-width: 100vw;
+  max-width: 100vw;
   color: #574e56;
   overflow: hidden;
   position: relative;
@@ -49,9 +49,24 @@ const ContentWrap = styled.div`
   transform: translate(-50%, -50%);
   width: 100%;
   margin: 0 auto;
-  @media (max-width: 425px) {
-    top: 40%;
+  &:before {
+  content: "";
+    opacity: 0.6;
+    background-color: white;
+    position: absolute;
+    transform: translateX(-50%);
+    top: -90%;
+    left: 50%;
+    bottom: -90%;
+    width: 80%;
+    z-index: -1;
+    @media (max-width: 767px) {
+    width: 100%;
   }
+  }
+  /* @media (max-width: 425px) {
+    top: 40%;
+  } */
 `;
 
 const TopWrap = styled.div`
@@ -80,6 +95,10 @@ const TextLine = styled.div`
 
 const Greeting = styled.div`
   text-align: center;
+  padding: 0 16px;
+  @media (max-width: 425px) {
+    padding: 0 18px;
+  }
 `;
 
 const InputLine = styled.div`
@@ -104,8 +123,11 @@ const Input = styled.input`
   padding: 8px;
   color: #44342d;
   background-color: #fff;
+  @media (max-width: 425px) {
+    min-width: 16rem;
+  }
   @media (max-width: 375px) {
-    min-width: 90%;
+    margin: 0 36px;
   }
 `;
 
@@ -159,7 +181,7 @@ const DateWrap = styled.div`
     margin: 14px;
   }
   @media (max-width: 425px) {
-    height: 80px;
+    /* height: 80px; */
     margin: 12px;
   }
 `;

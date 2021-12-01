@@ -27,8 +27,9 @@ const MainBackground = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100vw;
+  max-width: 100vw;
   min-height: 100vh;
+  overflow: hidden;
 `;
 
 const TopContent = styled.div`
@@ -231,7 +232,6 @@ const LandingPage = () => {
       guestlist: "[[]]",
     });
   }
-
 
   function onSubmit() {
     if (activeItem === "signup") {

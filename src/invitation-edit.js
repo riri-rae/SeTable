@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import "firebase/firestore";
 import Header from "./components/Header";
@@ -9,7 +9,8 @@ import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
-import ScrollButton from "./utils/scrollbuttonTemplate";
+// import ScrollButtonTemplate from "./utils/scrollbuttonTemplate";
+import { IoIosArrowDown } from "react-icons/io";
 
 
 import "firebase/firestore";
@@ -20,7 +21,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
   max-height: calc(100vh - 80px);
   overflow: hidden;
   @media (max-width: 1320px) {
@@ -188,14 +188,67 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
   margin-left: 4px;
 `;
 
-const InvitationEdit = () => {
+const ScrollButton = styled.div`
+display: none;
+@media (max-width: 1024px) {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0%;
+  font-size: 3rem;
+  cursor: pointer;
+  font-weight: lighter;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 1px;
+  transition: all 0.3s ease-in-out;
+  &:hover{
+    color: #A47E84;
+  }
+}
+`;
 
+const Span = styled.div`
+display: none;
+@media (max-width: 1024px) {
+  display: block;
+  font-size: 1rem;
+  margin-top: -5px;
+}
+`;
+
+const Icon = styled.div`
+display: none;
+@media (max-width: 1024px) {
+  display: block;
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2rem;
+}
+`;
+
+const InvitationEdit = () => {
   const user = useSelector((state) => state.user);
+  const target = useRef()
   const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
   const [groom, setGroom] = useState("");
   const [dateTime, setDateTime] = useState("");
   const [add, setAdd] = useState("");
+
+  const [visible, setVisible] = useState(true);
+
+  const toggleVisible = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 0) {
+      setVisible(false);
+    } else if (scrolled <= 0) {
+      setVisible(true);
+    }
+  };
+  window.addEventListener("scroll", toggleVisible);
 
   useEffect(() => {
     function getDefault(doc) {
@@ -259,9 +312,20 @@ const InvitationEdit = () => {
                 dateTime={dateTime}
                 pic={pic}
               />
-              <ScrollButton />
             </TemplateWrap>
-            <Edit>
+            {/* <ScrollButtonTemplate onClick={() => {
+              target.current.scrollIntoView({ behavior: 'smooth' })
+            }} /> */}
+            <ScrollButton
+              onClick={() => {
+                target.current.scrollIntoView({ behavior: 'smooth' })
+              }}
+              style={{ display: visible ? "inline-block" : "none" }}
+            >
+              <Icon><IoIosArrowDown /></Icon>
+              <Span>Scroll</Span>
+            </ScrollButton>
+            <Edit ref={target}>
               <Frame />
               <EditTitle>Edit Your Custom Information</EditTitle>
               <EditText>
@@ -331,7 +395,8 @@ const InvitationEdit = () => {
         </>
       ) : (
         <Loading />
-      )}
+      )
+      }
     </>
   );
 };

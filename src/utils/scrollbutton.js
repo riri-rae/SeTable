@@ -66,36 +66,36 @@ const Icon = styled.div`
 // `
 
 const ScrollButton = () => {
-    const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(true);
 
-    const toggleVisible = () => {
-        const scrolled = document.documentElement.scrollTop;
-        if (scrolled > 0) {
-            setVisible(false);
-        } else if (scrolled <= 0) {
-            setVisible(true);
-        }
-    };
+  const toggleVisible = () => {
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 0) {
+      setVisible(false);
+    } else if (scrolled <= 0) {
+      setVisible(true);
+    }
+  };
 
-    const scrollToBottom = () => {
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            // top: 1500,
-            behavior: "smooth",
-        });
-    };
+  const scrollToBottom = () => {
+    window.scrollTo({
+      // top: document.documentElement.scrollHeight,
+      top: 1500,
+      behavior: "smooth",
+    });
+  };
 
-    window.addEventListener("scroll", toggleVisible);
+  window.addEventListener("scroll", toggleVisible);
 
-    return (
-        <Button
-            onClick={scrollToBottom}
-            style={{ display: visible ? "inline-block" : "none" }}
-        >
-            <Icon><IoIosArrowDown /></Icon>
-            <Span>Scroll</Span>
-        </Button>
-    );
+  return (
+    <Button
+      onClick={scrollToBottom}
+      style={{ display: visible ? "inline-block" : "none" }}
+    >
+      <Icon><IoIosArrowDown /></Icon>
+      <Span>Scroll</Span>
+    </Button>
+  );
 };
 
 export default ScrollButton;

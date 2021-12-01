@@ -8,7 +8,6 @@ const Template = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100%;
   position: relative;
   overflow-y: hidden;
   overflow-x: hidden;

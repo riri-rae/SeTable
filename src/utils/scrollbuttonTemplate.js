@@ -8,9 +8,8 @@ display: none;
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 5%;
+  bottom: 0%;
   font-size: 3rem;
-  /* color: rgba(255, 255, 255, 0.8); */
   cursor: pointer;
   font-weight: lighter;
   display: flex;
@@ -19,22 +18,29 @@ display: none;
   margin-left: 1px;
   transition: all 0.3s ease-in-out;
   &:hover{
-    color: #fff;
+    color: #A47E84;
   }
 }
 `;
 
 const Span = styled.div`
+display: none;
+@media (max-width: 1024px) {
+  display: block;
   font-size: 1rem;
   margin-top: -5px;
+}
 `;
 
 const Icon = styled.div`
+display: none;
+@media (max-width: 1024px) {
+  display: block;
  display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
-
+}
 `;
 
 // const Span = styled.span`
@@ -65,7 +71,7 @@ const Icon = styled.div`
 //   }
 // `
 
-const ScrollButton = () => {
+const ScrollButtonTemplate = () => {
   const [visible, setVisible] = useState(true);
 
   const toggleVisible = () => {
@@ -78,9 +84,9 @@ const ScrollButton = () => {
   };
 
   const scrollToBottom = () => {
+    console.log('hi')
     window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      // top: 1500,
+      top: 1500,
       behavior: "smooth",
     });
   };
@@ -98,4 +104,4 @@ const ScrollButton = () => {
   );
 };
 
-export default ScrollButton;
+export default ScrollButtonTemplate;
