@@ -32,7 +32,7 @@ function reConfirm(title, text, confirmButtonText) {
 function alertThankyou() {
     return Swal.fire({
         icon: 'success',
-        title: 'Thank you! Have a nice day • u •',
+        title: 'Thank you! Have a nice day!',
         showClass: {
             popup: 'animate__animated animate__fadeInDown'
         },
