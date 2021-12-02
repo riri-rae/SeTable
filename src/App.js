@@ -1,103 +1,113 @@
-import React from 'react';
-import '@atlaskit/css-reset';
-import { DragDropContext } from 'react-beautiful-dnd';
-import initialData from './initial-data';
-import Column from './column';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import LandingPage from "./landingpage";
+import HomePage from "./homepage";
+import Loading from "./components/Loading";
+import Notfound from "./components/Notfound";
+import Table from "./table";
+import GuestList from "./guestlist";
+import InvitationEdit from "./invitation-edit";
+import InvitationRsvp from "./invitation-rsvp";
+import firebase from "./utils/firebase";
+import "firebase/firestore";
+import 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { getUser } from "./redux/action-cretors";
 
 
-const Container = styled.div`
-  display: flex;
-`;
+const App = () => {
 
-class App extends React.Component {
-  state = initialData;
+  const dispatch = useDispatch();
+  const [user, setUser] = useState();
 
-  //儲存移動後的new arry
-  onDragEnd = result => {
-    const { destination, source, draggableId } = result;
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((currentUser) => {
+      dispatch(getUser(currentUser))
+      setUser(currentUser);
+    })
+  }, [])
 
-    if (!destination) {
-      return;
-    }
+  return (
+    <>
+      <Router>
+        <Switch>
+          {user === undefined ? (<Loading />) : (
+            <Switch>
+              <Route exact path="/">
+                {user ? <Redirect to="/homepage" /> : <LandingPage />}
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
+              </Route>
+              <Route exact path="/invitation-rsvp/404" component={Notfound} />
+              <Route exact path="/invitation-rsvp/:userid" component={InvitationRsvp} />
+              <Route path="/homepage">
+                {user ? <HomePage /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/invitation-edit">
+                {user ? <InvitationEdit /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/guestlist">
+                {user ? <GuestList /> : <Redirect to="/" />}
+              </Route>
+              <Route path="/table">
+                {user ? <Table /> : <Redirect to="/" />}
+              </Route>
+              <Route exact path="" component={Notfound} />
+            </Switch>
+          )}
+          <Route exact path="" component={Notfound} />
+        </Switch>
+      </Router>
+    </>
 
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
-
-    if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
-
-      const newColumn = {
-        ...start,
-        taskIds: newTaskIds,
-      };
-
-      const newState = {
-        ...this.state,
-        columns: {
-          ...this.state.columns,
-          [newColumn.id]: newColumn,
-        },
-      };
-
-      this.setState(newState);
-      return;
-    }
-
-    // Moving from one list to another
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      taskIds: startTaskIds,
-    };
-
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      taskIds: finishTaskIds,
-    };
-
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
-    };
-    this.setState(newState);
-  };
-
-
-  render() {
-    return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        <Container>
-          {this.state.columnOrder.map(columnId => {
-            const column = this.state.columns[columnId];
-            const tasks = column.taskIds.map(taskId => this.state.tasks[taskId]);
-
-            return <Column key={column.id} column={column} tasks={tasks} />;
-          })}
-        </Container>
-      </DragDropContext>
-
-    );
-  }
+  );
 }
-
-
-
-
 export default App;
+
+
+{/* <Route exact path="./homepage" component={HomePage} />
+<Route path="/invitation-edit" component={InvitationEdit} />
+<Route path="/table" component={Table} />
+<Route path="/guestlist" component={GuestList} />
+<Route path="/" component={LandingPage} />
+<Route path="/invitation-rsvp/:userid" component={InvitationRsvp} /> */}
+
+
+
+
+
+{/* <BrowserRouter>
+      <Switch>
+        <Route exact path="./homepage" component={HomePage} />
+        <Route path="/invitation-edit" component={InvitationEdit} />
+        <Route path="/table" component={Table} />
+        <Route path="/guestlist" component={GuestList} />
+        <Route path="/" component={LandingPage} />
+        <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
+      </Switch>
+    </BrowserRouter> */}
+
+
+    // <Router>
+    //     <Route exact path="/">
+    //       <LandingPage />
+    //     </Route>
+
+    //     <Route path="/invitation-rsvp/:userid" component={InvitationRsvp} />
+    //     {user ?
+    //       <>
+    //         <Route path="/homepage">
+    //           <HomePage />
+    //         </Route>
+    //         <Route path="/invitation-edit">
+    //           <InvitationEdit />
+    //         </Route>
+    //         <Route path="/guestlist">
+    //           <GuestList setDeleteId={setDeleteId} />
+    //         </Route>
+    //         <Route path="/table">
+    //           <Table deleteId={deleteId} />
+    //         </Route>
+    //       </>
+    //       : <Redirect to="/" />}
+
+    //   </Router>
