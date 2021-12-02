@@ -66,9 +66,6 @@ const SubTitleContainer = styled(MainTitleContainer)`
   margin-right: 20px;
   overflow-x: scroll;
   background-color: #fff;
-  /* &:last-child {
-    padding-bottom: 20px;
-  } */
 `;
 
 const EmptyIcon = styled(RiStickyNoteLine)`
