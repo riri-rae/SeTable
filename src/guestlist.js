@@ -176,15 +176,13 @@ function GuestList({ setDeleteId }) {
                       {renderSubTitle()}
                       <tbody>
                         {allData.map((data, index) =>
-                          data.status === "yes" ? (
+                          data.status === "yes" && (
                             <GuestlistPack
                               data={data}
                               index={index}
                               key={data.id}
                               setDeleteId={setDeleteId}
-                            ></GuestlistPack>
-                          ) : (
-                            <></>
+                            />
                           )
                         )}
                       </tbody>
@@ -198,15 +196,12 @@ function GuestList({ setDeleteId }) {
                       {renderSubTitle()}
                       <tbody>
                         {allData.map((data, index) =>
-                          data.status === "notSure" ? (
-                            <GuestlistPack
-                              data={data}
-                              index={index}
-                              key={data.id}
-                            ></GuestlistPack>
-                          ) : (
-                            <></>
-                          )
+                          data.status === "notSure" &&
+                          <GuestlistPack
+                            data={data}
+                            index={index}
+                            key={data.id}
+                          />
                         )}
                       </tbody>
                     </table>
@@ -219,15 +214,12 @@ function GuestList({ setDeleteId }) {
                       {renderSubTitle()}
                       <tbody>
                         {allData.map((data, index) =>
-                          data.status === "no" ? (
-                            <GuestlistPack
-                              data={data}
-                              index={index}
-                              key={data.id}
-                            ></GuestlistPack>
-                          ) : (
-                            <></>
-                          )
+                          data.status === "no" &&
+                          <GuestlistPack
+                            data={data}
+                            index={index}
+                            key={data.id}
+                          />
                         )}
                       </tbody>
                     </table>
