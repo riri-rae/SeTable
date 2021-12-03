@@ -49,7 +49,6 @@ const InputNew = styled(Input)`
 const MainTitleContainer = styled.div`
   margin: 0 auto;
   padding: 20px 20px 0 20px;
-  /* width: 80%; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

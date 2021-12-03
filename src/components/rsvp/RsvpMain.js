@@ -134,9 +134,6 @@ const SelectStyleLong = styled(SelectStyle)`
     margin-left: 0px;
     margin-top: 4px;
   }
-  /* @media (max-width: 1440px) {
-    margin-left: 0px;
-  } */
 `;
 
 const Textarea = styled.textarea`

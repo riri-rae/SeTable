@@ -5,7 +5,6 @@ import firebase from "../utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
 import roseLogo from "../images/rose-logo.png";
-import memberImg from "../images/member.png";
 import { reConfirm, alertWithTimer } from "../utils/alert";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
@@ -172,7 +171,6 @@ export default function Header() {
 
           <LogoutIcon
             onClick={confirmLogout}>
-            <img src={memberImg} height="44" alt="member" />
           </LogoutIcon>
         </DeskHeaderDiv>
 
@@ -186,7 +184,6 @@ export default function Header() {
             <MobileTag to="/table">Table</MobileTag>
             <LogoutIcon
               onClick={confirmLogout}>
-              <img src={memberImg} height="44" alt="member" />
             </LogoutIcon>
           </MobileNav>
         </MobileHeaderDiv>
