@@ -293,7 +293,7 @@ const HomePage = () => {
               <TopWrap>
                 <TextLine>
                   <Greeting>
-                    Dear <span style={{ color: "#A47E84" }}>{userName},</span>
+                    Dear <span style={{ color: "#A47E84" }}>{userName}</span>
                   </Greeting>
                   <Greeting>Let's set your event time!</Greeting>
                 </TextLine>

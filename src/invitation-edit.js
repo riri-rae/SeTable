@@ -9,10 +9,7 @@ import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
-// import ScrollButtonTemplate from "./utils/scrollbuttonTemplate";
 import { IoIosArrowDown } from "react-icons/io";
-
-
 import "firebase/firestore";
 
 const Container = styled.div`
@@ -190,11 +187,12 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
 
 const ScrollButton = styled.div`
 display: none;
-@media (max-width: 1024px) {
+
+@media (max-width: 768px) {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0%;
+  bottom: 0;
   font-size: 3rem;
   cursor: pointer;
   font-weight: lighter;
@@ -203,24 +201,26 @@ display: none;
   align-items: center;
   margin-left: 1px;
   transition: all 0.3s ease-in-out;
+  color:#ccc;
+  padding: 8px;
   &:hover{
     color: #A47E84;
   }
 }
 `;
 
-const Span = styled.div`
-display: none;
-@media (max-width: 1024px) {
-  display: block;
-  font-size: 1rem;
-  margin-top: -5px;
-}
-`;
+// const Span = styled.div`
+// display: none;
+// @media (max-width: 1024px) {
+//   display: block;
+//   font-size: 1rem;
+//   margin-top: -5px;
+// }
+// `;
 
 const Icon = styled.div`
 display: none;
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   display: block;
  display: flex;
   flex-direction: column;
@@ -241,7 +241,9 @@ const InvitationEdit = () => {
   const [visible, setVisible] = useState(true);
 
   const toggleVisible = () => {
+    console.log("hi")
     const scrolled = document.documentElement.scrollTop;
+    console.log(scrolled)
     if (scrolled > 0) {
       setVisible(false);
     } else if (scrolled <= 0) {
@@ -249,6 +251,9 @@ const InvitationEdit = () => {
     }
   };
   window.addEventListener("scroll", toggleVisible);
+
+
+
 
   useEffect(() => {
     function getDefault(doc) {
@@ -312,19 +317,18 @@ const InvitationEdit = () => {
                 dateTime={dateTime}
                 pic={pic}
               />
+              {/* <ScrollButton
+                onClick={() => {
+                  target.current.scrollIntoView({ behavior: 'smooth' })
+                  toggleVisible();
+                }}
+                style={{ display: visible ? "block" : "none" }}
+              >
+                <Icon><IoIosArrowDown /></Icon> */}
+              {/* <Span>Scroll</Span> */}
+              {/* </ScrollButton> */}
             </TemplateWrap>
-            {/* <ScrollButtonTemplate onClick={() => {
-              target.current.scrollIntoView({ behavior: 'smooth' })
-            }} /> */}
-            <ScrollButton
-              onClick={() => {
-                target.current.scrollIntoView({ behavior: 'smooth' })
-              }}
-              style={{ display: visible ? "inline-block" : "none" }}
-            >
-              <Icon><IoIosArrowDown /></Icon>
-              <Span>Scroll</Span>
-            </ScrollButton>
+
             <Edit ref={target}>
               <Frame />
               <EditTitle>Edit Your Custom Information</EditTitle>

@@ -3,7 +3,6 @@ import { useHistory } from "react-router";
 import { getTemplateData } from "./utils/firebaseFunction";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import firebase from "./utils/firebase";
 import "firebase/firestore";
 import RsvpTemplate from "./components/RsvpTemplate";
 import RsvpMain from "./components/rsvp/RsvpMain";
