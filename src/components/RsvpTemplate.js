@@ -27,9 +27,6 @@ const BackGround = styled.div`
   background-size: cover;
   height: 100vh;
   transition: all 0.5s;
-  /* @media (max-width: 1024px) {
-    height: 90vh;
-  } */
 `;
 
 const ContentWrap = styled.div`
@@ -71,14 +68,6 @@ const Name = styled.div`
     font-size: 96px;
     height: 136px;
   }
-  /* @media (max-width: 590px) {
-    font-size: 78px;
-    height: 120px;
-  }
-  @media (max-width: 425px) {
-    font-size: 60px;
-    height: 100px;
-  } */
 `;
 
 const And = styled.div`
@@ -90,12 +79,6 @@ const And = styled.div`
   @media (max-width: 768px) {
     font-size: 56px;
   }
-  /* @media (max-width: 590px) {
-    font-size: 42px;
-  }
-  @media (max-width: 425px) {
-    font-size: 32px;
-  } */
 `;
 
 const DateTimeWrap = styled.div`
@@ -116,13 +99,6 @@ const DateTimeWrap = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
-  /* @media (max-width: 768px) {
-    font-size: 20px;
-    flex-direction: column;
-  } ;
-  @media (max-width: 590px) {
-    font-size: 16px;
-  } */
 `;
 
 const Side = styled.div`
@@ -138,10 +114,6 @@ const Side = styled.div`
     width: 140px;
     margin: 0px 28px;
   }
-  /* @media (max-width: 768px) {
-    width: 100px;
-    margin: 0px 28px;
-  } */
 `;
 
 const DateWrap = styled.div`
@@ -162,12 +134,6 @@ const Month = styled.div`
 const Date = styled.div`
   font-family: "Dancing Script", cursive;
   font-size: 28px;
-  /* @media (max-width: 768px) {
-    font-size: 20px;
-  } ;
-  @media (max-width: 590px) {
-    font-size: 16px;
-  } */
 `;
 
 const Year = styled.div`
@@ -264,8 +230,6 @@ const RsvpTemplate = (props) => {
   const getwd = date.toLocaleString("en-US", { weekday: "long" });
   const wd = getwd.toUpperCase();
 
-  // console.log(year, month, dd, time, wd);
-
   return (
     <Template>
       <PicWrap>
@@ -292,10 +256,8 @@ const RsvpTemplate = (props) => {
               <IconWrap><HiHeart /></IconWrap>
               <DateRow>{year}</DateRow>
             </DateWrapRow>
-            {/* <DateWrapRow> */}
             <Row>{wd}</Row>
             <Row>{time}</Row>
-            {/* </DateWrapRow> */}
           </DateTimeWrapRow>
 
           <Address>At {props.add}</Address>

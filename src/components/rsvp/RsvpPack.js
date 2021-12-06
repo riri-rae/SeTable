@@ -5,12 +5,10 @@ import Select from 'react-select'
 
 const AddMoreWrap = styled.div`
   width: 100%;
- 
 `;
 
 const InputWrap = styled.div`
   display: flex;
-  /* justify-content: left; */
   height: 32px;
   margin: 16px;
   vertical-align:middle;
@@ -56,7 +54,6 @@ const BtnWrap = styled.div`
   flex-direction: row;
 `;
 const Button = styled.button`
-  /* position: relative; */
   display: flex;
   align-items: center;
   margin: 16px;
@@ -64,12 +61,11 @@ const Button = styled.button`
   padding: 0.2rem 0.6rem;
   color: #574e56;
   border: 1px solid #ddd;
-  /* background: #fff; */
   border-radius: 16px;
   font-size: 1rem;
   cursor: pointer;
   transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s; /* Safari */
+  -webkit-transition-duration: 0.1s;
   
 `;
 
@@ -112,7 +108,6 @@ function RsvpPack({ allData, setAllData, index }) {
     { value: 'yes', label: 'Yes' },
     { value: 'no', label: 'No' }
   ]
-  //console.log(veggie)
 
   const [baby, setBaby] = useState('');
   const babys = [

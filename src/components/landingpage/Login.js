@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { SubmitButton, SwitchButton, SignSubmitButton } from "../../components/style/generalStyle";
 
 
-
 const SignInTitle = styled.div`
   font-size: 2rem;
   margin: 1.5rem 0;
@@ -35,7 +34,6 @@ const Input = styled.input`
     border-bottom: 2px solid rgb(244, 185, 184);
   }
 `;
-
 
 
 const Login = ({ email, setEmail, enterKey, password, setPassword, onSubmit, setName, setActiveItem }) => {

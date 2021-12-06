@@ -17,7 +17,6 @@ const Input = styled.input`
   display: flex;
   align-items: center;
   margin: 0px auto;
-  /* margin-left:24px; */
   padding: 0.5rem;
   color: #000;
   border: 1px solid #ddd;

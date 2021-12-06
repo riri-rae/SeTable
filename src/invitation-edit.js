@@ -9,7 +9,6 @@ import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
-import { IoIosArrowDown } from "react-icons/io";
 import "firebase/firestore";
 
 const Container = styled.div`
@@ -185,49 +184,7 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
   margin-left: 4px;
 `;
 
-const ScrollButton = styled.div`
-display: none;
 
-@media (max-width: 768px) {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
-  font-size: 3rem;
-  cursor: pointer;
-  font-weight: lighter;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 1px;
-  transition: all 0.3s ease-in-out;
-  color:#ccc;
-  padding: 8px;
-  &:hover{
-    color: #A47E84;
-  }
-}
-`;
-
-// const Span = styled.div`
-// display: none;
-// @media (max-width: 1024px) {
-//   display: block;
-//   font-size: 1rem;
-//   margin-top: -5px;
-// }
-// `;
-
-const Icon = styled.div`
-display: none;
-@media (max-width: 768px) {
-  display: block;
- display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 2rem;
-}
-`;
 
 const InvitationEdit = () => {
   const user = useSelector((state) => state.user);
@@ -237,23 +194,6 @@ const InvitationEdit = () => {
   const [groom, setGroom] = useState("");
   const [dateTime, setDateTime] = useState("");
   const [add, setAdd] = useState("");
-
-  const [visible, setVisible] = useState(true);
-
-  const toggleVisible = () => {
-    console.log("hi")
-    const scrolled = document.documentElement.scrollTop;
-    console.log(scrolled)
-    if (scrolled > 0) {
-      setVisible(false);
-    } else if (scrolled <= 0) {
-      setVisible(true);
-    }
-  };
-  window.addEventListener("scroll", toggleVisible);
-
-
-
 
   useEffect(() => {
     function getDefault(doc) {
@@ -317,16 +257,6 @@ const InvitationEdit = () => {
                 dateTime={dateTime}
                 pic={pic}
               />
-              {/* <ScrollButton
-                onClick={() => {
-                  target.current.scrollIntoView({ behavior: 'smooth' })
-                  toggleVisible();
-                }}
-                style={{ display: visible ? "block" : "none" }}
-              >
-                <Icon><IoIosArrowDown /></Icon> */}
-              {/* <Span>Scroll</Span> */}
-              {/* </ScrollButton> */}
             </TemplateWrap>
 
             <Edit ref={target}>
@@ -337,6 +267,8 @@ const InvitationEdit = () => {
                   <Label>Theme:</Label>
                   <Select value={pic} onChange={(e) => setPic(e.target.value)}>
                     <option value="/images/red_flower.jpeg">TheOne</option>
+                    <option value="/images/pink.jpeg">Lovely</option>
+                    <option value="/images/white.png">Pure</option>
                     <option value="/images/orange.jpeg">Passionate</option>
                     <option value="/images/yellowbg.jpeg">SunShine</option>
                   </Select>

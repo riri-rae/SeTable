@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import styled from "styled-components";
-import { updateHistory, getHistory, getHistoryParse } from "../../utils/firebaseFunction";
+import { updateHistory } from "../../utils/firebaseFunction";
 import { alert, alertThankyou } from "../../utils/alert";
 import { Button } from "../../components/style/generalStyle";
 import firebase from "../../utils/firebase";
@@ -51,7 +51,6 @@ const EditTitleBig = styled(EditTitle)`
   font-weight: 600;
   letter-spacing: 4px;
   padding-bottom: 28px;
-  /* margin-bottom: 20px; */
   text-align: center;
   @media (max-width: 1440px) {
     font-size: 46px;
@@ -66,7 +65,6 @@ const Formwrap = styled.div`
 
 const InputWrap = styled.div`
   display: flex;
-  /* height: 32px; */
   margin: 16px;
   vertical-align: middle;
   @media (max-width: 1440px) {
@@ -94,7 +92,6 @@ const Input = styled.input`
   letter-spacing: 1px;
  
 `;
-
 
 const Label = styled.div`
   float: left;
@@ -239,30 +236,11 @@ const RsvpMain = () => {
     }
   }
 
-  // function addHistoryTable(allId) {
-  //   getHistoryParse(user.uid, handelAddHistoryTable)
-
-  //   function handelAddHistoryTable(historyList) {
-  //     const [preTable] = historyList.splice(0, 1);
-  //     historyList.splice(0, 0, preTable);
-  //     const newList = [
-  //       ...allData.map((data, index) => ({
-  //         id: allId[index],
-  //         content: data.name,
-  //       })),
-  //       ...preTable,
-  //     ];
-  //     updateHistory(user.uid, [newList, ...historyList.slice(1)])
-  //     afterSend();
-  //   }
-  // }
-
   function addHistoryTable(allId) {
     db.collection("users")
       .doc(user.uid)
       .get()
       .then((doc) => {
-        // const history = doc.data().guestlist;
         const historyList = JSON.parse(doc.data().guestlist);
         console.log(historyList);
         const [preTable] = historyList.splice(0, 1);
