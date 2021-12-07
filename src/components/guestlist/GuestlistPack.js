@@ -151,7 +151,6 @@ function GuestlistPack({ data }) {
       })
 
     const guestToDelete = data.id;
-    // console.log(guestToDelete);
 
     getUserData(user.uid, handelDelHistory)
     function handelDelHistory(doc) {
