@@ -64,9 +64,6 @@ const ContentWrap = styled.div`
     width: 100%;
   }
   }
-  /* @media (max-width: 425px) {
-    top: 40%;
-  } */
 `;
 
 const TopWrap = styled.div`
