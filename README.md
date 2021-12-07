@@ -1,4 +1,4 @@
-# ＳａＴａｂｌｅ
+# ＳｅＴａｂｌｅ
 
 You focus on the big day, leave SeTable to focus on you...
 
