@@ -41,12 +41,13 @@ const InputNew = styled(Input)`
     margin:8px;
   } ;
 
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     margin:6px 4px;
   } ;
 `;
 
 const MainTitleContainer = styled.div`
+  font-family: "Karla",sans-serif;
   margin: 0 auto;
   padding: 20px 20px 0 20px;
   display: flex;
@@ -60,7 +61,7 @@ const MainTitleContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 24px;
+  font-size: 26px;
   color: #574e56;
   margin-left: 16px;
   color: #fff;
@@ -100,20 +101,27 @@ const DropBtn = styled.button`
   cursor: pointer;
   box-shadow: 2px 2px 7px 1px rgba(114, 114, 114, 0.8);
   position: relative;
+  transition: all 0.3s ease-in-out;
   &:active {
     top: 2px;
   }
-  @media (max-width: 375px) {
+  &:hover {
+    filter: brightness(1.4);
+  }
+  @media (max-width: 390px) {
     margin-left: 8px;
   } ;
 `;
 
 const ButtonStyled = styled(Button)`
    font-size: 16px;
+   box-shadow: 2px 2px 7px 1px rgba(114, 114, 114, 0.8);
+   background-color: #DBBAAF;
+   border: 1px solid #DBBAAF;
    @media (max-width: 768px) {
     font-size: 14px;
   } ;
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     margin: 4px;
     padding:0.4rem
   } ;

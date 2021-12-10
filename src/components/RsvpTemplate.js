@@ -35,7 +35,7 @@ const ContentWrap = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0px 0px 10px 5px rgba(183, 143, 149, 0.3);
   display: flex;
   flex-direction: column;
@@ -47,11 +47,10 @@ const ContentWrap = styled.div`
   padding: 36px 16px;
   overflow: hidden;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1440px) {
     width: 60%;
   } ;
   @media (max-width: 768px) {
-    width: 80%;
     min-height: 500px;
   } ;
 `;
@@ -114,6 +113,10 @@ const Side = styled.div`
     width: 140px;
     margin: 0px 28px;
   }
+  @media (max-width: 425px) {
+    border-bottom:none;
+  }
+  
 `;
 
 const DateWrap = styled.div`
@@ -181,11 +184,12 @@ const DateWrapRow = styled.div`
     justify-content: center;
     align-items: center;
     width: 80%;
-    border-bottom: 2px solid rgba(23, 43, 77, 0.5);
+    /* border-bottom: 2px solid rgba(23, 43, 77, 0.5); */
   } ;
   @media (max-width: 425px) {
     width: 100%;
     margin-bottom: 8px;
+    border-bottom:none;
   } ;
 `;
 
@@ -208,11 +212,12 @@ const Row = styled.div`
   @media (max-width: 768px) {
     margin: 12px;
     margin-top: 16px;
-    border-bottom: 2px solid rgba(23, 43, 77, 0.5);
+    /* border-bottom: 2px solid rgba(23, 43, 77, 0.5); */
   } ;
   @media (max-width: 425px) {
     margin: 8px;
     margin-top: 2px;
+    border-bottom:none;
   } ;
 `;
 

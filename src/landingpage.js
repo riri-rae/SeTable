@@ -65,7 +65,7 @@ const TopTitleMain = styled.div`
     font-size: 4.5rem;
     line-height: 8rem;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     font-size: 4.2rem;
   }
 `;
@@ -98,7 +98,7 @@ const WrapperBottom = styled(WrapperTop)`
     flex-wrap: wrap;
     margin: 2rem;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     max-width: 100vw;
     overflow: hidden;
     margin: 1rem;
@@ -115,8 +115,9 @@ const Introduce = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
-  @media (max-width: 375px) {
-    margin: 1rem;
+  @media (max-width: 390px) {
+    margin: 0.5rem; 
+    margin-bottom: 1rem;
   }
 `;
 
@@ -136,7 +137,7 @@ const Logo = styled.div`
     height: 6rem;
     margin: 0 auto;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     width: 5rem;
     height: 5rem;
   }
@@ -154,8 +155,8 @@ const IntroduceTitle = styled.div`
     text-align: center;
     margin-bottom: 2.5rem;
   }
-  @media (max-width: 375px) {
-    font-size: 1.8rem;
+  @media (max-width: 390px) {
+    font-size: 1.4rem;
     text-align: left;
     margin-top: 2rem;
   }
@@ -166,6 +167,9 @@ const SeTable = styled.span`
   font-size: 3rem;
   @media (max-width: 768px) {
     font-size: 2.5rem;
+  }
+  @media (max-width: 390px) {
+    font-size: 2rem;
   }
 `;
 
@@ -179,6 +183,9 @@ const IntroduceText = styled.div`
   }
   @media (max-width: 425px) {
     line-height: 2rem;
+  }
+  @media (max-width: 390px) {
+    font-size: 1rem;
   }
 `;
 
@@ -201,10 +208,10 @@ const SignIn = styled.div`
   }
   @media (max-width: 768px) {
     margin-top: 0rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     height: 26rem;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     max-width: 100vw;
   }
 `;

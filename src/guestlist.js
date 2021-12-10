@@ -64,7 +64,7 @@ const SubTitleContainer = styled(MainTitleContainer)`
   padding: 16px 16px 24px 16px;
   margin-left: 20px ;
   margin-right: 20px;
-  overflow-x: scroll;
+  overflow-x: auto;
   background-color: #fff;
 `;
 
@@ -78,6 +78,7 @@ const Th = styled.th`
   text-align: center;
   color: #574e56;
   font-size: 16px;
+  font-family: "Karla",sans-serif;
 `;
 
 
@@ -127,6 +128,9 @@ function GuestList({ setDeleteId }) {
       });
       setAllData(data);
     }
+    // return () => {
+    //   renderRsvpData();
+    // };
   }, []);
 
   useEffect(() => {

@@ -42,14 +42,14 @@ const Login = ({ email, setEmail, enterKey, password, setPassword, onSubmit, set
             <SignInTitle>Login</SignInTitle>
             <Input
                 type="email"
-                placeholder="Email"
+                placeholder="setable01@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => enterKey(e)}
             />
             <Input
                 type="password"
-                placeholder="Password"
+                placeholder="setable01"
                 value={password}
                 onChange={(e) => {
                     setPassword(e.target.value);

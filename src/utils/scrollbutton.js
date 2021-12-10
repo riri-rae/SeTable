@@ -3,6 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
 const Button = styled.div`
+
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -21,6 +22,10 @@ const Button = styled.div`
   }
   @media (max-width: 768px) {
     bottom: 10%;
+  }
+  @media (max-width: 390px) {
+    display: none;
+    visibility: hidden;
   }
 `;
 

@@ -5,13 +5,22 @@ import Select from 'react-select'
 
 const AddMoreWrap = styled.div`
   width: 100%;
+  margin-left: 12px;
+  @media (max-width: 1320px) {
+      margin-left: 0;
+  }
 `;
 
 const InputWrap = styled.div`
   display: flex;
-  height: 32px;
+  /* height: 32px; */
   margin: 16px;
   vertical-align:middle;
+  @media (max-width: 1680px) {
+    flex-wrap:wrap;
+    margin: 8px;
+  }
+
 `;
 
 const Hr = styled.hr`
@@ -33,20 +42,30 @@ const Input = styled.input`
   padding: 8px;
   color: #44342d;
   letter-spacing: 1px;
+  @media (max-width: 425px) {
+  margin-left: 0;
+  }
 `;
 
 const Label = styled.div`
   float:left; 
   text-align:right;
   line-height: 32px;
+  @media (max-width: 425px) {
+    width: 100%;
+    float: none;
+    text-align: left;
+  }
 `;
-
 
 const SelectStyle = styled(Select)`
  min-width: 160px;
  font-size: 16px;
  margin-left:16px;
  min-height: 32px;
+ @media (max-width: 425px) {
+  margin-left: 0;
+  }
 `;
 
 const BtnWrap = styled.div`
@@ -96,9 +115,7 @@ function RsvpPack({ allData, setAllData, index }) {
 
   function handelRemove(e) {
     const changedForm = [...allData];
-    console.log(changedForm)
     changedForm.splice(index, 1);
-    console.log(changedForm)
     setAllData(changedForm);
 
   }

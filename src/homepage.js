@@ -103,7 +103,7 @@ const InputLine = styled.div`
   justify-content: center;
   margin-top: 28px;
 
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     flex-wrap: wrap;
     margin-top: 24px;
   }
@@ -123,7 +123,7 @@ const Input = styled.input`
   @media (max-width: 425px) {
     min-width: 16rem;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     margin: 0 36px;
   }
 `;
@@ -139,7 +139,7 @@ const Button = styled.button`
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     margin: 12px 0 0 0;
   }
 `;
@@ -160,7 +160,7 @@ const CountDown = styled.div`
   @media (max-width: 768px) {
     flex-wrap: wrap;
   }
-  @media (max-width: 375px) {
+  @media (max-width: 390px) {
     padding: 0;
   }
 `;

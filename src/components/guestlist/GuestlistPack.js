@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import firebase from "../../utils/firebase";
 import { alertWithTimer } from "../../utils/alert";
-import { updateHistory, saveGuestlistPack, deleteGuestlistPack, getUserData } from "../../utils/firebaseFunction";
+import {
+  updateHistory,
+  saveGuestlistPack,
+  deleteGuestlistPack,
+  getUserData,
+} from "../../utils/firebaseFunction";
 import "firebase/firestore";
 import "firebase/auth";
 import { reConfirm } from "../../utils/alert";
@@ -77,9 +82,9 @@ const Textarea = styled.textarea`
   resize: none;
   border-radius: 5px;
   border: 1px solid #ddd;
-  vertical-align:middle;
-  height:36px;
-  line-height:20px;
+  vertical-align: middle;
+  height: 36px;
+  line-height: 20px;
   font-family: "Karla", sans-serif;
   padding-top: 6px;
   box-sizing: border-box;
@@ -96,28 +101,30 @@ const Button = styled.button`
   border-radius: 16px;
   font-size: 14px;
   cursor: pointer;
-  &:hover{
+  &:hover {
     transition-duration: 0.1s;
-    background-color: #A49393;
-    color:#fff
+    background-color: #dbbaaf;
+    border: 2px solid #dbbaaf;
+    color: #fff;
   }
   :active {
-  background-color: #DCAE96;
-  box-shadow: 1px 2px #ccc;
-  transform: translateY(3px);
-}
+    background-color: #dcae96;
+    box-shadow: 1px 2px #ccc;
+    transform: translateY(3px);
+  }
 `;
 
 const DelIcon = styled(RiDeleteBinLine)`
-font-size: 20px;
-margin-top:6px;
-`
+  font-size: 20px;
+  margin-top: 6px;
+`;
 
 const DelButton = styled(Button)`
   border: none;
-  &:hover{
+  &:hover {
     background-color: #fff;
-    color: #9B5B5B;
+    color: #c45433;
+    border: none;
   }
 `;
 
@@ -134,26 +141,36 @@ function GuestlistPack({ data }) {
   const user = firebase.auth().currentUser;
 
   function saveChange() {
-    saveGuestlistPack(user.uid, data.id, name, group, tag, role, baby, veggie, note)
-      .then(() => {
-        alertWithTimer("Success!", "Your work has been saved", "success")
-      });
+    saveGuestlistPack(
+      user.uid,
+      data.id,
+      name,
+      group,
+      tag,
+      role,
+      baby,
+      veggie,
+      note
+    ).then(() => {
+      alertWithTimer("Success!", "Your work has been saved", "success");
+    });
   }
 
-
   function handelDel() {
-    reConfirm('Are you sure?', "You won't be able to revert this!", "Yes, delete it!")
-      .then((result) => {
-        if (result.isConfirmed) {
-          alertWithTimer("Deleted!", "Your file has been deleted", "success")
-          deleteGuestlistPack(user.uid, data.id)
-        }
-      })
+    reConfirm(
+      "Are you sure?",
+      "You won't be able to revert this!",
+      "Yes, delete it!"
+    ).then((result) => {
+      if (result.isConfirmed) {
+        alertWithTimer("Deleted!", "Your file has been deleted", "success");
+        deleteGuestlistPack(user.uid, data.id);
+      }
+    });
 
     const guestToDelete = data.id;
-    // console.log(guestToDelete);
 
-    getUserData(user.uid, handelDelHistory)
+    getUserData(user.uid, handelDelHistory);
     function handelDelHistory(doc) {
       const history = doc.data().guestlist;
       const historyList = JSON.parse(history);
@@ -175,28 +192,26 @@ function GuestlistPack({ data }) {
         return {};
       }
 
-      let { tablesInd, tableInd } = findTablesIndex(
-        historyList,
-        guestToDelete
-      );
+      let { tablesInd, tableInd } = findTablesIndex(historyList, guestToDelete);
       console.log(tablesInd, tableInd);
 
       let afterDelete = Array.from(historyList);
 
-      const [deleteTable] = afterDelete.splice(tablesInd, 1);//抓桌子
+      const [deleteTable] = afterDelete.splice(tablesInd, 1); //抓桌子
       console.log([deleteTable]);
       deleteTable.splice(tableInd, 1);
       console.log(deleteTable);
-      historyList.splice(tablesInd, 1, deleteTable);//
-      updateHistory(user.uid, historyList)
-    };
+      historyList.splice(tablesInd, 1, deleteTable); //
+      updateHistory(user.uid, historyList);
+    }
   }
 
   return (
-
     <Tr>
       <Td>
-        <NameDiv><GuestName>{name}</GuestName></NameDiv>
+        <NameDiv>
+          <GuestName>{name}</GuestName>
+        </NameDiv>
       </Td>
       <Td>
         <Input
@@ -227,7 +242,10 @@ function GuestlistPack({ data }) {
         </Select>
       </Td>
       <Td>
-        <Select defaultValue={veggie} onChange={(e) => setVeggie(e.target.value)}>
+        <Select
+          defaultValue={veggie}
+          onChange={(e) => setVeggie(e.target.value)}
+        >
           <option value="" disabled>
             ---
           </option>
@@ -253,12 +271,28 @@ function GuestlistPack({ data }) {
         ></Textarea>
       </Td>
       <Td>
-        <Button onClick={() => {
-          saveChange(user.uid, data.id, name, group, tag, role, baby, veggie, note)
-        }}>Save</Button>
+        <Button
+          onClick={() => {
+            saveChange(
+              user.uid,
+              data.id,
+              name,
+              group,
+              tag,
+              role,
+              baby,
+              veggie,
+              note
+            );
+          }}
+        >
+          Save
+        </Button>
       </Td>
       <Td>
-        <DelButton onClick={() => handelDel()}><DelIcon /></DelButton>
+        <DelButton onClick={() => handelDel()}>
+          <DelIcon />
+        </DelButton>
       </Td>
     </Tr>
   );

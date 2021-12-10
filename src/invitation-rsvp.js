@@ -17,12 +17,12 @@ const Container = styled.div`
   height: 100vh;
   @media (max-width: 1320px) {
     flex-wrap: wrap;
-    overflow: scroll;
+    overflow-x: auto;
   }
 `;
 
 const TemplateWrap = styled.div`
-  min-height: 100vh;
+  max-height: 100vh;
   width: calc(100vw - 40vw);
   @media (max-width: 1440px) {
     width: calc(100vw - 36vw);
@@ -33,17 +33,22 @@ const TemplateWrap = styled.div`
 `;
 
 const FormWrap = styled.div`
+  box-sizing: border-box;
   min-width: 40vw;
-  max-height: 100%;
-  overflow: scroll;
+  height: 100vh;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
-  @media (max-width: 1440px) {
-    min-width: 36vw;
-  }
+  padding: 8px 36px 36px 36px;
+  @media (max-width: 1320px) {
+    overflow: unset;
+  } 
+  @media (max-width: 425px) {
+    height: 100%;
+  } 
 `;
 
 const InvitationRsvp = () => {
@@ -62,7 +67,6 @@ const InvitationRsvp = () => {
       if (!doc.data()) {
         console.log(userid);
         history.replace({ pathname: '404' })
-        // console.log("okok");
         setBride("Bride");
         setGroom("Groom");
         setAdd("some where very nice");

@@ -12,20 +12,14 @@ import RsvpPack from "./RsvpPack";
 
 
 const Edit = styled.div`
-  font-size: 22px;
-  height: 100%;
+  font-size: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 36px 36px 36px;
   color: #67595e;
   padding-top: 100px;
-  @media (max-width: 1440px) {
-    font-size: 18px;
-    padding: 20px;
-  }
   @media (max-width: 1320px) {
-    padding: 60px 10rem;
+    font-size: 16px;
   }
 
 `;
@@ -42,7 +36,7 @@ const EditTitle = styled.div`
   padding-bottom: 20px;
   text-align: center;
   letter-spacing: 1px;
-
+  font-size: 16px;
 `;
 
 const EditTitleBig = styled(EditTitle)`
@@ -52,7 +46,7 @@ const EditTitleBig = styled(EditTitle)`
   letter-spacing: 4px;
   padding-bottom: 28px;
   text-align: center;
-  @media (max-width: 1440px) {
+  @media (max-width:1919px) {
     font-size: 46px;
   }
 `;
@@ -61,20 +55,32 @@ const Formwrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
 `;
 
 const InputWrap = styled.div`
   display: flex;
-  margin: 16px;
+  margin: 8px;
   vertical-align: middle;
-  @media (max-width: 1440px) {
+  align-items: center;
+  @media (max-width919) {
     margin-top:8px;
     margin-bottom:8px;
   }
+  @media (max-width: 425px) {
+    flex-wrap: wrap;
+  }
+`;
+const NoteWrap = styled(InputWrap)`
+  flex-wrap: nowrap;
+  @media (max-width: 424px) {
+    flex-wrap: wrap;
+  }
 `;
 
+
 const InputWrapBlock = styled(InputWrap)`
-  @media (max-width: 1680px) {
+  @media (max-width: 1919px) {
     flex-wrap:wrap;
   }
 `;
@@ -90,18 +96,24 @@ const Input = styled.input`
   padding: 8px;
   color: #44342d;
   letter-spacing: 1px;
- 
+  @media (max-width: 424px) {
+    margin-left: 0px;
+  }
 `;
 
 const Label = styled.div`
   float: left;
   text-align: right;
   line-height: 32px;
+  @media (max-width: 425px) {
+    width: 100%;
+    float: none;
+    text-align: left;
+  }
 `;
 
 const LabelBlock = styled(Label)`
-
-  @media (max-width: 1440px) {
+  @media (max-width: 1919px) {
     width: 100%;
     float: none;
     text-align: left;
@@ -111,22 +123,22 @@ const LabelBlock = styled(Label)`
 const SelectStyle = styled(Select)`
   min-width: 160px;
   font-size: 16px;
-  margin-left: 16px;
+  margin: 0 12px;
   min-height: 32px;
   color: #44342d;
   outline: none !important;
   &:focus{
     outline: none !important;
   }
-  @media (max-width: 1680px) {
-    margin-left: 12px;
-  }
-  @media (max-width: 1440px) {
+  @media (max-width: 1919px) {
     margin-left: 0px;
+  }
+  @media (max-width: 425px) {
+    margin: 4px 12px;
+    margin-left: 0;
   }
 `;
 const SelectStyleLong = styled(SelectStyle)`
-
   @media (max-width: 1662px) {
     margin-left: 0px;
     margin-top: 4px;
@@ -145,6 +157,9 @@ const Textarea = styled.textarea`
   padding: 0 8px;
   color: #44342d;
   outline: none;
+  @media (max-width: 424px) {
+    margin-left: 0px;
+  }
 `;
 
 const RsvpMain = () => {
@@ -301,7 +316,6 @@ const RsvpMain = () => {
 
         <InputWrapBlock>
           <LabelBlock>You are ...</LabelBlock>
-
           <SelectStyle
             placeholder="Please Select"
             value={tag}
@@ -322,7 +336,6 @@ const RsvpMain = () => {
 
         <InputWrapBlock>
           <LabelBlock>Will you be able to join us at our wedding ?</LabelBlock>
-
           <SelectStyleLong
             placeholder="Please Select"
             value={status}
@@ -343,14 +356,14 @@ const RsvpMain = () => {
         ))}
       </Formwrap>
       <Frame></Frame>
-      <InputWrap>
+      <NoteWrap>
         <Label>Note: </Label>
         <Textarea
           placeholder="Anything we need to know?"
           value={note}
           onChange={(e) => setNote(e.target.value)}
         ></Textarea>
-      </InputWrap>
+      </NoteWrap>
 
       <Button onClick={sendForm}>Send</Button>
     </Edit>

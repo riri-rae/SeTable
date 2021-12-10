@@ -1,23 +1,33 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
+  font-family: "Karla",sans-serif;
   position: relative;
   display: flex;
   align-items: center;
   margin: 16px;
   padding: 0.4rem 0.8rem;
-  color: #574e56;
-  border: 1px solid #ddd;
+  color: white;
+  background-color: #DCAE96;
+  border: 1px solid #DCAE96;
   border-radius: 16px;
   font-size: 20px;
   cursor: pointer;
+  box-shadow: 0px 0px 5px rgb(0 0 0 / 20%);
   transition-duration: 0.1s;
   -webkit-transition-duration: 0.1s; /* Safari */
+  transition: all 0.3s ease-in-out;
+  &:active {
+    top: 2px;
+  }
   &:hover {
+    filter: brightness(1.05);
+  }
+  /* &:hover {
     transition-duration: 0.1s;
     background-color: #d48c70;
     color: #fff;
-  }
+  } */
   &:after {
     content: "";
     display: white;
@@ -103,7 +113,7 @@ export const SubmitButton = styled.button`
   cursor: pointer;
   transition: all, 0.3s ease-in-out;
   box-shadow: 0px 0px 5px rgb(0 0 0 / 20%);
-  background: rgb(244, 185, 184);
+  /* background: rgb(244, 185, 184); */
   background: linear-gradient(
     315deg,
     rgba(244, 185, 184, 1) 0%,
@@ -116,7 +126,7 @@ export const SubmitButton = styled.button`
 `;
 
 export const SignSubmitButton = styled(SubmitButton)`
-  background: rgb(236, 210, 210);
+  /* background: rgb(236, 210, 210); */
   background: linear-gradient(
     315deg,
     rgba(236, 210, 210, 1) 0%,
