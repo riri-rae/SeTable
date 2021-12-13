@@ -129,10 +129,9 @@ const DelButton = styled(Button)`
 `;
 
 function GuestlistPack({ data }) {
-  const [name, setName] = useState(data.name);
+  const name = data.name;
   const [group, setGroup] = useState(data.group);
   const [note, setNote] = useState(data.note);
-
   const [tag, setTag] = useState(data.tag);
   const [role, setRole] = useState(data.role);
   const [veggie, setVeggie] = useState(data.veggie);
@@ -172,10 +171,7 @@ function GuestlistPack({ data }) {
 
     getUserData(user.uid, handelDelHistory);
     function handelDelHistory(doc) {
-      const history = doc.data().guestlist;
-      const historyList = JSON.parse(history);
-      console.log(historyList);
-
+      const historyList = JSON.parse(doc.data().guestlist);
       function findTablesIndex(historyList, guestToDelete) {
         var tablesInd;
         var tableInd;
@@ -184,7 +180,6 @@ function GuestlistPack({ data }) {
           for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
             const tempObject = nsDetails[tableInd];
             if (tempObject.id === guestToDelete) {
-              console.log(tablesInd, tableInd);
               return { tablesInd, tableInd };
             }
           }
@@ -193,15 +188,12 @@ function GuestlistPack({ data }) {
       }
 
       let { tablesInd, tableInd } = findTablesIndex(historyList, guestToDelete);
-      console.log(tablesInd, tableInd);
 
       let afterDelete = Array.from(historyList);
 
-      const [deleteTable] = afterDelete.splice(tablesInd, 1); //抓桌子
-      console.log([deleteTable]);
+      const [deleteTable] = afterDelete.splice(tablesInd, 1);
       deleteTable.splice(tableInd, 1);
-      console.log(deleteTable);
-      historyList.splice(tablesInd, 1, deleteTable); //
+      historyList.splice(tablesInd, 1, deleteTable);
       updateHistory(user.uid, historyList);
     }
   }

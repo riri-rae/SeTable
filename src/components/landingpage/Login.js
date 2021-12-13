@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { SubmitButton, SwitchButton, SignSubmitButton } from "../../components/style/generalStyle";
-
+import {
+    SubmitButton,
+    SwitchButton,
+    SignSubmitButton,
+} from "../../components/style/generalStyle";
 
 const SignInTitle = styled.div`
   font-size: 2rem;
@@ -35,8 +38,16 @@ const Input = styled.input`
   }
 `;
 
-
-const Login = ({ email, setEmail, enterKey, password, setPassword, onSubmit, setName, setActiveItem }) => {
+const Login = ({
+    email,
+    setEmail,
+    enterKey,
+    password,
+    setPassword,
+    onSubmit,
+    setName,
+    setActiveItem,
+}) => {
     return (
         <FormContainer>
             <SignInTitle>Login</SignInTitle>
@@ -60,7 +71,6 @@ const Login = ({ email, setEmail, enterKey, password, setPassword, onSubmit, set
                 onClick={(e) => {
                     onSubmit(e);
                 }}
-            // loading={isLoading}
             >
                 Login
             </SubmitButton>
@@ -78,8 +88,17 @@ const Login = ({ email, setEmail, enterKey, password, setPassword, onSubmit, set
     );
 };
 
-
-const Signup = ({ email, setEmail, enterKey, password, setPassword, onSubmit, setName, setActiveItem, name }) => {
+const Signup = ({
+    email,
+    setEmail,
+    enterKey,
+    password,
+    setPassword,
+    onSubmit,
+    setName,
+    setActiveItem,
+    name,
+}) => {
     return (
         <FormContainer>
             <SignInTitle style={{ color: "#87666B" }}>Signup</SignInTitle>
@@ -104,14 +123,7 @@ const Signup = ({ email, setEmail, enterKey, password, setPassword, onSubmit, se
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => enterKey(e)}
             />
-            <SignSubmitButton
-                // type="submit"
-                onClick={(e) => onSubmit(e)}
-
-            // loading={isLoading}
-            >
-                Signup
-            </SignSubmitButton>
+            <SignSubmitButton onClick={(e) => onSubmit(e)}>Signup</SignSubmitButton>
             <SwitchButton
                 onClick={() => {
                     setActiveItem("login");

@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Select from 'react-select'
-
+import Select from "react-select";
 
 const AddMoreWrap = styled.div`
   width: 100%;
   margin-left: 12px;
   @media (max-width: 1320px) {
-      margin-left: 0;
+    margin-left: 0;
   }
 `;
 
 const InputWrap = styled.div`
   display: flex;
-  /* height: 32px; */
   margin: 16px;
-  vertical-align:middle;
+  vertical-align: middle;
   @media (max-width: 1680px) {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     margin: 8px;
   }
-
 `;
 
 const Hr = styled.hr`
@@ -36,20 +33,20 @@ const Input = styled.input`
   height: 22px;
   font-size: 16px;
   margin-left: 8px;
-  vertical-align:middle;
+  vertical-align: middle;
   outline: none;
   border-radius: 5px;
   padding: 8px;
   color: #44342d;
   letter-spacing: 1px;
   @media (max-width: 425px) {
-  margin-left: 0;
+    margin-left: 0;
   }
 `;
 
 const Label = styled.div`
-  float:left; 
-  text-align:right;
+  float: left;
+  text-align: right;
   line-height: 32px;
   @media (max-width: 425px) {
     width: 100%;
@@ -59,12 +56,12 @@ const Label = styled.div`
 `;
 
 const SelectStyle = styled(Select)`
- min-width: 160px;
- font-size: 16px;
- margin-left:16px;
- min-height: 32px;
- @media (max-width: 425px) {
-  margin-left: 0;
+  min-width: 160px;
+  font-size: 16px;
+  margin-left: 16px;
+  min-height: 32px;
+  @media (max-width: 425px) {
+    margin-left: 0;
   }
 `;
 
@@ -84,57 +81,49 @@ const Button = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s;
-  
 `;
 
 const AddButton = styled(Button)`
-&:hover{
+  &:hover {
     transition-duration: 0.1s;
-    background-color: #A49393;
-    color:#fff
+    background-color: #a49393;
+    color: #fff;
   }
   :active {
-  background-color: #DCAE96;
-  box-shadow: 1px 2px #ccc;
-  transform: translateY(3px);
-}
-
+    background-color: #dcae96;
+    box-shadow: 1px 2px #ccc;
+    transform: translateY(3px);
+  }
 `;
 
 const RemoveButton = styled(Button)`
-&:hover{
+  &:hover {
     transition-duration: 0.1s;
-    background-color: #9B5B5B;
-    color:#fff
+    background-color: #9b5b5b;
+    color: #fff;
   }
-
 `;
 
 function RsvpPack({ allData, setAllData, index }) {
-
   function handelRemove(e) {
     const changedForm = [...allData];
     changedForm.splice(index, 1);
     setAllData(changedForm);
-
   }
 
-  const [veggie, setVeggie] = useState('');
+  const [veggie, setVeggie] = useState("");
   const veggies = [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' }
-  ]
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+  ];
 
-  const [baby, setBaby] = useState('');
+  const [baby, setBaby] = useState("");
   const babys = [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' }
-  ]
-
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" },
+  ];
 
   return (
-
     <>
       <Hr />
       <AddMoreWrap>
@@ -147,22 +136,30 @@ function RsvpPack({ allData, setAllData, index }) {
             value={allData[index].name}
             onChange={(e) => {
               let allDataInForm = [...allData];
-              allDataInForm[index] = { ...allDataInForm[index], name: e.target.value };
+              allDataInForm[index] = {
+                ...allDataInForm[index],
+                name: e.target.value,
+              };
               setAllData(allDataInForm);
             }}
           />
         </InputWrap>
 
-
         <InputWrap>
           <Label>Vegetarian meal?</Label>
           <SelectStyle
             placeholder="Please Select"
-            value={{ value: allData[index].veggie, label: allData[index].veggie }}
+            value={{
+              value: allData[index].veggie,
+              label: allData[index].veggie,
+            }}
             onChange={(value) => {
-              setVeggie(value)
+              setVeggie(value);
               let allDataInForm = [...allData];
-              allDataInForm[index] = { ...allDataInForm[index], veggie: value.value };
+              allDataInForm[index] = {
+                ...allDataInForm[index],
+                veggie: value.value,
+              };
               setAllData(allDataInForm);
             }}
             options={veggies}
@@ -174,9 +171,12 @@ function RsvpPack({ allData, setAllData, index }) {
             placeholder="Please Select"
             value={{ value: allData[index].baby, label: allData[index].baby }}
             onChange={(value) => {
-              setBaby(value)
+              setBaby(value);
               let allDataInForm = [...allData];
-              allDataInForm[index] = { ...allDataInForm[index], baby: value.value };
+              allDataInForm[index] = {
+                ...allDataInForm[index],
+                baby: value.value,
+              };
               setAllData(allDataInForm);
             }}
             options={babys}
@@ -186,19 +186,16 @@ function RsvpPack({ allData, setAllData, index }) {
           <AddButton
             type="button"
             onClick={() => {
-              setAllData([...allData, {}])
+              setAllData([...allData, {}]);
             }}
           >
             + Click To Add More Guests
           </AddButton>
-          {index > 0 ? (<RemoveButton
-            onClick={(e) => handelRemove(e)}
-          >
-            Remove
-          </RemoveButton>) : null}
+          {index > 0 ? (
+            <RemoveButton onClick={(e) => handelRemove(e)}>Remove</RemoveButton>
+          ) : null}
         </BtnWrap>
       </AddMoreWrap>
-
     </>
   );
 }

@@ -10,7 +10,6 @@ import Loading from "./components/Loading";
 import { RiStickyNoteLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
-
 const Bg = styled.div`
   background-image: url("/images/tablebg.jpeg");
   background-position: right;
@@ -24,7 +23,7 @@ const Wrap = styled.div`
   box-shadow: 0px 0px 10px 6px rgba(138, 105, 90, 0.5);
   min-height: 100vh;
   width: 80%;
-  border-bottom: 20px solid #a49393 ;
+  border-bottom: 20px solid #a49393;
   margin: 0 auto;
   @media (max-width: 1440px) {
     width: 95%;
@@ -37,7 +36,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  box-sizing:border-box;
+  box-sizing: border-box;
 `;
 
 const BlockWrap = styled.div`
@@ -49,7 +48,6 @@ const BlockWrap = styled.div`
 const MainTitleContainer = styled.div`
   margin: 0 auto;
   padding: 20px 20px 0 20px;
-  /* width: 80%; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -58,11 +56,11 @@ const MainTitleContainer = styled.div`
 `;
 
 const SubTitleContainer = styled(MainTitleContainer)`
-  height: ${(props) => (props.display ? "fit-content" : '20px')};
+  height: ${(props) => (props.display ? "fit-content" : "20px")};
   display: flex;
   align-items: flex-start;
   padding: 16px 16px 24px 16px;
-  margin-left: 20px ;
+  margin-left: 20px;
   margin-right: 20px;
   overflow-x: auto;
   background-color: #fff;
@@ -78,9 +76,16 @@ const Th = styled.th`
   text-align: center;
   color: #574e56;
   font-size: 16px;
-  font-family: "Karla",sans-serif;
+  font-family: "Karla", sans-serif;
 `;
 
+const Table = styled.table`
+  width: fit-content;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+`;
 
 function GuestList({ setDeleteId }) {
   const user = useSelector((state) => state.user);
@@ -99,28 +104,28 @@ function GuestList({ setDeleteId }) {
 
   function clickYes() {
     if (display1) {
-      setDisplay1(0)
+      setDisplay1(0);
     } else {
-      setDisplay1(1)
+      setDisplay1(1);
     }
   }
   function clickNotSure() {
     if (display2) {
-      setDisplay2(0)
+      setDisplay2(0);
     } else {
-      setDisplay2(1)
+      setDisplay2(1);
     }
   }
   function clickNo() {
     if (display3) {
-      setDisplay3(0)
+      setDisplay3(0);
     } else {
-      setDisplay3(1)
+      setDisplay3(1);
     }
   }
 
   useEffect(() => {
-    getRsvpData(user.uid, renderRsvpData)
+    getRsvpData(user.uid, renderRsvpData);
     function renderRsvpData(querySnapshot) {
       const data = [];
       querySnapshot.forEach((doc) => {
@@ -128,9 +133,6 @@ function GuestList({ setDeleteId }) {
       });
       setAllData(data);
     }
-    // return () => {
-    //   renderRsvpData();
-    // };
   }, []);
 
   useEffect(() => {
@@ -162,77 +164,115 @@ function GuestList({ setDeleteId }) {
           <Th>Delete</Th>
         </tr>
       </thead>
-    )
-  }
+    );
+  };
 
   return (
     <>
       <Header />
-      {user ?
+      {user ? (
         <Bg>
           <Wrap>
             <Container>
               <BlockWrap>
-                <GuestlistMain title={'Joyfully Attend'} count={yesCount} click={clickYes} addValue={addYes} setName={setAddYes} status={"yes"} display={display1} />
+                <GuestlistMain
+                  title={"Joyfully Attend"}
+                  count={yesCount}
+                  click={clickYes}
+                  addValue={addYes}
+                  setName={setAddYes}
+                  status={"yes"}
+                  display={display1}
+                />
                 <SubTitleContainer display={display1}>
-                  {yesCount !== '0' ?
-                    <table>
+                  {yesCount !== "0" ? (
+                    <Table>
                       {renderSubTitle()}
                       <tbody>
-                        {allData.map((data, index) =>
-                          data.status === "yes" && (
-                            <GuestlistPack
-                              data={data}
-                              index={index}
-                              key={data.id}
-                              setDeleteId={setDeleteId}
-                            />
-                          )
+                        {allData.map(
+                          (data, index) =>
+                            data.status === "yes" && (
+                              <GuestlistPack
+                                data={data}
+                                index={index}
+                                key={data.id}
+                                setDeleteId={setDeleteId}
+                              />
+                            )
                         )}
                       </tbody>
-                    </table>
-                    : <EmptyIcon />}
+                    </Table>
+                  ) : (
+                    <EmptyIcon />
+                  )}
                 </SubTitleContainer>
-                <GuestlistMain title={'Not Sure Yet'} count={notCount} click={clickNotSure} addValue={addNotSure} setName={setAddNotSure} status={"notSure"} display={display2} />
+                <GuestlistMain
+                  title={"Not Sure Yet"}
+                  count={notCount}
+                  click={clickNotSure}
+                  addValue={addNotSure}
+                  setName={setAddNotSure}
+                  status={"notSure"}
+                  display={display2}
+                />
                 <SubTitleContainer display={display2}>
-                  {notCount !== '0' ?
-                    <table>
+                  {notCount !== "0" ? (
+                    <Table>
                       {renderSubTitle()}
                       <tbody>
-                        {allData.map((data, index) =>
-                          data.status === "notSure" &&
-                          <GuestlistPack
-                            data={data}
-                            index={index}
-                            key={data.id}
-                          />
+                        {allData.map(
+                          (data, index) =>
+                            data.status === "notSure" && (
+                              <GuestlistPack
+                                data={data}
+                                index={index}
+                                key={data.id}
+                              />
+                            )
                         )}
                       </tbody>
-                    </table>
-                    : <EmptyIcon />}
+                    </Table>
+                  ) : (
+                    <EmptyIcon />
+                  )}
                 </SubTitleContainer>
-                <GuestlistMain title={'Regretfully Decline'} count={noCount} click={clickNo} addValue={addNo} setName={setAddNo} status={"no"} display={display3} />
+                <GuestlistMain
+                  title={"Regretfully Decline"}
+                  count={noCount}
+                  click={clickNo}
+                  addValue={addNo}
+                  setName={setAddNo}
+                  status={"no"}
+                  display={display3}
+                />
                 <SubTitleContainer display={display3}>
-                  {noCount !== '0' ?
-                    <table>
+                  {noCount !== "0" ? (
+                    <Table>
                       {renderSubTitle()}
                       <tbody>
-                        {allData.map((data, index) =>
-                          data.status === "no" &&
-                          <GuestlistPack
-                            data={data}
-                            index={index}
-                            key={data.id}
-                          />
+                        {allData.map(
+                          (data, index) =>
+                            data.status === "no" && (
+                              <GuestlistPack
+                                data={data}
+                                index={index}
+                                key={data.id}
+                              />
+                            )
                         )}
                       </tbody>
-                    </table>
-                    : <EmptyIcon />}
+                    </Table>
+                  ) : (
+                    <EmptyIcon />
+                  )}
                 </SubTitleContainer>
               </BlockWrap>
             </Container>
           </Wrap>
-        </Bg> : <Loading />}
+        </Bg>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 }

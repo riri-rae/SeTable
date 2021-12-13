@@ -47,7 +47,6 @@ function getHistoryParse(uid, callback) {
 }
 
 function updateHistory(uid, data) {
-    // const updateHistory = JSON.stringify(data);
     const update = {};
     update.guestlist = JSON.stringify(data);
     db.collection("users").doc(uid).update(update);
@@ -57,7 +56,6 @@ function setHistory(uid, callback) {
     db.collection("users")
         .doc(uid)
         .onSnapshot((doc) => {
-            // let getSaveList = doc.data().guestlist;
             let saveList = JSON.parse(doc.data().guestlist);
             callback(saveList);
         });

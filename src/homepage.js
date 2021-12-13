@@ -178,7 +178,6 @@ const DateWrap = styled.div`
     margin: 14px;
   }
   @media (max-width: 425px) {
-    /* height: 80px; */
     margin: 12px;
   }
 `;
@@ -325,8 +324,6 @@ const HomePage = () => {
                 </DateWrap>
               </CountDown>
             </ContentWrap>
-            {/* </CenterWrap> */}
-            {/* </CenterBg> */}
           </Container>
         </>
       ) : (

@@ -1,13 +1,12 @@
 import React from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import firebase from "../utils/firebase";
 import "firebase/firestore";
-import 'firebase/auth';
+import "firebase/auth";
 import roseLogo from "../images/rose-logo.png";
 import { reConfirm, alertWithTimer } from "../utils/alert";
 import { RiLogoutCircleRLine } from "react-icons/ri";
-
 
 const Navbar = styled.header`
   position: sticky;
@@ -26,7 +25,6 @@ const Container = styled.div`
   justify-content: center;
   font-size: 20px;
   color: #3f3a3a;
-
 `;
 
 const DeskHeaderDiv = styled.div`
@@ -44,15 +42,15 @@ const Logo = styled(NavLink)`
   margin-top: 4px;
   margin-right: 8px;
 
-  &:active{
-    color:none;
+  &:active {
+    color: none;
   }
-  &:focus{
-    outline:none;
+  &:focus {
+    outline: none;
   }
   @media (max-width: 768px) {
     width: 50%;
-    margin-top:2vh;
+    margin-top: 2vh;
   }
 `;
 
@@ -74,11 +72,11 @@ const DeskTag = styled(NavLink)`
     color: #8b572a;
     cursor: pointer;
   }
-  &:active{
-    color:none;
+  &:active {
+    color: none;
   }
-  &:focus{
-    outline:none;
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -98,7 +96,6 @@ const LogoutIcon = styled(RiLogoutCircleRLine)`
 const MobileHeaderDiv = styled.div`
   display: none;
   @media (max-width: 768px) {
-    /* height: 110px; */
     display: flex;
     justify-content: center;
     width: 100%;
@@ -130,24 +127,28 @@ const MobileTag = styled(NavLink)`
     color: #8b572a;
     cursor: pointer;
   }
-  &:active{
-    color:none;
+  &:active {
+    color: none;
   }
-  &:focus{
-    outline:none;
+  &:focus {
+    outline: none;
   }
 `;
 
 export default function Header() {
-
   function confirmLogout() {
-    reConfirm('Logging out?', "Are you sure you want to log out?", "Yes!")
-      .then((result) => {
+    reConfirm("Logging out?", "Are you sure you want to log out?", "Yes!").then(
+      (result) => {
         if (result.isConfirmed) {
-          alertWithTimer('Logged out successfully', 'Hope to see you soon!', 'success')
-          firebase.auth().signOut()
+          alertWithTimer(
+            "Logged out successfully",
+            "Hope to see you soon!",
+            "success"
+          );
+          firebase.auth().signOut();
         }
-      })
+      }
+    );
   }
 
   return (
@@ -158,20 +159,18 @@ export default function Header() {
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
           <DeskNav>
-            <DeskTag to="/invitation-edit"
-              activeStyle={{ color: "#8b572a" }}
-            >Invitation</DeskTag>
-            <DeskTag to="/guestlist"
-              activeStyle={{ color: "#8b572a" }}
-            >Guest List</DeskTag>
-            <DeskTag to="/table"
-              activeStyle={{ color: "#8b572a" }}
-            >Table</DeskTag>
+            <DeskTag to="/invitation-edit" activeStyle={{ color: "#8b572a" }}>
+              Invitation
+            </DeskTag>
+            <DeskTag to="/guestlist" activeStyle={{ color: "#8b572a" }}>
+              Guest List
+            </DeskTag>
+            <DeskTag to="/table" activeStyle={{ color: "#8b572a" }}>
+              Table
+            </DeskTag>
           </DeskNav>
 
-          <LogoutIcon
-            onClick={confirmLogout}>
-          </LogoutIcon>
+          <LogoutIcon onClick={confirmLogout}></LogoutIcon>
         </DeskHeaderDiv>
 
         <MobileHeaderDiv>
@@ -182,9 +181,7 @@ export default function Header() {
             <MobileTag to="/invitation-edit">Invitation</MobileTag>
             <MobileTag to="/guestlist">Guest List</MobileTag>
             <MobileTag to="/table">Table</MobileTag>
-            <LogoutIcon
-              onClick={confirmLogout}>
-            </LogoutIcon>
+            <LogoutIcon onClick={confirmLogout}></LogoutIcon>
           </MobileNav>
         </MobileHeaderDiv>
       </Container>

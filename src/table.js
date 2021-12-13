@@ -278,7 +278,6 @@ const Task = styled.div`
         return "#89605B";
     }
   }};
-  -webkit-box-shadow: 5px 5px 6px -1px rgba(203, 175, 165, 0.6);
   box-shadow: 5px 5px 6px -1px rgba(203, 175, 165, 0.6);
   width: 60px;
   height: 60px;
@@ -347,10 +346,10 @@ function Table() {
       source.droppableId === destination.droppableId &&
       source.index !== destination.index
     ) {
-      const reorder = Array.from(tables); //reorder=copy tables[]
-      const theTable = reorder[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
+      const reorder = Array.from(tables);
+      const theTable = reorder[Number(source.droppableId)];
 
-      const [changeSeat] = theTable.splice(source.index, 1); // 把table array的 source.index 跟 destination.index交換
+      const [changeSeat] = theTable.splice(source.index, 1);
       theTable.splice(destination.index, 0, changeSeat);
 
       reorder[Number(source.droppableId)] = theTable;
@@ -360,8 +359,8 @@ function Table() {
     }
 
     if (source.droppableId !== destination.droppableId) {
-      const move = Array.from(tables); //result=copy tables[]
-      const pickTable = move[Number(source.droppableId)]; //抓到tables[]裡的哪一張table[]
+      const move = Array.from(tables);
+      const pickTable = move[Number(source.droppableId)];
       const desTable = move[Number(destination.droppableId)];
 
       const [moveGuest] = pickTable.splice(source.index, 1);
@@ -464,7 +463,6 @@ function Table() {
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  // isDragging={snapshot.isDragging}
                                   isDragging={
                                     snapshot.isDragging &&
                                     !snapshot.isDropAnimating

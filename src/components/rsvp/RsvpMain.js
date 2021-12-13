@@ -10,7 +10,6 @@ import "firebase/firestore";
 import "firebase/auth";
 import RsvpPack from "./RsvpPack";
 
-
 const Edit = styled.div`
   font-size: 18px;
   display: flex;
@@ -21,8 +20,8 @@ const Edit = styled.div`
   @media (max-width: 1320px) {
     font-size: 16px;
   }
-
 `;
+
 const Frame = styled.div`
   background-image: url("/images/frame-brown.png");
   background-position: center;
@@ -31,6 +30,7 @@ const Frame = styled.div`
   width: 100%;
   min-height: 36px;
 `;
+
 const EditTitle = styled.div`
   font-weight: 500;
   padding-bottom: 20px;
@@ -46,7 +46,7 @@ const EditTitleBig = styled(EditTitle)`
   letter-spacing: 4px;
   padding-bottom: 28px;
   text-align: center;
-  @media (max-width:1919px) {
+  @media (max-width: 1919px) {
     font-size: 46px;
   }
 `;
@@ -55,7 +55,6 @@ const Formwrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
 `;
 
 const InputWrap = styled.div`
@@ -64,8 +63,8 @@ const InputWrap = styled.div`
   vertical-align: middle;
   align-items: center;
   @media (max-width919) {
-    margin-top:8px;
-    margin-bottom:8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
   @media (max-width: 425px) {
     flex-wrap: wrap;
@@ -78,10 +77,9 @@ const NoteWrap = styled(InputWrap)`
   }
 `;
 
-
 const InputWrapBlock = styled(InputWrap)`
   @media (max-width: 1919px) {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
 `;
 
@@ -127,7 +125,7 @@ const SelectStyle = styled(Select)`
   min-height: 32px;
   color: #44342d;
   outline: none !important;
-  &:focus{
+  &:focus {
     outline: none !important;
   }
   @media (max-width: 1919px) {
@@ -194,9 +192,17 @@ const RsvpMain = () => {
     let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
     let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
     if (group === "") {
-      alert("Empty Name!", "Please let us know who is filling this form?", "question");
+      alert(
+        "Empty Name!",
+        "Please let us know who is filling this form?",
+        "question"
+      );
     } else if (tag === "") {
-      alert("Empty Selector!", "Please let us you are from which side?", "question");
+      alert(
+        "Empty Selector!",
+        "Please let us you are from which side?",
+        "question"
+      );
     } else if (role === "") {
       alert("Empty Selector!", "Please let us you are our?", "question");
     } else if (status === "") {
@@ -204,28 +210,41 @@ const RsvpMain = () => {
     } else {
       const allId = [];
       if (allData.length === 0) {
-        rsvpRef.set({
-          name: group,
-          group,
-          status: status.value,
-          tag: tag.value,
-          role: role.value,
-          baby: "",
-          veggie: "",
-          note,
-          id,
-          time: firebase.firestore.Timestamp.now(),
-        })
-          .then(() => { afterSend() });
+        rsvpRef
+          .set({
+            name: group,
+            group,
+            status: status.value,
+            tag: tag.value,
+            role: role.value,
+            baby: "",
+            veggie: "",
+            note,
+            id,
+            time: firebase.firestore.Timestamp.now(),
+          })
+          .then(() => {
+            afterSend();
+          });
       } else {
         allData.forEach((data) => {
-          console.log('yes??')
-          let id = db.collection("users").doc(userid).collection("rsvp").doc().id;
+          let id = db
+            .collection("users")
+            .doc(userid)
+            .collection("rsvp")
+            .doc().id;
           allId.push(id);
-          let rsvpRef = db.collection("users").doc(userid).collection("rsvp").doc(id);
-          console.log(data.name, data.veggie, data.baby)
+          let rsvpRef = db
+            .collection("users")
+            .doc(userid)
+            .collection("rsvp")
+            .doc(id);
           if (!data.name) {
-            return alert("Empty Name!", "Please fill in guest name", "question");
+            return alert(
+              "Empty Name!",
+              "Please fill in guest name",
+              "question"
+            );
           } else if (!data.veggie) {
             return alert("Vegetarian meal?", "Please select", "question");
           } else if (!data.baby) {
@@ -246,7 +265,6 @@ const RsvpMain = () => {
             addHistoryTable(allId);
           }
         });
-
       }
     }
   }
@@ -257,7 +275,6 @@ const RsvpMain = () => {
       .get()
       .then((doc) => {
         const historyList = JSON.parse(doc.data().guestlist);
-        console.log(historyList);
         const [preTable] = historyList.splice(0, 1);
         historyList.splice(0, 0, preTable);
         const newList = [
@@ -267,23 +284,23 @@ const RsvpMain = () => {
           })),
           ...preTable,
         ];
-        updateHistory(user.uid, [newList, ...historyList.slice(1)])
+        updateHistory(user.uid, [newList, ...historyList.slice(1)]);
       })
-      .then(() => { afterSend() });
+      .then(() => {
+        afterSend();
+      });
   }
 
   function afterSend() {
-    alertThankyou()
-      .then(() => {
-        setAllData([]);
-        setGroup("");
-        setTag("");
-        setRole("");
-        setNote("");
-        setStatus("");
-      })
+    alertThankyou().then(() => {
+      setAllData([]);
+      setGroup("");
+      setTag("");
+      setRole("");
+      setNote("");
+      setStatus("");
+    });
   }
-
 
   useEffect(() => {
     if (status.value === "yes") {

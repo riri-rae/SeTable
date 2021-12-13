@@ -35,7 +35,6 @@ const App = () => {
             <Switch>
               <Route exact path="/">
                 {user ? <Redirect to="/homepage" /> : <LandingPage />}
-
               </Route>
               <Route exact path="/invitation-rsvp/404" component={Notfound} />
               <Route exact path="/invitation-rsvp/:userid" component={InvitationRsvp} />

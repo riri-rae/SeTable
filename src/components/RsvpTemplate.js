@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { HiHeart } from "react-icons/hi";
+import Loading from "./Loading";
 
 const Template = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ const ContentWrap = styled.div`
 
   @media (max-width: 1440px) {
     width: 60%;
-  } ;
+  }
   @media (max-width: 768px) {
     min-height: 500px;
   } ;
@@ -114,9 +115,8 @@ const Side = styled.div`
     margin: 0px 28px;
   }
   @media (max-width: 425px) {
-    border-bottom:none;
+    border-bottom: none;
   }
-  
 `;
 
 const DateWrap = styled.div`
@@ -126,7 +126,7 @@ const DateWrap = styled.div`
   align-items: center;
   width: 5vw;
   @media (max-width: 768px) {
-   display: none;
+    display: none;
   } ;
 `;
 
@@ -170,8 +170,7 @@ const DateTimeWrapRow = styled.div`
     font-family: "Dancing Script", cursive;
     letter-spacing: 3px;
     font-size: 24px;
-
-  } ;
+  }
   @media (max-width: 425px) {
     font-size: 24px;
   } ;
@@ -184,19 +183,18 @@ const DateWrapRow = styled.div`
     justify-content: center;
     align-items: center;
     width: 80%;
-    /* border-bottom: 2px solid rgba(23, 43, 77, 0.5); */
-  } ;
+  }
   @media (max-width: 425px) {
     width: 100%;
     margin-bottom: 8px;
-    border-bottom:none;
+    border-bottom: none;
   } ;
 `;
 
 const DateRow = styled.div`
   @media (max-width: 768px) {
     margin: 0 8px;
-  } ;
+  }
   @media (max-width: 425px) {
     margin: 0 4px;
   } ;
@@ -204,7 +202,7 @@ const DateRow = styled.div`
 
 const IconWrap = styled(DateRow)`
   @media (max-width: 768px) {
-   font-size: 9px;
+    font-size: 9px;
   } ;
 `;
 
@@ -212,12 +210,11 @@ const Row = styled.div`
   @media (max-width: 768px) {
     margin: 12px;
     margin-top: 16px;
-    /* border-bottom: 2px solid rgba(23, 43, 77, 0.5); */
-  } ;
+  }
   @media (max-width: 425px) {
     margin: 8px;
     margin-top: 2px;
-    border-bottom:none;
+    border-bottom: none;
   } ;
 `;
 
@@ -236,39 +233,49 @@ const RsvpTemplate = (props) => {
   const wd = getwd.toUpperCase();
 
   return (
-    <Template>
-      <PicWrap>
-        <BackGround style={{ backgroundImage: `url(${props.pic})` }} />
-        <ContentWrap>
-          <Name>{props.bride}</Name>
-          <And>&</And>
-          <Name>{props.groom}</Name>
-          <DateTimeWrap>
-            <Side>{wd}</Side>
-            <DateWrap>
-              <Month>{mm}</Month>
-              <Date>{dd}</Date>
-              <Year>{year}</Year>
-            </DateWrap>
-            <Side>{time}</Side>
-          </DateTimeWrap>
+    <>
+      {props.pic ? (
+        <Template>
+          <PicWrap>
+            <BackGround style={{ backgroundImage: `url(${props.pic})` }} />
+            <ContentWrap>
+              <Name>{props.bride}</Name>
+              <And>&</And>
+              <Name>{props.groom}</Name>
+              <DateTimeWrap>
+                <Side>{wd}</Side>
+                <DateWrap>
+                  <Month>{mm}</Month>
+                  <Date>{dd}</Date>
+                  <Year>{year}</Year>
+                </DateWrap>
+                <Side>{time}</Side>
+              </DateTimeWrap>
 
-          <DateTimeWrapRow>
-            <DateWrapRow>
-              <DateRow>{mm}</DateRow>
-              <IconWrap><HiHeart /></IconWrap>
-              <DateRow>{dd} </DateRow>
-              <IconWrap><HiHeart /></IconWrap>
-              <DateRow>{year}</DateRow>
-            </DateWrapRow>
-            <Row>{wd}</Row>
-            <Row>{time}</Row>
-          </DateTimeWrapRow>
+              <DateTimeWrapRow>
+                <DateWrapRow>
+                  <DateRow>{mm}</DateRow>
+                  <IconWrap>
+                    <HiHeart />
+                  </IconWrap>
+                  <DateRow>{dd} </DateRow>
+                  <IconWrap>
+                    <HiHeart />
+                  </IconWrap>
+                  <DateRow>{year}</DateRow>
+                </DateWrapRow>
+                <Row>{wd}</Row>
+                <Row>{time}</Row>
+              </DateTimeWrapRow>
 
-          <Address>At {props.add}</Address>
-        </ContentWrap>
-      </PicWrap>
-    </Template>
+              <Address>At {props.add}</Address>
+            </ContentWrap>
+          </PicWrap>
+        </Template>
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
 

@@ -8,7 +8,10 @@ import { alert, alertWithTimer } from "./utils/alert";
 import Loading from "./components/Loading";
 import { HiOutlineArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
-import { saveEditTemplate, snapshotEditDefault } from "./utils/firebaseFunction";
+import {
+  saveEditTemplate,
+  snapshotEditDefault,
+} from "./utils/firebaseFunction";
 import "firebase/firestore";
 
 const Container = styled.div`
@@ -184,11 +187,9 @@ const ArrowIcon = styled(HiOutlineArrowCircleRight)`
   margin-left: 4px;
 `;
 
-
-
 const InvitationEdit = () => {
   const user = useSelector((state) => state.user);
-  const target = useRef()
+  const target = useRef();
   const [pic, setPic] = useState("");
   const [bride, setBride] = useState("");
   const [groom, setGroom] = useState("");
@@ -217,16 +218,11 @@ const InvitationEdit = () => {
         let dateTime = doc.data().dateTime;
         setDateTime(dateTime);
       } else {
-        let bride = doc.data().bride;
-        let groom = doc.data().groom;
-        let dateTime = doc.data().dateTime;
-        let add = doc.data().add;
-        let pic = doc.data().pic;
-        setBride(bride);
-        setGroom(groom);
-        setDateTime(dateTime);
-        setAdd(add);
-        setPic(pic);
+        setBride(doc.data().bride);
+        setGroom(doc.data().groom);
+        setDateTime(doc.data().dateTime);
+        setAdd(doc.data().add);
+        setPic(doc.data().pic);
       }
     }
     snapshotEditDefault(user.uid, getDefault);
@@ -236,10 +232,9 @@ const InvitationEdit = () => {
     if (!bride || !groom || !dateTime || !add) {
       alert("Empty columns!", "Please check again", "warning");
     } else {
-      saveEditTemplate(uid, bride, groom, dateTime, add, pic)
-        .then(() => {
-          alertWithTimer("Success!", "Your work has been saved", "success")
-        });
+      saveEditTemplate(uid, bride, groom, dateTime, add, pic).then(() => {
+        alertWithTimer("Success!", "Your work has been saved", "success");
+      });
     }
   }
 
@@ -313,7 +308,13 @@ const InvitationEdit = () => {
                   ></Textarea>
                 </InputWrap>
               </EditText>
-              <Button onClick={() => { saveChange(user.uid, bride, groom, dateTime, add, pic) }}>Save</Button>
+              <Button
+                onClick={() => {
+                  saveChange(user.uid, bride, groom, dateTime, add, pic);
+                }}
+              >
+                Save
+              </Button>
 
               <CheckWrap>
                 <CheckRsvp
@@ -331,8 +332,7 @@ const InvitationEdit = () => {
         </>
       ) : (
         <Loading />
-      )
-      }
+      )}
     </>
   );
 };

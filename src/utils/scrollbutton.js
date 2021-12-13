@@ -3,7 +3,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
 const Button = styled.div`
-
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -17,7 +16,7 @@ const Button = styled.div`
   align-items: center;
   margin-left: 1px;
   transition: all 0.3s ease-in-out;
-  &:hover{
+  &:hover {
     color: #fff;
   }
   @media (max-width: 768px) {
@@ -35,11 +34,10 @@ const Span = styled.div`
 `;
 
 const Icon = styled.div`
- display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
-
 `;
 
 // const Span = styled.span`
@@ -97,7 +95,9 @@ const ScrollButton = () => {
       onClick={scrollToBottom}
       style={{ display: visible ? "inline-block" : "none" }}
     >
-      <Icon><IoIosArrowDown /></Icon>
+      <Icon>
+        <IoIosArrowDown />
+      </Icon>
       <Span>Scroll</Span>
     </Button>
   );

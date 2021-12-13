@@ -15,7 +15,6 @@ const Container = styled.div`
 const WrapperTop = styled.div`
   max-width: 100vw;
   min-height: 100vh;
-  
 `;
 
 const MainBackground = styled.div`
@@ -116,7 +115,7 @@ const Introduce = styled.div`
     width: 100%;
   }
   @media (max-width: 390px) {
-    margin: 0.5rem; 
+    margin: 0.5rem;
     margin-bottom: 1rem;
   }
 `;
@@ -277,11 +276,10 @@ const LandingPage = () => {
                 break;
               default:
             }
-            // isLoading(false);
           });
       }
     } else if (activeItem === "login") {
-      if (email === "" || password === "") {
+      if (!email || !password) {
         alert(
           "Something Missing!",
           "Please check your infomation again",
@@ -308,12 +306,10 @@ const LandingPage = () => {
                 break;
               default:
             }
-            // isLoading(false);
           });
       }
     }
   }
-
 
   return (
     <Container>
@@ -340,14 +336,35 @@ const LandingPage = () => {
             {`- Edit your custom invitation\n- Get real-time responses from your guests\n- Control your guest list easily\nAnd … the best is … \nArrange guests with easy drag and drop to visualize your wedding tables\nNo worries from table arrangement everlast!`}
           </IntroduceText>
         </Introduce>
-        <SignIn>{activeItem === "login" ?
-          <Login email={email} setEmail={setEmail} enterKey={enterKey} password={password} setPassword={setPassword} onSubmit={onSubmit} setName={setName} setActiveItem={setActiveItem} />
-          : <Signup email={email} setEmail={setEmail} enterKey={enterKey} password={password} setPassword={setPassword} onSubmit={onSubmit} setName={setName} setActiveItem={setActiveItem} name={name} />}</SignIn>
+        <SignIn>
+          {activeItem === "login" ? (
+            <Login
+              email={email}
+              setEmail={setEmail}
+              enterKey={enterKey}
+              password={password}
+              setPassword={setPassword}
+              onSubmit={onSubmit}
+              setName={setName}
+              setActiveItem={setActiveItem}
+            />
+          ) : (
+            <Signup
+              email={email}
+              setEmail={setEmail}
+              enterKey={enterKey}
+              password={password}
+              setPassword={setPassword}
+              onSubmit={onSubmit}
+              setName={setName}
+              setActiveItem={setActiveItem}
+              name={name}
+            />
+          )}
+        </SignIn>
       </WrapperBottom>
     </Container>
   );
 };
 
 export default LandingPage;
-
-// style={{ color: "#A47E84" }}

@@ -38,16 +38,16 @@ const InputNew = styled(Input)`
   letter-spacing: 1px;
 
   @media (max-width: 768px) {
-    margin:8px;
-  } ;
+    margin: 8px;
+  }
 
   @media (max-width: 390px) {
-    margin:6px 4px;
+    margin: 6px 4px;
   } ;
 `;
 
 const MainTitleContainer = styled.div`
-  font-family: "Karla",sans-serif;
+  font-family: "Karla", sans-serif;
   margin: 0 auto;
   padding: 20px 20px 0 20px;
   display: flex;
@@ -70,7 +70,7 @@ const Title = styled.div`
   @media (max-width: 768px) {
     font-size: 20px;
     margin-left: 0;
-      width: 200px;
+    width: 200px;
   } ;
 `;
 const Count = styled(Title)`
@@ -114,16 +114,16 @@ const DropBtn = styled.button`
 `;
 
 const ButtonStyled = styled(Button)`
-   font-size: 16px;
-   box-shadow: 2px 2px 7px 1px rgba(114, 114, 114, 0.8);
-   background-color: #DBBAAF;
-   border: 1px solid #DBBAAF;
-   @media (max-width: 768px) {
+  font-size: 16px;
+  box-shadow: 2px 2px 7px 1px rgba(114, 114, 114, 0.8);
+  background-color: #dbbaaf;
+  border: 1px solid #dbbaaf;
+  @media (max-width: 768px) {
     font-size: 14px;
-  } ;
+  }
   @media (max-width: 390px) {
     margin: 4px;
-    padding:0.4rem
+    padding: 0.4rem;
   } ;
 `;
 
@@ -131,7 +131,6 @@ const DropIcon = styled.p`
   color: #9b5b5b;
   transform: ${(props) => (props.display ? "rotate(0deg)" : "rotate(180deg)")};
   transition: all 0.3s ease-in-out;
-  
 `;
 
 function GuestlistMain({
@@ -167,6 +166,32 @@ function GuestlistMain({
     }
   }
 
+  function checknAdd() {
+    if (!addValue) {
+      alert("Empty columns!", "Please enter a name", "warning");
+      return;
+    } else {
+      const id = db.collection("users").doc().id;
+      let body = {
+        name: addValue,
+        status: status,
+        group: "",
+        tag: "",
+        role: "",
+        baby: "",
+        veggie: "",
+        note: "",
+        time: firebase.firestore.Timestamp.now(),
+        id,
+      };
+      onSubmit(body, id);
+      setName("");
+      if (title === "Joyfully Attend") {
+        changeHistoryTable(id, addValue);
+      }
+    }
+  }
+
   return (
     <MainTitleContainer>
       <Title>{title}</Title>
@@ -180,29 +205,7 @@ function GuestlistMain({
       />
       <ButtonStyled
         onClick={() => {
-          if (!addValue) {
-            alert("Empty columns!", "Please enter a name", "warning");
-            return;
-          } else {
-            const id = db.collection("users").doc().id;
-            let body = {
-              name: addValue,
-              status: status,
-              group: "",
-              tag: "",
-              role: "",
-              baby: "",
-              veggie: "",
-              note: "",
-              time: firebase.firestore.Timestamp.now(),
-              id,
-            };
-            onSubmit(body, id);
-            setName("");
-            if (title === "Joyfully Attend") {
-              changeHistoryTable(id, addValue);
-            }
-          }
+          checknAdd();
         }}
       >
         Add

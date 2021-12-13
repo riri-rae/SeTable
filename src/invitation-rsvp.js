@@ -3,11 +3,9 @@ import { useHistory } from "react-router";
 import { getTemplateData } from "./utils/firebaseFunction";
 import { useParams } from "react-router";
 import styled from "styled-components";
-import "firebase/firestore";
 import RsvpTemplate from "./components/RsvpTemplate";
 import RsvpMain from "./components/rsvp/RsvpMain";
 import Loading from "./components/Loading";
-
 
 const Container = styled.div`
   display: flex;
@@ -45,10 +43,10 @@ const FormWrap = styled.div`
   padding: 8px 36px 36px 36px;
   @media (max-width: 1320px) {
     overflow: unset;
-  } 
+  }
   @media (max-width: 425px) {
     height: 100%;
-  } 
+  }
 `;
 
 const InvitationRsvp = () => {
@@ -62,36 +60,28 @@ const InvitationRsvp = () => {
   const [pic, setPic] = useState("/images/red_flower.jpeg");
 
   useEffect(() => {
-    getTemplateData(userid, setTemplateDefault)
+    getTemplateData(userid, setTemplateDefault);
     function setTemplateDefault(doc) {
       if (!doc.data()) {
-        console.log(userid);
-        history.replace({ pathname: '404' })
+        history.replace({ pathname: "404" });
         setBride("Bride");
         setGroom("Groom");
         setAdd("some where very nice");
         setDateTime("2022-12-31T12:00");
-        setPic("/images/red_flower.jpeg")
-      }
-      else {
-        let bride = doc.data().bride;
-        let groom = doc.data().groom;
-        let dateTime = doc.data().dateTime;
-        let add = doc.data().add;
-        let pic = doc.data().pic;
-        setBride(bride);
-        setGroom(groom);
-        setDateTime(dateTime);
-        setAdd(add);
-        setPic(pic);
+        setPic("/images/red_flower.jpeg");
+      } else {
+        setBride(doc.data().bride);
+        setGroom(doc.data().groom);
+        setDateTime(doc.data().dateTime);
+        setAdd(doc.data().add);
+        setPic(doc.data().pic);
       }
     }
-
   }, []);
 
   return (
     <>
-      {bride !== '' && groom !== '' && dateTime !== '' && add !== '' ?
+      {bride !== "" && groom !== "" && dateTime !== "" && add !== "" ? (
         <>
           <Container>
             <TemplateWrap>
@@ -108,7 +98,10 @@ const InvitationRsvp = () => {
               <RsvpMain userid={userid} />
             </FormWrap>
           </Container>
-        </> : <Loading />}
+        </>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };
