@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import "firebase/firestore";
 import { getRsvpData } from "./utils/firebaseFunction";
-
 import GuestlistPack from "./components/guestlist/GuestlistPack";
 import GuestlistMain from "./components/guestlist/GuestlistMain";
 import Header from "./components/Header";

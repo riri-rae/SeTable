@@ -13,11 +13,6 @@ import "firebase/auth";
 import { reConfirm } from "../../utils/alert";
 import { RiDeleteBinLine } from "react-icons/ri";
 
-const Tr = styled.tr`
-  font-family: "Karla", sans-serif;
-  font-size: 14px;
-`;
-
 const Input = styled.input`
   display: flex;
   align-items: center;
@@ -45,11 +40,17 @@ const NameDiv = styled.div`
     width: 150px;
   }
 `;
+
 const GuestName = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
+`;
+
+const Tr = styled.tr`
+  font-family: "Karla", sans-serif;
+  font-size: 14px;
 `;
 
 const Td = styled.td`
@@ -59,6 +60,15 @@ const Td = styled.td`
   border-bottom: 1px solid #ddd;
   &:nth-child(7) {
     width: 12rem;
+  }
+  @media (min-width: 1440px) {
+    width: 8rem;
+    &:nth-child(8) {
+      width: 6rem;
+    }
+    &:nth-child(9) {
+      width: 6rem;
+    }
   }
 `;
 
@@ -86,9 +96,10 @@ const Textarea = styled.textarea`
   height: 36px;
   line-height: 20px;
   font-family: "Karla", sans-serif;
-  padding-top: 6px;
+  padding: 6px 0 0 4px;
   box-sizing: border-box;
   font-size: 14px;
+  width: 12rem;
 `;
 
 const Button = styled.button`
@@ -188,9 +199,7 @@ function GuestlistPack({ data }) {
       }
 
       let { tablesInd, tableInd } = findTablesIndex(historyList, guestToDelete);
-
       let afterDelete = Array.from(historyList);
-
       const [deleteTable] = afterDelete.splice(tablesInd, 1);
       deleteTable.splice(tableInd, 1);
       historyList.splice(tablesInd, 1, deleteTable);

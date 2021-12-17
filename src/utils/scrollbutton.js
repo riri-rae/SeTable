@@ -82,13 +82,14 @@ const ScrollButton = () => {
 
   const scrollToBottom = () => {
     window.scrollTo({
-      // top: document.documentElement.scrollHeight,
-      top: 1500,
+      top: document.documentElement.scrollHeight,
+      //top: 1500,
       behavior: "smooth",
     });
   };
 
   window.addEventListener("scroll", toggleVisible);
+
 
   return (
     <Button

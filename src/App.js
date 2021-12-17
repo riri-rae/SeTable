@@ -12,7 +12,7 @@ import firebase from "./utils/firebase";
 import "firebase/firestore";
 import 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { getUser } from "./redux/action-cretors";
+import { getUser } from "./redux/action";
 
 
 const App = () => {
