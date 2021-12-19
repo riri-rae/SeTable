@@ -308,7 +308,7 @@ const RsvpMain = () => {
     } else if (status.value === "no" || status.value === "notSure") {
       setAllData([]);
     }
-  }, [status.value]);
+  }, [status.value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Edit>

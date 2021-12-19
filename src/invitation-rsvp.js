@@ -60,7 +60,9 @@ const InvitationRsvp = () => {
   const [pic, setPic] = useState("/images/red_flower.jpeg");
 
   useEffect(() => {
-    getTemplateData(userid, setTemplateDefault);
+    const unsubscribe = getTemplateData(userid, setTemplateDefault);
+    return () => unsubscribe();
+
     function setTemplateDefault(doc) {
       if (!doc.data()) {
         history.replace({ pathname: "404" });
@@ -77,7 +79,7 @@ const InvitationRsvp = () => {
         setPic(doc.data().pic);
       }
     }
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

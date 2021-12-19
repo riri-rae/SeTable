@@ -311,16 +311,19 @@ function Table() {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    setHistory(user.uid, setTables);
-  }, []);
+    const unsubscribe = setHistory(user.uid, setTables);
+    return () => unsubscribe();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    getVeggie(user.uid, setVeggie);
-  }, []);
+    const unsubscribe = getVeggie(user.uid, setVeggie);
+    return () => unsubscribe();
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    getBaby(user.uid, setBaby);
-  }, []);
+    const unsubscribe = getBaby(user.uid, setBaby);
+    return () => unsubscribe();
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   function getColor(id) {
     if (veggie.includes(id)) {

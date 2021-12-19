@@ -124,15 +124,19 @@ function GuestList({ setDeleteId }) {
   }
 
   useEffect(() => {
-    getRsvpData(user.uid, renderRsvpData);
+    const unsubscribe = getRsvpData(user.uid, renderRsvpData);
+    return () => unsubscribe();
+
     function renderRsvpData(querySnapshot) {
       const data = [];
       querySnapshot.forEach((doc) => {
         data.push(doc.data());
       });
       setAllData(data);
+
     }
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+
 
   useEffect(() => {
     const copyData = Array.from(allData);

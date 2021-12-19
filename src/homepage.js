@@ -219,7 +219,7 @@ const HomePage = () => {
     function getUserName(doc) {
       setUserName(doc.data().name);
     }
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   function saveDateChange() {
     saveHomepageDate(user.uid, enterDate).then(() => {
@@ -237,7 +237,7 @@ const HomePage = () => {
         setEnterDate(doc.data().dateTime);
       }
     }
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!getDate) {

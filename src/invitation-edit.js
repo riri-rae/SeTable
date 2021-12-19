@@ -225,8 +225,10 @@ const InvitationEdit = () => {
         setPic(doc.data().pic);
       }
     }
-    snapshotEditDefault(user.uid, getDefault);
-  }, []);
+
+    const unsubscribe = snapshotEditDefault(user.uid, getDefault);
+    return () => unsubscribe();
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   function saveChange(uid, bride, groom, dateTime, add, pic) {
     if (!bride || !groom || !dateTime || !add) {

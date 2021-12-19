@@ -6,7 +6,8 @@ const db = firebase.firestore();
 
 //invitation edit
 function snapshotEditDefault(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .collection("invitation")
         .doc("template")
@@ -42,7 +43,7 @@ function getHistoryParse(uid, callback) {
         .get()
         .then((doc) => {
             const historyList = JSON.parse(doc.data().guestlist);
-            callback(historyList)
+            callback(historyList);
         });
 }
 
@@ -53,7 +54,8 @@ function updateHistory(uid, data) {
 }
 
 function setHistory(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .onSnapshot((doc) => {
             let saveList = JSON.parse(doc.data().guestlist);
@@ -62,7 +64,8 @@ function setHistory(uid, callback) {
 }
 
 function getVeggie(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .collection("rsvp")
         .where("veggie", "==", "yes")
@@ -76,7 +79,8 @@ function getVeggie(uid, callback) {
 }
 
 function getBaby(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .collection("rsvp")
         .where("baby", "==", "yes")
@@ -140,7 +144,8 @@ function saveHomepageDate(uid, enterDate) {
 }
 
 function getTemplateData(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .collection("invitation")
         .doc("template")
@@ -148,14 +153,13 @@ function getTemplateData(uid, callback) {
 }
 
 function getRsvpData(uid, callback) {
-    db.collection("users")
+    return db
+        .collection("users")
         .doc(uid)
         .collection("rsvp")
         .orderBy("time", "desc")
         .onSnapshot((doc) => callback(doc));
 }
-
-
 
 export {
     snapshotEditDefault,
@@ -171,5 +175,5 @@ export {
     saveHomepageDate,
     getTemplateData,
     getRsvpData,
-    getHistoryParse
+    getHistoryParse,
 };

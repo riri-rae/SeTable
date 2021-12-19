@@ -184,8 +184,8 @@ function GuestlistPack({ data }) {
     function handelDelHistory(doc) {
       const historyList = JSON.parse(doc.data().guestlist);
       function findTablesIndex(historyList, guestToDelete) {
-        var tablesInd;
-        var tableInd;
+        let tablesInd;
+        let tableInd;
         for (tablesInd = 0; tablesInd < historyList.length; ++tablesInd) {
           const nsDetails = historyList[tablesInd];
           for (tableInd = 0; tableInd < nsDetails.length; ++tableInd) {
