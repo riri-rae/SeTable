@@ -229,7 +229,8 @@ display: none;
 }
 `;
 
-const InvitationEdit = () => {
+
+const InvitationEdit = (visible) => {
   const user = useSelector((state) => state.user);
   const target = useRef()
   const [pic, setPic] = useState("");
@@ -238,17 +239,32 @@ const InvitationEdit = () => {
   const [dateTime, setDateTime] = useState("");
   const [add, setAdd] = useState("");
 
-  const [visible, setVisible] = useState(true);
+  // const [visible, setVisible] = useState(true);
 
-  const toggleVisible = () => {
-    const scrolled = document.documentElement.scrollTop;
-    if (scrolled > 0) {
-      setVisible(false);
-    } else if (scrolled <= 0) {
-      setVisible(true);
-    }
-  };
-  window.addEventListener("scroll", toggleVisible);
+  // const toggleVisible = () => {
+  //   const scrolled = document.documentElement.scrollTop;
+  //   const scrolled = document.scrollingElement;
+  //   const scrolled = document.documentElement.scrollTop || document.body.scrollTop || 0;
+  //   const scrolled = document.body.scrollTop
+  //   if (scrolled > 0) {
+  //     console.log(scrolled)
+  //     console.log("hih")
+  //     setVisible(false);
+  //   } else if (scrolled === 0) {
+  //     console.log(scrolled)
+  //     setVisible(true);
+  //   }
+  // };
+  // window.addEventListener("scroll", toggleVisible);
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', toggleVisible)
+
+  //   return () => {
+  //     window.removeEventListener('scroll', toggleVisible)
+  //   }
+  // }, [])
+
 
   useEffect(() => {
     function getDefault(doc) {
@@ -304,7 +320,7 @@ const InvitationEdit = () => {
       {pic ? (
         <>
           <Container>
-            <TemplateWrap>
+            <TemplateWrap >
               <RsvpTemplate
                 bride={bride}
                 groom={groom}
@@ -317,15 +333,16 @@ const InvitationEdit = () => {
               target.current.scrollIntoView({ behavior: 'smooth' })
             }} /> */}
             <ScrollButton
+              visible={visible}
               onClick={() => {
                 target.current.scrollIntoView({ behavior: 'smooth' })
               }}
-              style={{ display: visible ? "inline-block" : "none" }}
+            // style={{ display: visible ? "block" : "none" }}
             >
               <Icon><IoIosArrowDown /></Icon>
               <Span>Scroll</Span>
             </ScrollButton>
-            <Edit ref={target}>
+            <Edit ref={target} >
               <Frame />
               <EditTitle>Edit Your Custom Information</EditTitle>
               <EditText>

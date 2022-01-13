@@ -27,6 +27,32 @@ const App = () => {
     })
   }, [])
 
+  const [visible, setVisible] = useState(true);
+
+  const toggleVisible = () => {
+    // const scrolled = document.documentElement.scrollTop;
+    // const scrolled = document.scrollingElement;
+    // const scrolled = document.documentElement.scrollTop || document.body.scrollTop || 0;
+    // const scrolled = document.body.scrollTop
+    if (document.documentElement.scrollTop > 0) {
+      // console.log(scrolled)
+      console.log("hih")
+      setVisible(false);
+    } else if (document.documentElement.scrollTop === 0) {
+      console.log("scrolled")
+      setVisible(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisible)
+
+    return () => {
+      window.removeEventListener('scroll', toggleVisible)
+    }
+  }, [])
+
+
   return (
     <>
       <Router>
@@ -42,7 +68,7 @@ const App = () => {
               <Route path="/homepage">
                 {user ? <HomePage /> : <Redirect to="/" />}
               </Route>
-              <Route path="/invitation-edit">
+              <Route path="/invitation-edit" visible={visible}>
                 {user ? <InvitationEdit /> : <Redirect to="/" />}
               </Route>
               <Route path="/guestlist">
