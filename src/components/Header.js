@@ -80,6 +80,7 @@ const DeskTag = styled(NavLink)`
   }
 `;
 
+
 const LogoutIcon = styled(RiLogoutCircleRLine)`
   font-size: 24px;
   margin: 0 4px;
@@ -173,7 +174,7 @@ export default function Header() {
           <LogoutIcon onClick={confirmLogout}></LogoutIcon>
         </DeskHeaderDiv>
 
-        <MobileHeaderDiv>
+        {/* <MobileHeaderDiv>
           <Logo to="/homepage">
             <img src={roseLogo} alt="logo" height="44" />
           </Logo>
@@ -183,7 +184,7 @@ export default function Header() {
             <MobileTag to="/table">Table</MobileTag>
             <LogoutIcon onClick={confirmLogout}></LogoutIcon>
           </MobileNav>
-        </MobileHeaderDiv>
+        </MobileHeaderDiv> */}
       </Container>
     </Navbar>
   );

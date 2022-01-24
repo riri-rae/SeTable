@@ -38,7 +38,7 @@ const App = () => {
               </Route>
               <Route exact path="/invitation-rsvp/404" component={Notfound} />
               <Route exact path="/invitation-rsvp/:userid" component={InvitationRsvp} />
-              <Route path="/homepage">
+              <Route path="/homepage" >
                 {user ? <HomePage /> : <Redirect to="/" />}
               </Route>
               <Route path="/invitation-edit">

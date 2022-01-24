@@ -5,7 +5,9 @@ import { getRsvpData } from "./utils/firebaseFunction";
 import GuestlistPack from "./components/guestlist/GuestlistPack";
 import GuestlistMain from "./components/guestlist/GuestlistMain";
 import Header from "./components/Header";
+import Dropdown from "./components/Dropdown";
 import Loading from "./components/Loading";
+import useDropdown from "./utils/useDropdown";
 import { RiStickyNoteLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 
@@ -169,10 +171,27 @@ function GuestList({ setDeleteId }) {
       </thead>
     );
   };
+  const [isOpen, toggle] = useDropdown();
+
+  // useEffect(() => {
+  //   const hideMenu = () => {
+  //     if (window.innerWidth > 720 && isOpen) {
+  //       setIsOpen(false)
+  //       console.log(window.innerWidth)
+  //     }
+
+  //   }
+  //   window.addEventListener('resize', hideMenu)
+
+  //   return () => {
+  //     window.removeEventListener('resize', hideMenu)
+  //   }
+  // })
 
   return (
     <>
-      <Header />
+      <Header toggle={toggle} />
+      <Dropdown toggle={toggle} isOpen={isOpen} />
       {user ? (
         <Bg>
           <Wrap>
